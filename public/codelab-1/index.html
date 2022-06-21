@@ -1,0 +1,299 @@
+
+<!doctype html>
+
+<html>
+<head>
+  <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1.0, user-scalable=yes">
+  <meta name="theme-color" content="#4F7DC9">
+  <meta charset="UTF-8">
+  <title>Codelab 1 - Prepare your Desktop</title>
+  <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Source+Code+Pro:400|Roboto:400,300,400italic,500,700|Roboto+Mono">
+  <link rel="stylesheet" href="//fonts.googleapis.com/icon?family=Material+Icons">
+  <link rel="stylesheet" href="https://storage.googleapis.com/codelab-elements/codelab-elements.css">
+  <style>
+    .success {
+      color: #1e8e3e;
+    }
+    .error {
+      color: red;
+    }
+  </style>
+</head>
+<body>
+  <google-codelab-analytics gaid="UA-49880327-14"></google-codelab-analytics>
+  <google-codelab codelab-gaid=""
+                  id="codelab-1-prepare-your-desktop"
+                  title="Codelab 1 - Prepare your Desktop"
+                  environment="web"
+                  feedback-link="">
+    
+      <google-codelab-step label="การติดตั้ง Windows Subsystem for Linux" duration="15">
+        <p>Windows Subsystem for Linux (WSL) เป็นฟีเจอร์ของระบบปฏิบัติการ Windows ที่ทำให้สามารถใช้คำสั่งที่ทำงานในฝั่ง Linux ได้หรือพูดง่ายๆ ว่าเราสามารถใช้งาน Linux บน Windows ได้แบบ Native โดยที่ไม่ต้องลง Virtual Machine หรือ Hyper-V ใดๆ โดยที่ใน WSL Version 2 นี้  จะสามารถ Mount ระบบไฟล์จากดิสก์ที่เป็นลินุกซ์ในเครื่องเดียวกันได้ โดยไม่ต้องคอยแปลง format</p>
+<aside class="special"><p><strong>Tip: </strong></p>
+<ul>
+<li>Window 10 ที่ Major Version <strong>1903</strong> และ <strong>1909</strong>  ให้พิจารณา Major version (Build) มากกว่า <strong>18363</strong> หรือ Minor Version ที่สูงกว่า<strong> 1049,</strong> (18362<strong>.1049</strong>) จึงจะสามารถติดตั้งและใช้งาน WSL 2 ได้    </li>
+<li>Window 10 ที่ Major Version <strong>2004</strong> ให้พิจารณา Major version(Build) มากกว่า <strong>19041</strong> จึงจะสามารถติดตั้งและใช้งาน WSL 2 ได้ </li>
+</ul>
+</aside>
+<h3 is-upgraded><strong>วิธีการตรวจสอบ Version ของ Window</strong></h3>
+<p>ผู้ใช้งานต้องตรวจสอบ Version ของ Windows ก่อน ซึ่งทำได้โดยเข้าไปที่ Command Promt (window logo key + R) จากนั้นพิมพ์ &#34;<code>winver</code>&#34;</p>
+<p class="image-container"><img style="width: 624.00px" src="img\dfecefba787b85e1.png"></p>
+<p>หรืออีกวิธีหนึ่งทำได้โดย พิมพ์ค้นหา &#34; About Your PC &#34; ในช่อง Windows Search </p>
+<p class="image-container"><img style="width: 247.45px" src="img\d1f44301a601a582.png"></p>
+<p>ผลลัพธ์ตัวอย่างดังรูป</p>
+<p class="image-container"><img style="width: 624.00px" src="img\8c9d54c1422710d6.png"></p>
+<h3 is-upgraded><strong>การติดตั้ง WSL สำหรับ ระบบปฏิบัติการ Windows 10 ที่ต่ำกว่า 1903.18362.1049</strong></h3>
+<p>Step 1. เปิด PowerShell ขึ้นมา โดยเลือกแบบ Open as an Administrator</p>
+<p class="image-container"><img style="width: 407.19px" src="img\72bf2997cb779e2f.jpeg"></p>
+<p>Step 2. จากนั้นพิมพ์คำสั่ง หรือคัดลอกคำสั่งนี้ ไปวางที่ PowerShell แล้วกด Enter เพื่อเริ่มดาวน์โหลดและติดตั้ง</p>
+<pre><code>dism.exe /online /enable-feature /featurename:Microsoft-Windows-Subsystem-Linux /all /norestart</code></pre>
+<p class="image-container"><img style="width: 624.00px" src="img\9292efd56653c8e9.png"></p>
+<p>Step 3.  จากนั้นพิมพ์คำสั่ง หรือคัดลอกคำสั่งนี้ ไปวางที่ PowerShell  Enter เพื่อเปิดฟีเจอร์ Virtual Machine feature</p>
+<pre><code>dism.exe /online /enable-feature /featurename:VirtualMachinePlatform /all /norestart</code></pre>
+<p class="image-container"><img style="width: 624.00px" src="img\7eae59cf364b5ed4.png"></p>
+<p>Step 5. ทำการ Restart </p>
+<p>Step 6. ทำการทดสอบ WSL ว่าสามารถใช้งานได้หรือไม่ โดยการพิมพ์คำสั่งใน PowerShell </p>
+<pre><code>wsl --list --verbose</code></pre>
+<h3 is-upgraded><strong>วิธี Update</strong> <strong>WSL ให้เป็น Version 2 </strong></h3>
+<p>Step 1. ดาวน์โหลด Linux kernel update package ให้เหมาะสมตามสถาปัตยกรรม (x64 หรือ ARM64) เครื่องของเรา (เลือกโหลด ตามความเหมาะสม) จากนั้นทำการติดตั้ง</p>
+<ul>
+<li><a href="https://wslstorestorage.blob.core.windows.net/wslblob/wsl_update_x64.msi" target="_blank">x64 system Linux kernel</a></li>
+<li><a href="https://wslstorestorage.blob.core.windows.net/wslblob/wsl_update_arm64.msi" target="_blank">ARM64 system Linux kernel</a></li>
+</ul>
+<aside class="special"><p><strong>วิธีการตรวจสอบสถาปัตยกรรมของเครื่อง : </strong>ให้ใช้คำสั่งนี้ &#34;systeminfo | find &#34;System Type&#34; ใน Command Prompt (window logo key + R ) </p>
+</aside>
+<p class="image-container"><img style="width: 642.47px" src="img\1f6dc0fe84b3dafc.jpeg"></p>
+<p>Step 2. Double Click ไฟล์ที่ได้โหลดมา แล้วกด RUN</p>
+<p class="image-container"><img style="width: 460.50px" src="img\2aab644dbfca3c86.jpeg"></p>
+<p class="image-container"><img style="width: 366.00px" src="img\b3d9ba43d90054f.jpeg"></p>
+<p>Step 3. Click ปุ่ม Next แล้วรอการติดตั้ง</p>
+<p class="image-container"><img style="width: 369.90px" src="img\7ff88e86ea79dcd6.jpeg"></p>
+<p>Step 4. เมื่อติดตั้ง Update เสร็จแล้วให้ทำการ Restart (เป็นการติดตั้ง Docker CE ต่อให้สำเร็จ หลังจากที่รอการ Update WSL ให้เป็น Version 2 )</p>
+<p>Step 5. เปิด PowerShell ขึ้นมา โดยเลือกแบบ Open as an Administrator จากนั้นให้พิมพ์คำสั่งด้านล่าง เพื่อการกำหนดค่า Default ของ WSL ให้ เป็น Version 2</p>
+<pre><code>wsl --set-default-version 2</code></pre>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="ติดตั้ง Ubuntu 18.04 LST ในระบบปฏิบัติการ Windows" duration="5">
+        <p>Step 1. หลังจากได้มีการติดตั้ง WSL พร้อม Update V2 เรียบร้อยแล้ว ให้ทำการเปิด Microsoft Store ขึ้นมา จากนั้นพิมพ์ในช่องค้นหาแอพพลิเคชั่น &#34;Ubuntu 18.04&#34; </p>
+<p class="image-container"><img style="width: 624.00px" src="img\3f841f1e4fd90f79.png"></p>
+<p>Step 2. จากนั้นให้เราคลิ๊กที่ปุ่ม Get </p>
+<p class="image-container"><img style="width: 624.00px" src="img\4c16dec945e95cdb.jpeg"></p>
+<p>Step 3. จะปรากฏหน้าต่างข้อความตามรูปด้านล่างให้คลิ๊กที่ NO</p>
+<p class="image-container"><img style="width: 608.00px" src="img\875b0ebe34d842a6.png"></p>
+<p>Step 4. รอจนกว่าการดาวน์โหลดและติดตั้งจนแล้วเสร็จ</p>
+<p class="image-container"><img style="width: 624.00px" src="img\a53ba90734e69efb.jpeg"></p>
+<p>Step 5. เมื่อติดตั้งเรียบร้อย จะมีการแจ้งเตือนว่าเครื่องเราได้ติดต้้ง Ubuntu เรียบร้อย พร้อมเริ่มต้นในการทำงาน คลิก Pin to Start เพื่อสร้าง Shortcut ใน Programs </p>
+<p class="image-container"><img style="width: 407.00px" src="img\d86954038efaa4a6.png"></p>
+<p class="image-container"><img style="width: 288.00px" src="img\85374dce0f7bc.png"></p>
+<p>Step 6. เปิด App จาก Startup Program Menu  หรือโดยการคลิ๊กที่ปุ่ม Lunch ใน Microsoft Store</p>
+<p class="image-container"><img style="width: 624.00px" src="img\887060b93c859a2f.jpeg"> </p>
+<p>Step 7. รอการ Initial ระบบปฏิบัติการ Ubuntu </p>
+<p class="image-container"><img style="width: 624.00px" src="img\7311b2b3308f3a4c.jpeg"></p>
+<p>Step 8. กำหนด User Account และ Password สำหรับใช้ในระบบปฏิบัติการ Ubuntu</p>
+<aside class="special"><p><strong>User , Password : </strong>กำหนดให้ใช้ User และ Password ดังนี้</p>
+<p>User : student</p>
+<p>Password : 1234</p>
+</aside>
+<p class="image-container"><img style="width: 624.00px" src="img\7311b2b3308f3a4c.jpeg"></p>
+<p class="image-container"><img style="width: 624.00px" src="img\fc5a546ce24718aa.jpeg"></p>
+<p>&#34;เพียงเท่านี้เราก็สามารถใช้งาน  Ubuntu ในระบบปฏิบัติการ Windows เรียบร้อยแล้ว&#34;</p>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="การตรวจสอบ ip address ของเครื่อง Ubuntu" duration="1">
+        <p>พิมพ์คำสั่ง ifconfig ที่ command line </p>
+<pre><code>ifconfig </code></pre>
+<p>ตัวอย่างผลลัพธ์ </p>
+<p class="image-container"><img style="width: 1064.30px" src="img\338e35e32d5caf7e.jpeg"></p>
+<p>IP Address จากรูปคือ 172.21.219.197</p>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="การ Config SSH server ที่ Ubuntu" duration="15">
+        <p>Step 1. ตรวจสอบ เซอร์วิส ssh server ว่ามีสถานะการทำงานอย่างไรบ้าง </p>
+<pre><code>sudo service ssh status </code></pre>
+<p>หรือใช้คำสั่ง</p>
+<pre><code>sudo systemctl status ssh.service</code></pre>
+<p>ผลลัพธ์</p>
+<p class="image-container"><img style="width: 606.72px" src="img\b782104d78b6772c.jpeg"></p>
+<p>Step 2. พิมพ์คำสั่งสำหรับการ generate private และ public key เพื่อใช้ใน ssh service</p>
+<pre><code>sudo dpkg-reconfigure openssh-server</code></pre>
+<p>ผลลัพท์</p>
+<p class="image-container"><img style="width: 624.00px" src="img\c781b531d8c6fce9.jpeg"></p>
+<p>Step 3. แก้ไข config แก้ได้ที่ /etc/ssh/sshd_config โดยการพิมพ์คำสั่ง</p>
+<pre><code>sudo vim /etc/ssh/sshd_config</code></pre>
+<p>Step 4. จากนั้นกดปุ่ม i (Insert Mode) และเริ่มกำหนดค่า config ดังนี้</p>
+<pre><code>Port 22
+ListenAddress 0.0.0.0
+LoginGraceTime 120
+StrictModes yes
+AllowUsers student 
+AllowGroups student 
+PasswordAuthentication yes</code></pre>
+<p>โดยพิจารณาบรรทัดจากรูป และกำหนดค่าตาม</p>
+<p>ตัวอย่าง</p>
+<p class="image-container"><img style="width: 624.00px" src="img\a6505e3bc0ba1e89.jpeg"></p>
+<p class="image-container"><img style="width: 624.00px" src="img\7d22c6b1608a3f0c.jpeg"></p>
+<p class="image-container"><img style="width: 624.00px" src="img\6f9dc89b4a52dc94.jpeg"></p>
+<p>Step 5. ทำการ save ค่าที่แก้ไข ด้วยการกดปุ่มตาม Esc จากนั้นพิมพ์ :wq! (ตามลำดับ)</p>
+<p class="image-container"><img style="width: 590.98px" src="img\f62efb5864ec262b.jpeg"></p>
+<p>Step 6. ทำการ restart เซอร์วิส โดยใช้คำสั่งนี้</p>
+<pre><code>sudo service ssh restart</code></pre>
+<p>หรือ</p>
+<pre><code>sudo /etc/init.d/ssh restart</code></pre>
+<p>ผลลัพธ์</p>
+<p class="image-container"><img style="width: 624.00px" src="img\bee09d610d51051e.jpeg"></p>
+<p>Step 7. ตรวจสอบ เซอร์วิส ssh server ว่าพร้อมทำงานหรือไม่ ?</p>
+<pre><code>sudo service ssh status </code></pre>
+<p class="image-container"><img style="width: 624.00px" src="img\7b15c969f9cbc1d3.jpeg"></p>
+<p>Step 8. ตรวจสอบ port ssh server  โดยการใช้คำสั่งนี้</p>
+<pre><code>netstat -tan</code></pre>
+<p>ผลลัพธ์</p>
+<p class="image-container"><img style="width: 624.00px" src="img\ba9a0b60c836fccf.jpeg"></p>
+<p>Step 9. กำหนดให้ firewall อนุญาตให้ port ที่ใช้ในการรับส่งข้อมูลเพื่อเชื่อมต่อ ssh server ทำงาน ด้วยการใช้คำสั่ง</p>
+<pre><code>sudo ufw allow ssh</code></pre>
+<p>ผลลัพธ์</p>
+<p class="image-container"><img style="width: 536.16px" src="img\9a9dbae4bc34de73.jpeg"></p>
+<p>&#34;เพียงเท่านี้เราก็สามารถใช้งานเซอร์วิส  ssh ในเข้าไปควบคุมและสั่งการเครื่อง server ของเราได้แล้ว&#34;</p>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="ติดตั้ง Xshell 7" duration="10">
+        <p>Step 1. Download โปรแกรม Xshell 7 ได้จาก <a href="https://drive.google.com/file/d/1jbBOdUFS_rc-6-dr5W4IaoFqhUmg7ZI9/view?usp=sharing" target="_blank">Link นี้ </a></p>
+<p>Step 2. ทำการ Double Click ไฟล์ .exe และกด Yes และ Next</p>
+<p class="image-container"><img style="width: 500.00px" src="img\a7efa4b463594ea4.jpeg"></p>
+<p>Step 3. ทำการเลือก ยอมรับข้อตกลงในการใช้งาน</p>
+<p class="image-container"><img style="width: 500.00px" src="img\f1fae4587dfab1b1.jpeg"></p>
+<p>Step 4. ทำการเลือก Folder ปลายทางในการติดตั้ง และกด Next </p>
+<p class="image-container"><img style="width: 500.00px" src="img\ba7e0b9e5767b3f6.jpeg"></p>
+<p>Step 5. ทำการ Click ปุ่ม Install</p>
+<p class="image-container"><img style="width: 500.00px" src="img\a66253c4509fe888.jpeg"></p>
+<p>Step 6. รอจนการติดตั้งแล้วเสร็จ จากนั้นกดปุ่ม Finish</p>
+<p class="image-container"><img style="width: 500.00px" src="img\86cf1b8c2118a98a.jpeg"></p>
+<p>Step 7. หลังจากทำการเปิดโปรแกรมขึ้นมาใช้งานครั้งแรก ควร Set Color Schemes โดยไปที่เมนู Tool &gt; Color Schemes</p>
+<p class="image-container"><img style="width: 624.00px" src="img\4972aed9cf14f926.jpeg"></p>
+<p class="image-container"><img style="width: 624.00px" src="img\2dc50758eb98d37f.jpeg"></p>
+<p>Step 8. เลือก ANSI Colors on Black จากนั้นกด OK</p>
+<p class="image-container"><img style="width: 361.00px" src="img\fbd388071cefa164.jpeg"></p>
+<p>Step 9. ทำการสร้าง Connection เพื่อใช้ในการเชื่อมต่อ Ubuntu โดยการกดปุ่ม ALT+N หรือกดปุ่ม Icon ที่แถบ Menu bar ตามรูปด้านล่าง</p>
+<p class="image-container"><img style="width: 302.00px" src="img\8bf3333f598bcf60.jpeg"></p>
+<p> หรือสามารถคลิ๊กปุ่ม New ที่ Session Windows ที่พบได้ขณะเปิดโปรแกรมครั้งแรก</p>
+<p class="image-container"><img style="width: 560.50px" src="img\be0a9c7f87bb9a10.jpeg"></p>
+<p>Step 10. กำหนด Connection Name และ IP Address ที่ได้จากขั้นตอนที่ 3</p>
+<p class="image-container"><img style="width: 663.53px" src="img\338e35e32d5caf7e.jpeg"></p>
+<p>Step 11. ทำกำหนดรูปแบบวิธีการเชื่อมต่อ โดยคลิ๊กที่ Tab Authentication</p>
+<p class="image-container"><img style="width: 624.00px" src="img\bc9838028865906a.jpeg"></p>
+<p>กำหนดค่า user และ password ที่ใช้ access เครื่อง จากนั้นกด Connect. </p>
+<p class="image-container"><img style="width: 511.00px" src="img\f3990089a04fb534.jpeg"></p>
+<p class="image-container"><img style="width: 624.00px" src="img\f55f2e1a7b07e14b.jpeg"></p>
+<p>&#34;เพียงเท่านี้เราก็สามารถใช้โปรแกรม Xshell 7  เพื่อเข้าไปควบคุมและสั่งการเครื่อง server ของเราผ่าน Protocol SSH ได้แล้ว&#34;</p>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="ติดตั้ง HTTP Service" duration="10">
+        <p>Step 1. Install apache2 โดยพิมพ์คำสั่ง</p>
+<pre><code>sudo apt-get install apache2</code></pre>
+<p>Step 2. พิมพ์ Y</p>
+<p>Step 3. หาก Error ให้พิมพ์คำสั่ง</p>
+<pre><code>sudo apt-get update</code></pre>
+<p>Step 4. จากนั้น Install apache2 อีกครั้ง</p>
+<pre><code>sudo apt-get install apache2</code></pre>
+<p>Step 5. เมื่อ install เรียบร้อย พิมพ์ netstat -tan จะเห็นว่ามี port 80 ขึ้นมา หากไม่มีให้พิมพ์คำสั่ง</p>
+<pre><code>sudo service apache2 start</code></pre>
+<p>Step 6. ทดสอบ port 80 ทำงานหรือไม่โดยเข้า Browser แล้วพิมพ์ IP address ที่ช่อง Address Bar โดยสามารถดู IP ได้โดยพิมพ์คำสั่ง</p>
+<pre><code>ifconfig</code></pre>
+<p>Step 7. ถ้าใช้งานได้จะขึ้นดังนี้</p>
+<p class="image-container"><img style="width: 510.61px" src="img\fa268970e5558887.png"></p>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="ติดตั้ง FTP Service" duration="15">
+        <p>Step 1. Install vsftpd โดยใช้คำสั่ง</p>
+<pre><code>sudo apt-get install vsftpd</code></pre>
+<p>Step 2. เมื่อ install เรียบร้อย พิมพ์ netstat -tan จะเห็นว่ามี port 21 ขึ้นมา</p>
+<p>Step 3. แก้ไข vsftpd config ไฟล์ที่ /etc/vsftpd.conf โดยพิมพ์คำสั่ง</p>
+<pre><code>sudo vim /etc/vsftpd.conf</code></pre>
+<p>Step 4. กดตัว i ที่คีย์บอร์ดเพื่อแก้ไขไฟล์</p>
+<p>Step 5. ลบคอมเม้น (#) หน้าบรรทัดที่ 31,35 และ 122 ออก</p>
+<p class="image-container"><img style="width: 254.50px" src="img\9f8fe97a30461754.png"></p>
+<p class="image-container"><img style="width: 260.31px" src="img\54198493d83a4c70.png"></p>
+<p>Step 6. จากนั้นพิมพ์คำสั่งดังต่อไปนี้ลงไปต่อจากบรรทัดสุดท้าย</p>
+<pre><code>allow_writeable_chroot=YES
+pasv_enable=YES
+pasv_min_port=40000
+pasv_max_port=40100
+local_root=/var/www/html/</code></pre>
+<p class="image-container"><img style="width: 262.47px" src="img\8ae41261d706f08b.png"></p>
+<p>Step 7. จากนั้นกดปุ่ม ESC ที่คีย์บอร์ด แล้วพิมพ์ :wq เพื่อทำการ Save ไฟล์</p>
+<p>Step 8. ให้ restart vsftpd service โดยพิมพ์คำสั่ง</p>
+<pre><code>sudo service vsftpd restart</code></pre>
+<p class="image-container"><img style="width: 541.00px" src="img\7e539932bb5f69b6.png"></p>
+<p>Step 9. พิมพ์ netstat -tan เพิ่อดูว่า port 80,21 ยังอยู่หรือไม่</p>
+<p class="image-container"><img style="width: 541.88px" src="img\1b0429e29726d531.png"></p>
+<p>Step 10. สร้าง User และกำหนด User&#39;s permission โดยพิมพ์คำสั่ง sudo useradd -m ตามด้วยชื่อ user ที่ต้องการสร้าง</p>
+<pre><code>sudo useradd -m [username]</code></pre>
+<p>Step 11. กำหนด password ด้วยคำสั่ง sudo passwd ตามด้วย username ที่เราต้องการกำหนด password</p>
+<pre><code>sudo passwd [username]</code></pre>
+<p>Step 12. พิมพ์ password ลงไป</p>
+<p class="image-container"><img style="width: 498.17px" src="img\36ecb3ef5b0524d4.png"></p>
+<p>Step 13. ทำการบล็อกหรือปิดการใช้งานการเข้าสู่ระบบ nologin shells ของผู้ใช้โดยการกำหนดค่าที่ /etc/shells </p>
+<pre><code>sudo vim /etc/shells</code></pre>
+<p>Step 14. เพิ่มคำสั่ง /usr/sbin/nologin ที่บรรทัดสุดท้าย</p>
+<pre><code>/usr/sbin/nologin</code></pre>
+<p class="image-container"><img style="width: 170.00px" src="img\c76c41c5e5ac6e94.png"></p>
+<p>Step 15. กดปุ่ม ESC ที่คีย์บอร์ด แล้วพิมพ์ :wq เพื่อทำการ Save ไฟล์</p>
+<p>Step 16. สร้างไดเรคทอรี่ user โดยพิมพ์คำสั่ง mkdir /var/www/html/ชื่อโฟลเดอร์</p>
+<pre><code>sudo mkdir /var/www/html/[student-code]</code></pre>
+<p>Step 17. กำหนด owner ให้กับ folder ที่สร้าง โดยพิมพ์คำสั่ง</p>
+<pre><code>sudo chown [student-code]:[student-code] /var/www/html/[student-code]</code></pre>
+<p>Step 18. <a href="https://filezilla-project.org/download.php" target="_blank">ดาวน์โหลด FileZilla Client</a> และ install โปรแกรม</p>
+<p class="image-container"><img style="width: 337.00px" src="img\9461b673f4909a21.png"></p>
+<p>Step 19. สร้างไฟล์ html ขึ้นมาด้วยโปรแกรม Editor แล้วพิมพ์โค้ดดังต่อไปนี้</p>
+<pre><code>&lt;HTML&gt;
+&lt;HEAD&gt;
+&lt;title&gt;Student Code&lt;/title&gt;
+&lt;/HEAD&gt;
+&lt;BODY&gt;
+Your name.
+&lt;/BODY&gt;
+&lt;/HTML&gt;</code></pre>
+<p>Step 20. เปิดโปรแกรม FileZilla ขึ้นมา <img style="width: 624.00px" src="img\b0ec9902345418ad.png"></p>
+<ul>
+<li>Host : IP address ของ Ubuntu</li>
+<li>Username : username จาก Step 10.</li>
+<li>Password : password จาก Step 12.</li>
+<li>Port : 21</li>
+</ul>
+<p>จากนั้นกดปุ่ม Quickconnect</p>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="References" duration="1">
+        <h2 is-upgraded>Reference docs</h2>
+<ul>
+<li>Krief, M. (2019). Learning DevOps. Birmingham, Packt Publishing Ltd.: 215-232.</li>
+<li><a href="https://docs.microsoft.com/en-us/windows/wsl/install-win10#install-your-linux-distribution-of-choice" target="_blank">Windows Subsystem for Linux Installation Guide for Windows 10</a></li>
+<li><a href="https://piravit-chenpittaya.medium.com/%E0%B8%A7%E0%B8%B4%E0%B8%98%E0%B8%B5%E0%B8%95%E0%B8%B4%E0%B8%94%E0%B8%95%E0%B8%B1%E0%B9%89%E0%B8%87-windows-subsystem-for-linux-wsl-2-window-10-641343774f88" target="_blank">วิธีติดตั้ง Windows Subsystem for Linux (WSL 2) Window 10</a></li>
+<li><a href="https://www.saladpuk.com/basic/docker-1/wsl" target="_blank">WSL อยากใช้ Windows กับ Linux พร้อมกันทำไง</a></li>
+</ul>
+
+
+      </google-codelab-step>
+    
+  </google-codelab>
+
+  <script src="https://storage.googleapis.com/codelab-elements/native-shim.js"></script>
+  <script src="https://storage.googleapis.com/codelab-elements/custom-elements.min.js"></script>
+  <script src="https://storage.googleapis.com/codelab-elements/prettify.js"></script>
+  <script src="https://storage.googleapis.com/codelab-elements/codelab-elements.js"></script>
+
+</body>
+</html>

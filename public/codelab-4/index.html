@@ -1,0 +1,145 @@
+
+<!doctype html>
+
+<html>
+<head>
+  <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1.0, user-scalable=yes">
+  <meta name="theme-color" content="#4F7DC9">
+  <meta charset="UTF-8">
+  <title>Codelab 4 - Wireshark Lab HTTP</title>
+  <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Source+Code+Pro:400|Roboto:400,300,400italic,500,700|Roboto+Mono">
+  <link rel="stylesheet" href="//fonts.googleapis.com/icon?family=Material+Icons">
+  <link rel="stylesheet" href="https://storage.googleapis.com/codelab-elements/codelab-elements.css">
+  <style>
+    .success {
+      color: #1e8e3e;
+    }
+    .error {
+      color: red;
+    }
+  </style>
+</head>
+<body>
+  <google-codelab-analytics gaid="UA-49880327-14"></google-codelab-analytics>
+  <google-codelab codelab-gaid=""
+                  id="codelab-4-wireshark-lab-http"
+                  title="Codelab 4 - Wireshark Lab HTTP"
+                  environment="web"
+                  feedback-link="">
+    
+      <google-codelab-step label="The Basic HTTP GET/response interaction" duration="5">
+        <p>Step 1. เปิดเว็บบราวเซอร์</p>
+<p>Step 2. เปิดโปรแกรม Wireshark กดปุ่ม Stop เพื่อหยุดการจับแพ็คเกจ พิมพ์ http ในช่อง display-filter</p>
+<p class="image-container"><img style="width: 502.50px" src="img\624d83346711fe90.png"></p>
+<p>Step 3. รอสักครู่แล้วคลิกปุ่ม Start เพื่อเริ่มจับแพ็คเกจ</p>
+<p class="image-container"><img style="width: 502.50px" src="img\dab3c2dbbfdc41a1.png"></p>
+<p>Step 4. ที่บราวเซอร์ เข้าไปที่ URL: <a href="http://gaia.cs.umass.edu/wireshark-labs/HTTP-wireshark-file1.html" target="_blank">http://gaia.cs.umass.edu/wireshark-labs/HTTP-wireshark-file1.html</a> จะเห็นข้อความดังรูป</p>
+<p class="image-container"><img style="width: 565.50px" src="img\bb49ec6bef40677a.png"></p>
+<p>Step 5. ที่ Wireshark กด Stop จะขึ้นดังต่อไปนี้</p>
+<p class="image-container"><img style="width: 624.00px" src="img\e8693bc09b1d11b2.png"></p>
+<p>จากรูปด้านบนในส่วนของ packet-listing windows จะเห็น HTTP messages อยู่ 2 เฟรม คือ</p>
+<ul>
+<li>GET message จาก Client (your browser) ไปที่ Server (gaia.cs.umass.edu)</li>
+<li>Response message จาก Server ตอบกลับมาที่ Client (your browser)</li>
+</ul>
+<p>ในส่วนของ packet-contents จะแสดงรายละเอียดของ message ที่เราเลือก ซึ่งใน HTTP message จะประกอบด้วย Ethernet frame (1), IP diagram (2), TCP segment (3) และ HTTP (4) ให้เราคลิกลูกศร &gt; ตรง HTTP เพื่อดูรายละเอียดตรงส่วนนี้แล้วนำไปตอบคำถามใน Quiz 3.</p>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="The HTTP CONDITIONAL GET/response interaction" duration="5">
+        <p>Step 1. เข้าเว็บบราวเซอร์ ไปที่ Settings &gt; Clear browsing data &gt; Time range เลือก All time &gt; ติ๊กเครื่องหมายถูกตรง Cached images and files &gt; คลิกปุ่ม Clear data</p>
+<p class="image-container"><img style="width: 163.99px" src="img\5bb845109450287a.png"><img style="width: 420.50px" src="img\4e32f72e915c2be5.png"></p>
+<p class="image-container"><img style="width: 329.88px" src="img\73989d178b897292.png"></p>
+<p>Step 2. เปิดโปรแกรม Wireshark และเริ่มจับแพ็คเกจ</p>
+<p>Step 3. ที่บราวเซอร์ เข้าไปที่ URL: <a href="http://gaia.cs.umass.edu/wireshark-labs/HTTP-wireshark-file2.html" target="_blank">http://gaia.cs.umass.edu/wireshark-labs/HTTP-wireshark-file2.html</a> จะเห็นข้อความดังนี้</p>
+<p class="image-container"><img style="width: 615.00px" src="img\4f25c1b89a859d5d.png"></p>
+<p>Step 4. รีเพรชบราวเซอร์ 1 ครั้ง</p>
+<p>Step 5. ที่โปรแกรม Wireshark ให้ Stop การจับแพ็คเกจ แล้วพิมพ์ http ที่ช่อง display-filter แล้วกด Enter</p>
+<p class="image-container"><img style="width: 624.00px" src="img\433571ea71c0ce62.png"></p>
+<p>Step 6. ตอบคำถามใน Quiz 4.</p>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Retrieving Long Documents" duration="5">
+        <p>Step 1. เปิดบราวเซอร์ และเคลียร์ cache</p>
+<p>Step 2. เปิด Wireshark เริ่มจับแพ็คเกจ</p>
+<p>Step 3. ที่บราวเซอร์ เข้าไปที่ URL: <a href="http://gaia.cs.umass.edu/wireshark-labs/HTTP-wireshark-file3.html" target="_blank">http://gaia.cs.umass.edu/wireshark-labs/HTTP-wireshark-file3.html</a> จะเห็นข้อความดังนี้</p>
+<p class="image-container"><img style="width: 624.00px" src="img\588d98f80f6d1685.png"></p>
+<p>Step 4. ที่โปรแกรม Wireshark ให้ Stop การจับแพ็คเกจ แล้วพิมพ์ http ที่ช่อง display-filter แล้วกด Enter</p>
+<p class="image-container"><img style="width: 624.00px" src="img\a416c1b2fbaaaa38.png"></p>
+<p>ใน packet-listing เราจะเห็นว่า HTTP มีการตอบกลับมาเป็น TCP segments หลายแพ็คเกจ โดย HTTP response message มีส่วนประกอบดังรูปที่ 2.9 </p>
+<p class="image-container"><img style="width: 378.00px" src="img\7a5895210243e56.png"></p>
+<p class="image-container"><img style="width: 470.48px" src="img\e357fd5e4e0f817f.png"></p>
+<p>จากรูป 2.9 HTTP response message ประกอบไปด้วย 3 ส่วนหลักๆ คือ </p>
+<ul>
+<li>Status line : ประกอบด้วย HTTP Version, Status Code, คำอธิบาย Status Code</li>
+<li>Header line : รายละเอียดเพิ่มเติมที่ Server ส่งกลับมา</li>
+<li>Entity body : ข้อความที่ตอบกลับมา</li>
+</ul>
+<p>ในกรณีที่ผ่านมา HTTP ที่ตอบกลับมานั้น Entity body จะเป็นไฟล์ HTML ที่เราร้องขอข้อมูลทั้งหมดจาก Server แต่ในกรณีนี้ ไฟล์ HTML มีขนาดค่อนข้างยาวคือ 4500 ไบต์ ซึ่งมีขนาดใหญ่เกินกว่าจะใส่ลงใน TCP แพ็คเกจเดียวได้ ดังนั้นจึงมีการแบ่งออกเป็นหลายส่วนโดย TCP ซึ่งแต่ละส่วนจะอยู่ภายใน TCP segment ที่แยกจากกัน</p>
+<p>Step 5. ตอบคำถามใน Quiz 5.</p>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="HTML Documents with Embedded Objects" duration="5">
+        <p>Step 1. เปิดบราวเซอร์ และเคลียร์ cache</p>
+<p>Step 2. เปิด Wireshark เริ่มจับแพ็คเกจ</p>
+<p>Step 3. ที่บราวเซอร์ เข้าไปที่ URL: <a href="http://gaia.cs.umass.edu/wireshark-labs/HTTP-wireshark-file4.html" target="_blank">http://gaia.cs.umass.edu/wireshark-labs/HTTP-wireshark-file4.html</a> จะเห็นข้อความดังนี้</p>
+<p class="image-container"><img style="width: 624.00px" src="img\c69c16ff96964cc1.png"></p>
+<p>Step 4. ที่โปรแกรม Wireshark ให้ Stop การจับแพ็คเกจ แล้วพิมพ์ http ที่ช่อง display-filter แล้วกด Enter</p>
+<p class="image-container"><img style="width: 624.00px" src="img\e0e00cf385d0e48c.png"></p>
+<p>Step 5. ตอบคำถามใน Quiz 6.</p>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="HTTP Authentication" duration="5">
+        <p>Step 1. เปิดบราวเซอร์ และเคลียร์ cache</p>
+<p>Step 2. เปิด Wireshark เริ่มจับแพ็คเกจ</p>
+<p>Step 3. ที่บราวเซอร์ เข้าไปที่ URL: <a href="http://gaia.cs.umass.edu/wireshark-labs/protected_pages/HTTP-wireshark-file5.html" target="_blank">http://gaia.cs.umass.edu/wireshark-labs/protected_pages/HTTP-wireshark-file5.html</a> จะมีไดอะล็อคให้เรากรอก username กับ password ขึ้นมาดังรูป</p>
+<p class="image-container"><img style="width: 358.50px" src="img\ace71c27f0c4d47a.png"></p>
+<p>Step 4. Username : wireshark-students , Password: network เมื่อกรอกแล้วจะแสดงผลดังรูป</p>
+<p class="image-container"><img style="width: 606.00px" src="img\f39bb65556abf3af.png"></p>
+<p>Step 5. ที่โปรแกรม Wireshark ให้ Stop การจับแพ็คเกจ แล้วพิมพ์ http ที่ช่อง display-filter แล้วกด Enter</p>
+<p class="image-container"><img style="width: 572.74px" src="img\6d596e4dd05f1e8a.png"></p>
+<p>เมื่อเรากรอก username และ password เรียบร้อยแล้ว ข้อมูลที่เราป้อนจะถูกเข้ารหัสในรูปแบบ Base64 คือ d2lyZXNoYXJrLXN0dWRlbnRzOm5ldHdvcms= ภายใต้ Header : &#34;Authorization: Basic&#34; ใน HTTP GET message ซึ่งเราสามารถถอดรหัสได้โดยเข้าไปที่ URL: <a href="http://www.motobit.com/util/base64-decoder-encoder.asp" target="_blank">http://www.motobit.com/util/base64-decoder-encoder.asp</a></p>
+<p>โดยวางรหัสลงไปใน textbox เลือก <strong>decode the data form a Base64</strong> แล้วคลิกที่ปุ่ม Convert the source data ดังรูป</p>
+<p class="image-container"><img style="width: 438.50px" src="img\85a4f130c2ffa2b0.png"></p>
+<p>โปรแกรมจะทำการถอดรหัสออกมาให้เราดังรูป</p>
+<p class="image-container"><img style="width: 624.00px" src="img\e50c40934f36df73.png"></p>
+<p>โดย username ที่มีการเข้ารหัสในรูปแบบ Base64 คือ d2lyZXNoYXJrLXN0dWRlbnRz</p>
+<p>และ password ที่มีการเข้ารหัสในรูปแบบ Base64 คือ Om5ldHdvcms=</p>
+<p>Step 5. ตอบคำถามใน Quiz 7.</p>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="วิธีปริ้นไฟล์ Lab ด้วยโปรแกรม Wireshark" duration="1">
+        <p>Step 1. ไปที่เมนู File &gt; Print... (หรือกด Ctrl+P)</p>
+<p>Step 2.  ตั้งค่าดังรูปแล้วสั่ง Print...</p>
+<p class="image-container"><img style="width: 402.03px" src="img\7e27e578df1d012b.png">                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    </p>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="References" duration="1">
+        <h2 is-upgraded>Reference docs</h2>
+<ul>
+<li><a href="http://www-net.cs.umass.edu/wireshark-labs/Wireshark_Intro_v8.0.pdf" target="_blank">Wireshark Lab: Getting Started v8.0</a></li>
+</ul>
+
+
+      </google-codelab-step>
+    
+  </google-codelab>
+
+  <script src="https://storage.googleapis.com/codelab-elements/native-shim.js"></script>
+  <script src="https://storage.googleapis.com/codelab-elements/custom-elements.min.js"></script>
+  <script src="https://storage.googleapis.com/codelab-elements/prettify.js"></script>
+  <script src="https://storage.googleapis.com/codelab-elements/codelab-elements.js"></script>
+
+</body>
+</html>

@@ -1,0 +1,409 @@
+
+<!doctype html>
+
+<html>
+<head>
+  <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1.0, user-scalable=yes">
+  <meta name="theme-color" content="#4F7DC9">
+  <meta charset="UTF-8">
+  <title>การแก้ปัญหา - Prepare your Desktop</title>
+  <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Source+Code+Pro:400|Roboto:400,300,400italic,500,700|Roboto+Mono">
+  <link rel="stylesheet" href="//fonts.googleapis.com/icon?family=Material+Icons">
+  <link rel="stylesheet" href="https://storage.googleapis.com/codelab-elements/codelab-elements.css">
+  <style>
+    .success {
+      color: #1e8e3e;
+    }
+    .error {
+      color: red;
+    }
+  </style>
+</head>
+<body>
+  <google-codelab-analytics gaid="UA-49880327-14"></google-codelab-analytics>
+  <google-codelab codelab-gaid=""
+                  id="prepare-your-desktop"
+                  title="การแก้ปัญหา - Prepare your Desktop"
+                  environment="web"
+                  feedback-link="">
+    
+      <google-codelab-step label="ERROR: WslRegisterDistribution failed" duration="5">
+        <ul>
+<li><h3 is-upgraded><strong>error: 0xc03a001a</strong></h3>
+</li>
+</ul>
+<p>Error: 0xc03a001a เกิดจากการร้องขอที่ไม่สามารถดำเนินการได้เสร็จสิ้นเนื่องจากข้อจำกัดของ Virtual Disk </p>
+<h3 is-upgraded><strong>วิธีแก้ไขมี 2 วิธี</strong> </h3>
+<ul>
+<li>ปิดการใช้งานการเข้ารหัส Run FSUTIL Command</li>
+<li>แก้ปัญหาการบีบอัดโดยการ Uncheck Compress Contents ใน Ubuntu directory</li>
+</ul>
+<p><strong>การปิดการใช้งานการเข้ารหัสด้วยการ Run FSUTIL Command</strong></p>
+<p>step 1. ที่ Start button พิมพ์ cmd คลิกขวาเลือก Run as Administrator</p>
+<p class="image-container"><img style="width: 574.50px" src="img\3f8a471fc76979d.png"></p>
+<p>step 2. พิมพ์คำสั่ง</p>
+<pre><code>fsutil behavior set disableencryption 1
+fsutil behavior set disablecompression 1</code></pre>
+<p>Step 3. Restart คอมพิวเตอร์</p>
+<p><strong>แก้ปัญหาการบีบอัดโดยการ Uncheck Compress Contents ใน Ubuntu directory</strong></p>
+<p>Step 1. เข้าไปที่ Ubuntu directory path ด้วย Copy path ดังนี้</p>
+<pre><code>%localappdata%\Packages\</code></pre>
+<p>Step 2. มองหาโฟลเดอร์ CannonicalGroupLimited.Ubuntu18.04onWindows_79rhkp1fndgsc</p>
+<p class="image-container"><img style="width: 327.46px" src="img\af537c22f165938b.png"></p>
+<p>Step 3. คลิกขวาที่โฟลเดอร์ เลือก Properties ที่แถบ General คลิกปุ่ม Advanced ...</p>
+<p>Step 4. เอาเครื่องหมายถูกในส่วนของ Compress or Encrypt attributes ออก คลิกปุ่ม Save</p>
+<p class="image-container"><img style="width: 662.33px" src="img\8d978121d1e8f9c2.png"></p>
+<p>Step 5. เข้า Command line พิมพ์คำสั่ง </p>
+<pre><code>wsl --set-version Ubuntu-18.04 2
+wsl --set-default-version 2</code></pre>
+<p>Step 6. ตรวจสอบเวอร์ชั่น Ubuntu ด้วยคำสั่ง</p>
+<pre><code>wsl -l -v</code></pre>
+<p class="image-container"><img style="width: 411.50px" src="img\853fd63366972b30.png"></p>
+<ul>
+<li><h3 is-upgraded><strong>error: 0x80370102</strong> </h3>
+</li>
+</ul>
+<p>เกิดจาก Virtual machine ไม่สามารถทำงานได้เนื่องจากยังไม่ได้ติดตั้ง Windows Subsystem for Linux </p>
+<p class="image-container"><img style="width: 624.00px" src="img\36716ce5c99fc059.png"></p>
+<p>Step 1. เข้า cmd คลิกขวา Run as Administrator พิมพ์คำสั่ง เพื่อเปิดการทำงานของ hyper-v</p>
+<pre><code>bcdedit /set hypervisorlaunchtype auto</code></pre>
+<p class="image-container"><img style="width: 575.50px" src="img\e5f55999fc040477.png"></p>
+<p>Step 2. จากนั้นที่ Startup button พิมพ์ Turn Windows features on or off</p>
+<p class="image-container"><img style="width: 214.30px" src="img\b1f8deab46ce348d.png"></p>
+<p>Step 3. ติ๊กเครื่องหมายถูกหน้า Virtual machine platform, Hyper – V และ Windows Subsytem for Linux เพื่อ Enable การทำงาน แล้วกดปุ่ม OK</p>
+<p class="image-container"><img style="width: 305.43px" src="img\c1c9208f014399d3.png"></p>
+<p>Step 4. Restart เครื่อง</p>
+<aside class="warning"><p>หากไม่เจอ </p>
+<ul>
+<li>Windows Subsystem for Linux Virtual machine platform </li>
+<li>Windows Subsytem for Linux</li>
+</ul>
+<p>ให้กลับไปดูที่ <a href="https://networklab-305341.web.app/" target="_blank">Codelab</a> หัวข้อ การติดตั้ง Windows Subsystem for Linux และทำตามขั้นตอนในนั้น</p>
+</aside>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="เปลี่ยนรหัสผ่าน Ubuntu in WSL" duration="3">
+        <p>Step 1. เช็คว่าในเครื่องมี Ubuntu หรือไม่ ด้วย Copy path ดังนี้</p>
+<pre><code>%userprofile%\AppData\Local\Microsoft\WindowsApps</code></pre>
+<p>Step 2. ตรวจสอบว่ามีไฟล์ Ubuntu1804.exe หรือไม่</p>
+<p class="image-container"><img style="width: 239.50px" src="img\4eef53ce34407f6c.png"></p>
+<p>Step 3. เข้าไปที่ cmd คลิกขวา Run as administrator พิมพ์คำสั่งดังต่อไปนี้</p>
+<pre><code>ubuntu1804 config --default-user root</code></pre>
+<p class="image-container"><img style="width: 624.00px" src="img\5777683a7b77b6ae.png"></p>
+<p>Step 4. เปิดโปรแกรม Ubuntu ขึ้นมา โดยพิมพ์ Ubuntu ที่ Start button</p>
+<p class="image-container"><img style="width: 262.50px" src="img\7b89f02af59af49b.png"></p>
+<p>Step 5. ที่ Ubuntu พิมพ์คำสั่ง passwd ตามด้วย Username ที่เราต้องการเปลี่ยนรหัสผ่าน</p>
+<aside class="special"><p><strong>User , Password : </strong>กำหนดให้ใช้ User และ Password ดังนี้</p>
+<p>User : student</p>
+<p>Password : 1234</p>
+</aside>
+<pre><code>passwd [your-linux-username]</code></pre>
+<p class="image-container"><img style="width: 348.00px" src="img\5f5fe30c6be17538.png"></p>
+<p>Step 6. เมื่อเปลี่ยนรหัสเรียบร้อยปิดตัว Ubuntu ได้เลย จากนั้นไปที่ cmd (Run as Admin) แล้วพิมพ์คำสั่ง</p>
+<p>ubuntu1804 config --default-user ตามด้วย Username ที่เราต้องการ Set ให้เป็นค่า Default</p>
+<pre><code>ubuntu1804 config --default-user [your-linux-username]</code></pre>
+<p class="image-container"><img style="width: 624.00px" src="img\c33dd210fdc8388d.png"></p>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Windows Subsystem for Linux has no installed distributions." duration="1">
+        <p class="image-container"><img style="width: 903.84px" src="img\bb74b7a9229f7092.jpeg"></p>
+<p>เกิดจากยังไม่มีการติดตั้ง Linux บน Windows แก้ไขโดยการดาวน์โหลด Ubuntu จาก Microsoft Store ที่</p>
+<p><a href="https://aka.ms/wslstore" target="_blank">https://aka.ms/wslstore</a> หรือเข้าไปที่ <a href="https://www.microsoft.com/th-th/p/ubuntu-1804-lts/9n9tngvndl3q?activetab=pivot:overviewtab" target="_blank">https://www.microsoft.com/th-th/p/ubuntu-1804-lts/9n9tngvndl3q?activetab=pivot:overviewtab</a></p>
+<p class="image-container"><img style="width: 580.43px" src="img\604131fd0e4e86a8.png"></p>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="รัน Ubuntu แล้วขึ้น root@" duration="3">
+        <p>เกิดจากไม่ได้กำหนดค่า User Default ให้ Ubuntu</p>
+<p class="image-container"><img style="width: 579.80px" src="img\2665313f8662c6ad.png"></p>
+<p><strong>สามารถแก้ไขได้ 2 วิธี</strong></p>
+<ul>
+<li>Uninstall Ubuntu เดิมออกแล้วลงใหม่</li>
+<li>Set user default ให้กับ Ubuntu</li>
+</ul>
+<p><strong>แก้โดย Uninstall Ubuntu</strong></p>
+<p>Step 1. ไปที่ Startup button พิมพ์ ubuntu คลิกขวาเลือก Uninstall</p>
+<p class="image-container"><img style="width: 266.89px" src="img\819f1df3af4778f2.png"></p>
+<p>Step 2. เมื่อ uninstall เรียบร้อยให้ไปที่ Microsoft store แล้วลง Ubuntu อีกครั้ง</p>
+<p><strong>แก้ไขได้โดยการกำหนด User Default ให้กับ Ubuntu</strong></p>
+<p>Step 1. ที่หน้า Ubuntu พิมพ์คำสั่ง useradd [Username]</p>
+<aside class="special"><p><strong>User , Password : </strong>กำหนดให้ใช้ User และ Password ดังนี้</p>
+<p>User : student</p>
+<p>Password : 1234</p>
+</aside>
+<pre><code>useradd [Username]</code></pre>
+<p>Step 2. กำหนดรหัสผ่านให้กับ user ที่สร้างโดยพิมพ์คำสั่ง passwd ตามด้วย Username ที่เราต้องการเปลี่ยนรหัสผ่าน</p>
+<pre><code>passwd [Username]</code></pre>
+<p class="image-container"><img style="width: 348.00px" src="img\5f5fe30c6be17538.png"></p>
+<p>Step3. ไปที่ Startup button พิมพ์ cmd คลิกขวา Run as Administrator แล้วพิมพ์คำสั่ง</p>
+<p>ubuntu1804 config --default-user ตามด้วย Username ที่เราต้องการ Set ให้เป็นค่า Default</p>
+<pre><code>ubuntu1804 config --default-user [Username]</code></pre>
+<p class="image-container"><img style="width: 624.00px" src="img\c33dd210fdc8388d.png"></p>
+<p>Step 4. เมื่อเปิด Ubuntu ขึ้นมาจะขึ้นดังรูป เราไม่ต้องกำหนด username และ password ใหม่แล้วเพราะกำหนดไปตั้งแต่ Step 1 แล้ว</p>
+<p class="image-container"><img style="width: 616.50px" src="img\19068ad2b0e6b91b.png"></p>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="E53: ATTENTION" duration="1">
+        <p class="image-container"><img style="width: 468.50px" src="img\4952695ceed49e1d.png"></p>
+<p>เกิดจากการตรวจพบไฟล์ .swp ที่มีการเปิดใช้งานไฟล์นั้นอยู่ มันจึงฟ้องว่าต้องการทำอย่างไรกับไฟล์นี้ ให้กดปุ่ม E ที่คีย์บอร์ดเพื่อให้สามารถแก้ไขไฟล์ได้</p>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="FileZilla Error" duration="2">
+        <ul>
+<li><h3 is-upgraded><strong>Critical error: Could not connect to server</strong></h3>
+</li>
+</ul>
+<p class="image-container"><img style="width: 399.61px" src="img\de7dd9d71265a468.png"></p>
+<p>เกิดจากใส่ Username หรือ Password ผิด หากจำ password ไม่ได้ให้แก้ดังต่อไปนี้</p>
+<p>Step 1: เปิด Ubuntu พิมพ์ ifconfig ก่อนเพื่อเช็ค IP Address ที่จะใส่ในช่อง Host:</p>
+<pre><code>ifconfig</code></pre>
+<p>Step 2. แก้รหัสผ่านโดยใช้คำสั่ง sudo passwd ตามด้วย Username ที่เราต้องการเปลี่ยนรหัสผ่าน</p>
+<pre><code>sudo passwd [Username]</code></pre>
+<p>Step 3. พิมพ์รหัสผ่านที่ต้องการ</p>
+<p class="image-container"><img style="width: 310.00px" src="img\8d21d966225a030c.png"></p>
+<p>Step 4. ใส่ Host, Username, Password ตามด้วย Port: 21 แล้วคลิกปุ่ม Quickconnect อีกครั้ง</p>
+<aside class="warning"><p><strong>Note:</strong></p>
+<p>เมื่อปิด Ubuntu หมายเลข IP Address จะเปลี่ยนไปทุกครั้ง</p>
+</aside>
+<ul>
+<li><h3 is-upgraded><strong>Critical file transfer error</strong></h3>
+</li>
+</ul>
+<p class="image-container"><img style="width: 520.71px" src="img\e00b2ab1b53f475e.png"></p>
+<p>เกิดจากการกำหนดสิทธิ์ในส่วนของ Codelab ส่วนที่ 7 ติดตั้ง FTP Service ให้ตรวจสอบตั้งแต่ Step 13, 14 และ Step 17. อีกครั้ง</p>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="netstat -tan" duration="2">
+        <ul>
+<li><h3 is-upgraded><strong>ไม่มี port 80</strong></h3>
+</li>
+</ul>
+<p>มี 2 สาเหตุคือ</p>
+<ul>
+<li>ยังไม่ได้สั่ง start apache2</li>
+<li>ลง apache2 ไม่สำเร็จ</li>
+</ul>
+<p>กรณีแรกยังไม่สั่ง start apache2 แก้ไขโดยพิมพ์คำสั่ง</p>
+<pre><code>sudo service apache2 start</code></pre>
+<p>กรณีที่ 2 ลง apache2 ไม่สำเร็จจะขึ้น error ดังนี้</p>
+<p class="image-container"><img style="width: 848.34px" src="img\2efbb686fc39d5b7.png"></p>
+<p>Step 1. แก้ไขโดยพิมพ์คำสั่ง </p>
+<pre><code>sudo apt-get update</code></pre>
+<p>Step 2. จากนั้นลง apache2 อีกครั้งด้วยคำสั่ง</p>
+<pre><code>sudo apt-get install apache2</code></pre>
+<p>Step 3. พิมพ์ netstat -tan เพื่อดูว่ามี port 80 แล้วหรือยัง</p>
+<p class="image-container"><img style="width: 599.00px" src="img\7c45df3c27ea5046.png"></p>
+<p>Step 4. ถ้าไม่มีให้สั่ง start apache2 </p>
+<pre><code>sudo service apache2 start</code></pre>
+<ul>
+<li><h3 is-upgraded><strong>ไม่มี port 21</strong></h3>
+</li>
+</ul>
+<p>มี 2 สาเหตุคือ</p>
+<ul>
+<li>พิมพ์ config ในไฟล์ /etc/vsftpd.conf ผิด</li>
+<li>ปิด Ubuntu แล้วเปิดใหม่</li>
+</ul>
+<p>กรณีแรกพิมพ์ config ผิด ให้ตรวจเช็คตาม Codelab ให้ดีว่าพิมพ์ทุกอย่างถูกต้องหรือไม่ ลิงค์ Codelab หัวข้อที่ <a href="https://networklab-305341.web.app/codelab-1/#6" target="_blank">7. ติดตั้ง FTP Service</a> เช็คตั้งแต่ Step 4. ถึง Step 9.</p>
+<p class="image-container"><img style="width: 206.05px" src="img\a169adc3b7600f4a.png"></p>
+<p>กรณีที่ 2 ปิด Ubuntu ไปแล้วเปิดขึ้นมาใหม่ เมื่อเราปิด ubuntu ไปทุก service จะ stop อยู่ ดังนั้นจึงต้องทำการเปิด service ก่อน โดยพิมพ์คำสั่ง</p>
+<pre><code>sudo service apache2 start //port 80
+sudo service vsftpd start //port 21</code></pre>
+<aside class="warning"><p><strong>Note:</strong></p>
+<p>เมื่อปิด Ubuntu หมายเลข IP Address จะเปลี่ยนไปทุกครั้ง</p>
+</aside>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Error: /etc/ssh/sshd_config" duration="2">
+        <p class="image-container"><img style="width: 432.78px" src="img\b2683c5fa1508387.png"></p>
+<p>เกิดจากพิมพ์ config ผิด จากรูป error บรรทัดที่ 1 </p>
+<p class="image-container"><img style="width: 551.77px" src="img\3329796badc239ca.png"></p>
+<p>ให้ลบตรงสีเหลืองออก แล้วพิมพ์ # หน้า $OpenBSD: จากนั้นกด ESC ที่คีย์บอร์ด และพิมพ์ :wq เพื่อ save ไฟล์ สั่ง </p>
+<pre><code>sudo service ssh restart</code></pre>
+<p>อีกครั้ง หากยัง error อยู่ให้ตรวจเช็คตาม Codelab ให้ดีว่าพิมพ์ทุกอย่างถูกต้องหรือไม่ ลิงค์ Codelab <a href="https://networklab-305341.web.app/codelab-1/#3" target="_blank">หัวข้อที่ 4. การ Config SSH server</a> ที่ Ubuntu ตั้งแต่ Step 4. ถึง Step 6.</p>
+<p class="image-container"><img style="width: 244.00px" src="img\1d7fee4710d8aa76.png"></p>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="ERROR: wsl" duration="2">
+        <ul>
+<li><h3 is-upgraded><strong>The term ‘wsl&#39; is not recognized</strong></h3>
+</li>
+</ul>
+<p class="image-container"><img style="width: 624.00px" src="img\733019b0b38131aa.png"></p>
+<p>Restart คอมพิวเตอร์ จากนั้นให้ Update WSL ให้เป็น Version 2 โดยทำตาม Codelab หัวข้อที่ <a href="https://networklab-305341.web.app/codelab-1/#0" target="_blank">1. การติดตั้ง Windows Subsystem for Linux</a>  ตรงวิธี Update WSL ให้เป็น Version 2 เป็นต้นไป</p>
+<p class="image-container"><img style="width: 624.00px" src="img\457494b81edff0ca.png"></p>
+<ul>
+<li><h3 is-upgraded><strong>Invalid command line option: --set-default-version</strong></h3>
+</li>
+</ul>
+<p class="image-container"><img style="width: 569.00px" src="img\c646a75f501e0945.png"></p>
+<p>เกิดจากระบบปฏิบัติการ Windows 10 ที่ใช้ต่ำกว่า 1903.18362.1049 จึงไม่รองรับ wsl2 วิธีแก้คือ update windows ให้เป็นเวอร์ชั่น 20xx ขึ้นไป </p>
+<p>Step 1. เช็ค Version windows โดยไปที่ Startup button พิมพ์ winver</p>
+<p class="image-container"><img style="width: 519.47px" src="img\bbf55b336ce1a347.png"></p>
+<aside class="special"><p><strong>Tip: </strong></p>
+<ul>
+<li>Window 10 ที่ Major Version <strong>1903</strong> และ <strong>1909</strong>  ให้พิจารณา Major version (Build) มากกว่า <strong>18363</strong> หรือ Minor Version ที่สูงกว่า<strong> 1049,</strong> (18362<strong>.1049</strong>) จึงจะสามารถติดตั้งและใช้งาน WSL 2 ได้    </li>
+<li>Window 10 ที่ Major Version <strong>2004</strong> ให้พิจารณา Major version(Build) มากกว่า <strong>19041</strong> จึงจะสามารถติดตั้งและใช้งาน WSL 2 ได้ </li>
+</ul>
+</aside>
+<p>Step 2. หากต่ำกว่า Version 20x ให้อัพเดต Windows โดยเข้าไปดาวน์โหลดที่ <a href="https://www.microsoft.com/en-us/software-download/windows10" target="_blank">https://www.microsoft.com/en-us/software-download/windows10 </a> แล้วคลิก Update now</p>
+<p class="image-container"><img style="width: 602.00px" src="img\f86b31f605b236a8.png"></p>
+<p>Step 3. เราจะได้ Setup File มา ให้รันไฟล์ Setup และกด Update Now รอจนกว่าจะอัพเดตเสร็จแล้ว Restart เครื่องจากนั้น Check Windows Version อีกครั้งว่าเป็น 20xx หรือยัง</p>
+<ul>
+<li><h3 is-upgraded><strong>WSL 2 requires an update to its kernel component.</strong></h3>
+</li>
+</ul>
+<p>เกิดจากยังไม่ได้ Update WSL ให้เป็น Version 2</p>
+<p class="image-container"><img style="width: 624.00px" src="img\e80629bbad1ad799.png"></p>
+<p>ให้ Update WSL ให้เป็น Version 2 โดยดาวน์โหลด Linux kernel update package ให้เหมาะสมตามสถาปัตยกรรม (x64 หรือ ARM64) เครื่องของเรา (เลือกโหลด ตามความเหมาะสม) จากนั้นทำการติดตั้ง</p>
+<ul>
+<li><a href="https://wslstorestorage.blob.core.windows.net/wslblob/wsl_update_x64.msi" target="_blank">x64 system Linux kernel</a></li>
+<li><a href="https://wslstorestorage.blob.core.windows.net/wslblob/wsl_update_arm64.msi" target="_blank">ARM64 system Linux kernel</a></li>
+</ul>
+<aside class="special"><p><strong>วิธีการตรวจสอบสถาปัตยกรรมของเครื่อง : </strong>ให้ใช้คำสั่งนี้ &#34;systeminfo | find &#34;System Type&#34; ใน Command Prompt (window logo key + R ) </p>
+</aside>
+<p class="image-container"><img style="width: 624.00px" src="img\1f6dc0fe84b3dafc.jpeg"></p>
+<p> เมื่อลง update เรียบร้อยแล้ว เปิด PowerShell ขึ้นมา โดยเลือกแบบ Open as an Administrator จากนั้นให้พิมพ์คำสั่งด้านล่าง เพื่อการกำหนดค่า Default ของ WSL ให้ เป็น Version 2</p>
+<pre><code>wsl --set-default-version 2</code></pre>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Install Windows Subsystem for Linux Update ไม่ได้ Error code 2503." duration="2">
+        <p class="image-container"><img style="width: 624.00px" src="img\6818baf337499691.png"></p>
+<p>Step 1. เข้าไปที่ </p>
+<pre><code>C:\Windows</code></pre>
+<p>Step 2. คลิกขวาที่ folder Temp เลือก Properties</p>
+<p class="image-container"><img style="width: 223.92px" src="img\38acb794abaffb01.png"></p>
+<p>Step 3. ที่แถบ Security เลือก Advanced </p>
+<p class="image-container"><img style="width: 914.05px" src="img\c5df095be4f0e5a2.png"></p>
+<p>Step 4. คลิกปุ่ม Continue</p>
+<p class="image-container"><img style="width: 767.16px" src="img\57a9ff000dcd3339.png"></p>
+<p>Step 5. คลิกที่ Users จากนั้นคลิกปุ่ม Edit</p>
+<p class="image-container"><img style="width: 555.55px" src="img\61696814a51fbdec.png"></p>
+<p>Step 6. ตรงส่วน Basic permissions ติ๊กถูกทั้งหมด แล้วคลิกปุ่ม OK</p>
+<p class="image-container"><img style="width: 554.50px" src="img\e07d74d587016ee4.png"></p>
+<p>Step 7. ทำตาม Step 5. และ 6. ให้ครบทุก User แล้ว Restart คอมพิวเตอร์</p>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="พิมพ์ ifconfig แล้วไม่ขึ้นอะไร" duration="1">
+        <p class="image-container"><img style="width: 587.00px" src="img\261cca7a23b57c44.png"></p>
+<p>แก้ได้ 2 วิธี</p>
+<ul>
+<li>Uninstall ubuntu แล้ว install ใหม่อีกครั้ง</li>
+<li>สั่ง up eth0</li>
+</ul>
+<p>วิธีการสั่ง up eth0 ทำโดยเข้า ubuntu แล้วพิมพ์คำสั่ง</p>
+<pre><code>sudo ifconfig eth0 up</code></pre>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="โปรแกรม xShell" duration="2">
+        <ul>
+<li><h3 is-upgraded><strong>Public Key</strong></h3>
+</li>
+</ul>
+<p class="image-container"><img style="width: 410.50px" src="img\6dce54dd333107a7.png"></p>
+<p>เกิดจากไม่ได้ generate private และ public key เพื่อใช้ใน ssh service แก้โดยไปที่ Ubuntu พิมพ์คำสั่ง</p>
+<pre><code>sudo dpkg-reconfigure openssh-server</code></pre>
+<p>จะต้องได้ผลลัพธ์ดังรูป</p>
+<p class="image-container"><img style="width: 624.00px" src="img\c781b531d8c6fce9.jpeg"></p>
+<p>หากไม่ได้ผลลัพธ์ดังรูปด้านบนแต่ขึ้นแบบนี้</p>
+<p class="image-container"><img style="width: 515.00px" src="img\9066c17e809bf10e.png"></p>
+<p>ให้ทำการแก้ไขดังต่อไปนี้</p>
+<p>Step1. ลบ ssh ออกก่อนโดยใช้คำสั่ง</p>
+<pre><code>sudo apt-get purge openssh-server</code></pre>
+<p>Step2. Install ssh อีกครั้งด้วยคำสั่ง</p>
+<pre><code>sudo apt-get install openssh-server</code></pre>
+<p>Step3. ทำตาม<a href="https://networklab-305341.web.app/codelab-1/#3" target="_blank">ขั้นตอนที่ 4 ใน codelab</a> ตั้งแต่ Step3 - Step9.</p>
+<p>Step4. Generate key โดยใช้พิมพ์คำสั่ง</p>
+<pre><code>sudo /usr/bin/ssh-keygen -A</code></pre>
+<p>Step5. เข้า xshell แล้วลอง connect ตาม<a href="https://networklab-305341.web.app/codelab-1/#4" target="_blank">ขั้นตอนที่ 5 ใน codelab</a> ตั้งแต่ Step9 - Step11.</p>
+<ul>
+<li><h3 is-upgraded><strong>Password</strong></h3>
+</li>
+</ul>
+<p class="image-container"><img style="width: 440.00px" src="img\81c519fa7a0631f5.png"></p>
+<p>เกิดจากใส่ password ผิด แก้โดยการเข้าไปเปลี่ยนรหัสผ่านใน Ubuntu โดยดูจาก <a href="https://networklab-305341.web.app/faq-1/#1" target="_blank">วิธีการเปลี่ยนรหัสผ่าน Ubuntu in WSL ในหัวข้อที่ 2</a></p>
+<ul>
+<li><h3 is-upgraded><strong>Error: Could not connect to ‘&#39; (port 22): Connection failed.</strong></h3>
+</li>
+</ul>
+<p class="image-container"><img style="width: 493.00px" src="img\397f7569f190d9d2.png"></p>
+<p>Step 1. เข้าไปที่ Ubuntu แล้วพิมพ์คำสั่ง </p>
+<pre><code>sudo service ssh start</code></pre>
+<p>Step 2. เช็คว่า port 22 ทำงานอยู่หรือไม่โดยใช้คำสั่ง </p>
+<pre><code>netstat -tan</code></pre>
+<p class="image-container"><img style="width: 616.00px" src="img\cff66b04665a35f1.png"></p>
+<p>Step 3. เปิดโปรแกรม xShell แล้วลองเชื่อมต่ออีกครั้ง</p>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="โปรแกรม VMware (โปรแกรมทางเลือก)" duration="10">
+        <aside class="special"><p><strong>Tip: </strong></p>
+<ul>
+<li>หากนิสิตติดปัญหาการใช้งาน WSL ที่เครื่องคอมพิวเตอร์ สามารถใช้โปรแกรมตัวอื่นเพื่อลดผลกระทบจากการติดตั้ง WSL ได้ โดยใช้โปรแกรม VMware หรือโปรแกรม VirtualBox    </li>
+</ul>
+</aside>
+<p>Spec ที่ต้องการขั้นต่ำ</p>
+<p><strong>CPU</strong> : Intel Dual Core , AMD Athlon Dual Core Speed 1.3 Ghz </p>
+<p><strong>RAM</strong> : 2GB , 4GB recommend</p>
+<p><strong>HDD</strong> : free space 10 GB</p>
+<p class="image-container"><img style="width: 484.50px" src="img\491f59fc311b79d7.jpeg"></p>
+<p><strong>Download Program </strong>เพื่อทดลองใช้งานได้ที่ <a href="https://bit.ly/2UExPwO" target="_blank">https://bit.ly/2UExPwO</a></p>
+<ul>
+<li>เมื่อ Download เสร็จ จึงทำการ install</li>
+<li>ให้ Download images ที่ใช้จำลองระบบปฏิบัติการ Ubuntu 14.04 ได้ที่ <a href="https://bit.ly/3BrGFPa" target="_blank">https://bit.ly/3BrGFPa</a></li>
+<li>ทำการ import images ตามรูป<img style="width: 624.00px" src="img\fe0b672e4e3e09a4.jpeg"></li>
+<li><img style="width: 624.00px" src="img\68ade5a676c3cde9.jpeg"></li>
+<li>จากนั้นกด start หรือ poweron เพื่อเปิดเครื่อง</li>
+<li>ใส่ user : student และ รหัสผ่าน hello1234</li>
+<li><img style="width: 624.00px" src="img\8c8cad230dcdb351.jpeg"></li>
+<li>ทดลองใช้คำสั่ง ifconfig เพื่อพิจารณา ip ที่ได้</li>
+<li><img style="width: 624.00px" src="img\3e929a282a4ded76.jpeg"></li>
+</ul>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="References" duration="1">
+        <h2 is-upgraded>Reference docs</h2>
+<ul>
+<li><a href="https://www.thewindowsclub.com/wslregisterdistribution-failed-with-error-0xc03a001a-2" target="_blank">WslRegisterDistribution failed with error: 0xc03a001a</a></li>
+<li><a href="https://askubuntu.com/questions/772050/reset-the-password-in-ubuntu-linux-bash-in-windows" target="_blank">Reset the password in Ubuntu</a></li>
+<li><a href="https://rants.tech/fix-wslregisterdistribution-failed-with-error-0x80370102/" target="_blank">WslRegisterDistribution failed with error: 0x80370102</a></li>
+<li><a href="https://askubuntu.com/questions/434672/cannot-acquire-dhcp-address" target="_blank">Cannot acquire DHCP address</a></li>
+<li><a href="https://github.com/rescenic/autossh" target="_blank">invoke-rc.d: could not determine current runlevel with Openssh</a></li>
+</ul>
+
+
+      </google-codelab-step>
+    
+  </google-codelab>
+
+  <script src="https://storage.googleapis.com/codelab-elements/native-shim.js"></script>
+  <script src="https://storage.googleapis.com/codelab-elements/custom-elements.min.js"></script>
+  <script src="https://storage.googleapis.com/codelab-elements/prettify.js"></script>
+  <script src="https://storage.googleapis.com/codelab-elements/codelab-elements.js"></script>
+
+</body>
+</html>

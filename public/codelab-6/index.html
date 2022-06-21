@@ -1,0 +1,186 @@
+
+<!doctype html>
+
+<html>
+<head>
+  <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1.0, user-scalable=yes">
+  <meta name="theme-color" content="#4F7DC9">
+  <meta charset="UTF-8">
+  <title>Codelab 6 - FTP</title>
+  <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Source+Code+Pro:400|Roboto:400,300,400italic,500,700|Roboto+Mono">
+  <link rel="stylesheet" href="//fonts.googleapis.com/icon?family=Material+Icons">
+  <link rel="stylesheet" href="https://storage.googleapis.com/codelab-elements/codelab-elements.css">
+  <style>
+    .success {
+      color: #1e8e3e;
+    }
+    .error {
+      color: red;
+    }
+  </style>
+</head>
+<body>
+  <google-codelab-analytics gaid="UA-49880327-14"></google-codelab-analytics>
+  <google-codelab codelab-gaid=""
+                  id="codelab-6-ftp"
+                  title="Codelab 6 - FTP"
+                  environment="web"
+                  feedback-link="">
+    
+      <google-codelab-step label="FTP Overview" duration="5">
+        <p>                 เป็นโปรโตคอลที่ใช้สำหรับคัดลอกไฟล์จาก host หนึ่งไปยังอีก host ใดๆ ที่อยู่บนอินเตอร์เน็ต เราสามารถรันโปรแกรม FTP โดยใช้ command line</p>
+<pre><code>ftp [option] [hostname] </code></pre>
+<p>โดยทั่วไปเราจะใช้งาน FTP ในสถานการณ์ที่ ผู้ใช้งานหรือนักพัฒนาต้องการนำไฟล์จากเครื่องตนเอง (localhost) ไปยังเครื่องแม่ข่าย (Server) โดยที่ผู้ใช้งานผ่านการตรวจสอบและสามารถเข้าถึงเครื่องแม่ข่ายปลายทาง โดยการระบุบัญชีผู้ใช้งาน(user account)และรหัสผ่าน (password)  ซึ่งหลังจากกระบวนการ authorization ผู้ใช้งานจะสามารถ transfer files จาก localhost ไปยังเครื่องแม่ข่ายปลายทางได้ ดังแสดงในรูปด้านล่าง</p>
+<p class="image-container"><img style="width: 624.00px" src="img\70e3ee0487b28510.jpeg"></p>
+<p><strong>Scenario</strong></p>
+<ol type="1" start="1">
+<li>ผู้ใช้งานต้องโดยการกำหนดชื่อเครื่องปลายทาง (hostname หรือ the remote host) ผ่าน  FTP user agent (FileZilla) </li>
+<li>ในระหว่างกระบวนการเชื่อมต่อระหว่าง FTP client และ FTP server process ผ่าน TCP connection นั้น  ผู้ใช้งานจะต้องกำหนดบัญชีผู้ใช้งานและรหัสผ่าน ( user identification &amp; password) ผ่าน TCP connection</li>
+<li>Server จะทำการตรวจสอบบัญชีผู้ใช้งานและรหัสผ่าน และเมื่อทุกอย่างถูกต้องและเรียบร้อยดี ผู้ใช้งานก็สามารถ transfer files จาก local ไปยังเครื่องปลายทางได้</li>
+</ol>
+<p>ภายหลังจากที่มีการเชื่อมต่อเข้ากับ Host ปลายทาง (remote site) คุณสามารถใช้คำสั่งที่มีอยู่ในการสั่งการ จัดการไฟล์ที่อยู่ใน Host ปลายทาง  โดยคำสั่งด้านล่างนี้ เป็นคำสั่งแค่เพียงบางส่วนจากทั้งหมด โดยเราจะใช้คำสั่งที่อยู่ด้านล่างนี้ในการทำ Lab</p>
+<table>
+<tr><td colspan="1" rowspan="1"><p><strong>Command</strong></p>
+</td><td colspan="1" rowspan="1"><p><strong>Argument</strong></p>
+</td><td colspan="1" rowspan="1"><p><strong>Description</strong></p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p>bye</p>
+</td><td colspan="1" rowspan="1"><p>Terminate ftp session and exit.</p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p>cd</p>
+</td><td colspan="1" rowspan="1"><p>[remote-dir]</p>
+</td><td colspan="1" rowspan="1"><p>Change the working directory to remote-dir.</p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p>close</p>
+</td><td colspan="1" rowspan="1"><p>Terminate ftp session and return to command interpreter.</p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p>delete</p>
+</td><td colspan="1" rowspan="1"><p>[remote-file]</p>
+</td><td colspan="1" rowspan="1"><p>Delete remote-file.</p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p>dir</p>
+</td><td colspan="1" rowspan="1"><p>[remote-dir] [file]</p>
+</td><td colspan="1" rowspan="1"><p>Print a listing of the contents of the directory and place result in local-file.</p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p>get</p>
+</td><td colspan="1" rowspan="1"><p>remote-dir [local-file]</p>
+</td><td colspan="1" rowspan="1"><p>Retrieve the remote-file and store it on the local machine as the local file.</p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p>help</p>
+</td><td colspan="1" rowspan="1"><p>[command]</p>
+</td><td colspan="1" rowspan="1"><p>Print help information for the command.</p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p>ls</p>
+</td><td colspan="1" rowspan="1"><p>[remote] [local]</p>
+</td><td colspan="1" rowspan="1"><p>Display the contents of the remote directory and store in local file.</p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p>mkdir</p>
+</td><td colspan="1" rowspan="1"><p>directory</p>
+</td><td colspan="1" rowspan="1"><p>Make a directory in the remote machine.</p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p>put</p>
+</td><td colspan="1" rowspan="1"><p>local-file [remote-file]</p>
+</td><td colspan="1" rowspan="1"><p>Store local-file on the remote machine.</p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p>pwd</p>
+</td><td colspan="1" rowspan="1"><p>Display the working directory.</p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p>quit</p>
+</td><td colspan="1" rowspan="1"><p>Same as bye.</p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p>rename</p>
+</td><td colspan="1" rowspan="1"><p>[old] [new]</p>
+</td><td colspan="1" rowspan="1"><p>Change the file name (old to new).</p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p>rmdir</p>
+</td><td colspan="1" rowspan="1"><p>[dir-name]</p>
+</td><td colspan="1" rowspan="1"><p>Delete a directory on the remote machine.</p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p>size</p>
+</td><td colspan="1" rowspan="1"><p>filename</p>
+</td><td colspan="1" rowspan="1"><p>Return the size of file-name on remote machine.</p>
+</td></tr>
+</table>
+<p class="image-container"><img style="width: 624.00px" src="img\d86ec7553ea9521.jpeg"></p>
+<aside class="warning"><p><strong>Let ‘s  do it. :</strong> นิสิตลองใช้ FTP ผ่าน Command line</p>
+</aside>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Control and data connections" duration="5">
+        <p>ทั้ง HTTP และ FTP ทั้งคู่ต่างก็เป็น protocols ที่ใช้ในการส่งไฟล์ (transfer protocols) มีคุณลักษณะหลายๆอย่างที่คล้ายกัน โดย ทั้งคู่ทำงานบน TCP  </p>
+<p>อย่างไรก็ตาม ทั้งคู่ก็มีความสำคัญแตกต่างกันตามลักษณะการใช้งาน   แต่มีสิ่งหนึ่งที่ทำให้ FTP แตกต่างกับ HTTP นั้น  คือ FTP จะทำการสร้างและเชื่อมต่อโดยใช้ TCP Connection แบบขนาน <strong>(two parallel TCP connections</strong> ) โดยแบ่งเป็น</p>
+<ol type="1" start="1">
+<li><strong>Control connection</strong> ใช้ในการส่งข้อมูลรายละเอียดของการควบคุม (control information) ระหว่าง client-server ซึ่งเป็นข้อมูลจำพวก user identification, password, คำสั่งที่ใช้ในการควบคุมและสั่งการ เช่น การเปลี่ยนแปลง remote directory และคำสั่ง get , put โดยทำงานผ่าน port 21</li>
+<li><strong>Data connection</strong> ใช้สำหรับการส่งข้อมูลโดยเฉพาะ โดยทำงานผ่าน port 20 โดยจะทำการสร้าง TCP connections ขึ้นมาภายหลังจากที่มีคำสั่งให้โอนย้ายไฟล์ (transfer) ระหว่าง Client และ Server </li>
+</ol>
+<p class="image-container"><img style="width: 624.00px" src="img\bcc9935153c6a6fb.jpeg"></p>
+<aside class="warning"><p><strong>Tip :</strong> FTP นั้นจะใช้ TCP connections เป็น Data connection สำหรับการโอนย้าย/ขนส่งไฟล์ ต่อ 1 ไฟล์  นั้นหมายความว่า กรณีโอนย้าย/ขนส่งไฟล์ หลายๆไฟล์ก็จะเปิด TCP connections มาตามจำนวนไฟล์ ซึ่งเป็นการทำงานที่เรียกว่า <strong>non-persistent</strong></p>
+<p>ในส่วนของ TCP connections ที่ใช้สำหรับ Control connection นั้นจะใช้เพียง TCP connections เดียว ซึ่งจะขึ้นอยู่กับกับเวลาที่ใช้ในการ โอนย้าย/ขนส่งไฟล์ทั้งหมด หากสิ้นสุดการใช้งาน ก็จะตัดการเชื่อมต่อ</p>
+</aside>
+<aside class="special"><p><strong>Out-of-band : </strong></p>
+<ul>
+<li>พฤติกรรมของกระบวนการ<strong>ส่งคำสั่งที่ใช้ในการควบคุมและสั่งการ แยกออกจากการส่งข้อมูล โดยใช้ TCP แยกจากกันจำนวน Connection 2</strong> พบได้จาก FTP protocols </li>
+</ul>
+</aside>
+<aside class="special"><p><strong>In-band : </strong></p>
+<ul>
+<li>พฤติกรรมของกระบวนการ<strong>ส่งคำสั่งที่ใช้ในการควบคุมและสั่งการ รวมถึงการการส่งข้อมูลบน TCP Connection เดียวกัน</strong> พบได้จาก HTTP  protocols </li>
+</ul>
+</aside>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="FTP Commands and Replies" duration="5">
+        <p>        คำสั่งที่ใช้ในการควบคุมและตอบกลับมาระหว่าง client และ  server นั้นส่งผ่านช่องทางการเชื่อมต่อแบบ control connection  ในรูปแบบ 7-bit ASCII format เป็นรูปแบบที่มนุษย์สามารถอ่านได้ เมื่อจบคำสั่งทุกคำสั่งจะถูกคั่นด้วยอักษระที่แทนการขึ้นบรรทัดใหม่ (carriage return) โดยทุกคำสั่งจะใช้ตัวอักษรใหญ่ (Uppercase) และตามด้วย optional arguments ยกตัวอย่างเช่น</p>
+<ul>
+<li><strong>USER username</strong>: Used to send the user identification to the server.</li>
+<li><strong>PASS password</strong>: Used to send the user password to the server.</li>
+<li><strong>LIST:</strong> Used to ask the server to send back a list of all the files in the current remote directory. The list of files is sent over a (new and non-persistent) data connection rather than the control TCP connection.</li>
+<li><strong>RETR filename</strong>: Used to retrieve (that is, get) a file from the current directory of the remote host. This command causes the remote host to initiate a data connection and to send the requested file over the data connection.</li>
+<li><strong>STOR filename</strong>: Used to store (that is, put) a file into the current directory of the remote host.</li>
+</ul>
+<p><strong>ตัวอย่าง Command</strong></p>
+<p class="image-container"><img style="width: 624.00px" src="img\669cf098c8d71a20.jpeg"><img style="width: 610.50px" src="img\48ec83a19ef42486.jpeg"></p>
+<p>ทุกๆคำสั่ง (Command )ต้องมีการตอบสนอง (Reply) ที่สอดคล้องกับคำสั่งที่ได้รับ โดยการตอบสนองกลับนั้น เป็นการตอบกลับจาก server โดยมีรูปแบบเป็นตัวเลข 3 หลัก ตามด้วย optional message หรือข้อความที่ใช้อธิบายตัวเลขนั้นๆ ซึ่งเมีรูปแบบและโครงสร้างเดียวกันกับ HTTP  protocols ตัวอย่าง Reply ดังนี้</p>
+<ul>
+<li>331 Username OK, password required</li>
+<li>125 Data connection already open; transfer starting</li>
+<li>425 Can&#39;t open data connection</li>
+<li>452 Error writing file</li>
+</ul>
+<p><strong>ตัวอย่าง Reply</strong></p>
+<p class="image-container"><img style="width: 624.00px" src="img\8b453f0522b799fb.jpeg"></p>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="กระบวนการทำงาน FTP" duration="5">
+        <p>        เพื่อความเข้าใจลองพิจารณาลำดับขั้นตอนตามรูปด้านล่างนี้</p>
+<p class="image-container"><img style="width: 624.00px" src="img\f913e2f55a5ce6c5.png"></p>
+<aside class="warning"><p><strong>Let ‘s  do it. :</strong> นิสิตใช้ Wireshark จับ Package ในขณะที่มีการใช้บริการ FTP แล้วพิจารณาผลลัพธ์</p>
+</aside>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="References" duration="1">
+        <h2 is-upgraded>Reference docs</h2>
+<ul>
+<li>Kurose, James F. (2013). <a href="https://nu365.sharepoint.com/:b:/s/Sec_4947_2564_1_1/EUF__Krbk_NEktZ-6s6CjvEBaZQedkIkoBE2gWxQXX847A?e=9nh7b3" target="_blank">Computer Networking A Top-Down Approach 6th</a>, Pearson Education Inc.:116-118</li>
+</ul>
+
+
+      </google-codelab-step>
+    
+  </google-codelab>
+
+  <script src="https://storage.googleapis.com/codelab-elements/native-shim.js"></script>
+  <script src="https://storage.googleapis.com/codelab-elements/custom-elements.min.js"></script>
+  <script src="https://storage.googleapis.com/codelab-elements/prettify.js"></script>
+  <script src="https://storage.googleapis.com/codelab-elements/codelab-elements.js"></script>
+
+</body>
+</html>

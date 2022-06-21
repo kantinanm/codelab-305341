@@ -1,0 +1,241 @@
+
+<!doctype html>
+
+<html>
+<head>
+  <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1.0, user-scalable=yes">
+  <meta name="theme-color" content="#4F7DC9">
+  <meta charset="UTF-8">
+  <title>Codelab 2 - Linux Skill</title>
+  <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Source+Code+Pro:400|Roboto:400,300,400italic,500,700|Roboto+Mono">
+  <link rel="stylesheet" href="//fonts.googleapis.com/icon?family=Material+Icons">
+  <link rel="stylesheet" href="https://storage.googleapis.com/codelab-elements/codelab-elements.css">
+  <style>
+    .success {
+      color: #1e8e3e;
+    }
+    .error {
+      color: red;
+    }
+  </style>
+</head>
+<body>
+  <google-codelab-analytics gaid="UA-49880327-14"></google-codelab-analytics>
+  <google-codelab codelab-gaid=""
+                  id="codelab-2-linux-skill"
+                  title="Codelab 2 - Linux Skill"
+                  environment="web"
+                  feedback-link="">
+    
+      <google-codelab-step label="คำสั่งพื้นฐาน Linux" duration="15">
+        <p>ผู้สอนได้รวมรวมคำสั่งต่างๆและการใช้งานพื้นฐานในระบบปฏิบัติการ Linux สำหรับใช้ในชั่วโมงปฏิบัติการไว้ดังนี้ </p>
+<table>
+<tr><td colspan="1" rowspan="1"><p><strong>Command</strong></p>
+</td><td colspan="1" rowspan="1"><p><strong>Description</strong></p>
+</td><td colspan="1" rowspan="1"><p><strong>Example</strong></p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p><code>sudo su</code></p>
+</td><td colspan="1" rowspan="1"><p>เพิ่มสิทธิ์ชั่วคราว ให้ user ที่ใช้งานอยู่มีสิทธิการใช้งานเทียบเท่า Admin ในการบริหารและจัดการเครื่อง</p>
+</td><td colspan="1" rowspan="1"><p><code>sudo su</code></p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p><code>ifconfig</code></p>
+</td><td colspan="1" rowspan="1"><p>ดู IP Address เครื่อง</p>
+</td><td colspan="1" rowspan="1"><p><code>ifconfig</code></p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p><code>apt-get install</code> [...software/service...]</p>
+</td><td colspan="1" rowspan="1"><p>ติดตั้ง software หรือ service </p>
+</td><td colspan="1" rowspan="1"><p><code>apt-get install apache2</code></p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p><code>apt-get update</code></p>
+</td><td colspan="1" rowspan="1"><p>Update ระบบปฏิบัติการรวมถึง Library ต่างๆ</p>
+</td><td colspan="1" rowspan="1"><p><code>apt-get update</code></p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p><code>aptitude purge</code> [...software/service...]</p>
+</td><td colspan="1" rowspan="1"><p>ลบ software หรือ service </p>
+</td><td colspan="1" rowspan="1"><p><code>aptitude purge</code> <code>apache2</code></p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p><code>service</code> [...servicename...] <code>status</code></p>
+</td><td colspan="1" rowspan="1"><p>ตรวจสอบสถานะการทำงานของ service</p>
+</td><td colspan="1" rowspan="1"><p><code>service apache2 status</code></p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p><code>ls </code></p>
+</td><td colspan="1" rowspan="1"><p>แสดงรายการไฟล์หรือ folder ใน current working directory โดยสามารถระบุ args เพิ่มเติมได้ เช่น -a -la </p>
+</td><td colspan="1" rowspan="1"><p><code>ls -la</code></p>
+<p><code>ls -a</code></p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p><code>cd /directory/...</code></p>
+</td><td colspan="1" rowspan="1"><p>ไปยัง directory ตาม path ที่ระบุ</p>
+<p>กรณี ย้อนกลับยัง parent folder ให้ใช้คำสั่ง cd .. </p>
+</td><td colspan="1" rowspan="1"><p><code>cd /var/www/html/</code></p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p><code>mkdir</code></p>
+</td><td colspan="1" rowspan="1"><p>คำสั่งที่ใช้ในการสร้าง folder </p>
+</td><td colspan="1" rowspan="1"><p><code>mkdir myhomework</code></p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p><code>rm</code></p>
+</td><td colspan="1" rowspan="1"><p>คำสั่งที่ใช้ในการลบไฟล์ หรือ folder (ควรมีสิทธิ์ admin ก่อนใช้งานคำสั่งนี้ sudo )</p>
+</td><td colspan="1" rowspan="1"><p><code>rm info.php</code></p>
+<p><code>rm -rf myhomework (-recursive remove folder)</code></p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p><code>cp</code></p>
+</td><td colspan="1" rowspan="1"><p>คำสั่งที่ใช้ในการ คัดลอกไฟล์ โดยต้องระบุ source ไฟล์ที่ต้องการ copy และ destination path </p>
+</td><td colspan="1" rowspan="1"><p><code>cp info.php /var/www/html</code></p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p><code>netstat</code></p>
+</td><td colspan="1" rowspan="1"><p>ใช้ตรวจสอบสถานะการเชื่อมต่อของ เครื่องต่างๆและ port ของ service ภายในเครื่องที่เปิดให้บริการ สามารถระบุ args เพิ่มเติมได้ เช่น -t -a -n </p>
+</td><td colspan="1" rowspan="1"><p><code>netstat -tan</code></p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p><code>pwd</code></p>
+</td><td colspan="1" rowspan="1"><p>แสดง path directory ที่กำลังทำงานในขณะนี้ (current working directory)</p>
+</td><td colspan="1" rowspan="1"><p><code>pwd</code></p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p><code>free -m</code></p>
+</td><td colspan="1" rowspan="1"><p>แสดงขนาดพื้นที่ของหน่วยความจำที่เหลือในระบบปฏิบัติการ</p>
+</td><td colspan="1" rowspan="1"><p><code>free -m</code></p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p><code>df -h</code></p>
+</td><td colspan="1" rowspan="1"><p>แสดงขนาดพื้นที่ที่เหลือในระบบปฏิบัติการ</p>
+</td><td colspan="1" rowspan="1"><p><code>df -h</code></p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p><code>vim </code></p>
+</td><td colspan="1" rowspan="1"><p>เปิดโปรแกรม text editor เพื่ออ่านหรือเขียนไฟล์ โดยต้องระบุ path และชื่อไฟล์ ที่ต้องการอ่านหรือเขียน </p>
+<ul>
+<li>ออก แต่ไม่ save คือ ESC + :q!</li>
+<li>ออก แบบ save คือ ESC + :wq!</li>
+</ul>
+</td><td colspan="1" rowspan="1"><p><code>vim info.text </code></p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p><code>cat</code></p>
+</td><td colspan="1" rowspan="1"><p>แสดงหรืออ่านค่าไฟล์ออกมาแสดงใน console output</p>
+</td><td colspan="1" rowspan="1"><p><code>cat info.text</code></p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p><code>tail </code></p>
+</td><td colspan="1" rowspan="1"><p>แสดงหรืออ่านค่าไฟล์ ส่วนท้ายออกมาแสดงใน console output</p>
+</td><td colspan="1" rowspan="1"><p><code>tail info.text</code></p>
+</td></tr>
+</table>
+<aside class="special"><p><strong>Tip: </strong></p>
+<ul>
+<li>ก่อนติดตั้งซอฟต์แวร์  ควรจะใช้คำสั่ง <code>apt-get update</code> ทุกครั้ง</li>
+</ul>
+</aside>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="การเพิ่ม User และกำหนด password" duration="2">
+        <p>การสร้าง User ใหม่ใช้คำสั่งรูปแบบดังต่อไปนี้</p>
+<pre><code>sudo useradd [user]</code></pre>
+<p><strong>ตัวอย่าง</strong></p>
+<pre><code>sudo useradd donnarumma</code></pre>
+<p> การกำหนดรหัสผ่าน User ใช้คำสั่งรูปแบบดังต่อไปนี้</p>
+<pre><code>sudo passwd [user]</code></pre>
+<p><strong>ตัวอย่าง</strong></p>
+<pre><code>sudo passwd donnarumma</code></pre>
+<p>จากน้ั้น ระบุ password และพิมพ์ password ให้ถูกต้อง</p>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="วิธีการกำหนดสิทธิ์  Directory" duration="5">
+        <p>1.การกำหนดสิทธิ์การเป็น Owner ใน Directory</p>
+<pre><code>sudo chown -R [user]:[user-group] /[path directory]/ </code></pre>
+<p><strong>ตัวอย่าง</strong></p>
+<pre><code>sudo chown -R student:student /var/www/html/student </code></pre>
+<p>2.การกำหนดสิทธิ์การเข้าถึงของระบบไฟล์และ Directory</p>
+<pre><code>sudo chmod [xxx] /path directory</code></pre>
+<p><strong>ตัวอย่าง</strong></p>
+<pre><code>sudo chmod 775 /var/www/html/student</code></pre>
+<p>โดยที่ [xxx] คือ ค่าเลขฐาน 8 ในการระบุสิทธิ์หรือระดับการเข้าถึง แบ่งเป็นสิทธิ์ของ file owner, group owner, other user </p>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="การทำ symbolic link" duration="2">
+        <p>        Symbolic link หรือการ map virtual directory ในระบบปฏิบัติการ linux ส่วนใหญ่จะนิยมใช้ในการบ่งบอกและกำหนด directory นั้นว่ามี directory อื่นๆนอกเหลือจาก physical directory อะไรบ้าง </p>
+<p>เช่น</p>
+<pre><code>sudo ln -s /source path/ /destination path/</code></pre>
+<p><strong>ตัวอย่าง</strong></p>
+<pre><code>sudo ln -s /usr/share/phpmyadmin/ /var/www/html/</code></pre>
+<p><strong>อธิบาย </strong></p>
+<p>จากตัวอย่าง เป็นการกำหนด ให้ folder phpmyadmin เป็น virtual path ที่ /var/www/html</p>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="วิธีการ unlink symbolic" duration="2">
+        <p>        Symbolic link ที่เรา map ไว้ หากไม่ต้องการใช้งานแล้ว สามารถลบ หรือ unmount directory ได้โดยคำสั่งในรูปแบบนี้</p>
+<pre><code>sudo unlink /destination path/</code></pre>
+<p><strong>ตัวอย่าง</strong></p>
+<pre><code>sudo unlink /var/www/html/phpmyadmin</code></pre>
+<p><strong>อธิบาย </strong></p>
+<p>จากตัวอย่าง เป็นการนำ folder phpmyadmin ออกจาก path /var/www/html</p>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="วิธีการ Fix IP Ubuntu Linux (ใช้กับเครื่องแบบ VPS หรือ Vmware)" duration="3">
+        <p>Step 1. พิมพ์คำสั่ง <code>sudo vim /etc/netplan/50....yaml</code></p>
+<p>        Step 2. แก้ไขและระบุค่าดังตัวอย่างนี้</p>
+<pre><code>network:
+    ethernets:
+        ens33:
+           addresses: [10.27.65.7/24]
+           gateway4: 10.27.65.1
+           dhcp4: false
+           nameservers:
+              addresses: [10.10.10.72]
+    version: 2</code></pre>
+<p>โดยที่</p>
+<aside class="special"><p><strong>Tip: </strong></p>
+<ul>
+<li>Addresses คือ   ip address ที่ต้องการ/subnetmask</li>
+<li>Gateway4 คือ ip address ที่เป็น gateway</li>
+<li>addresses ภายใต้ nameservers คือ ip dns server ในตัวอย่างใช้ของ google  </li>
+</ul>
+</aside>
+<h3 is-upgraded><strong>        </strong></h3>
+<h3 is-upgraded>Step 3. พิมพ์คำสั่ง <code>sudo netplan apply</code> </h3>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="วิธีการ Fix IP Ubuntu on Windows 10 WSL" duration="5">
+        <p>ทุกครั้งที่ปิดและเปิด Ubuntu หมายเลข IP Address จะเปลี่ยนไปทุกครั้ง แต่เราสามารถกำหนด IP Address ให้กับ Ubuntu ในเครื่องของเราได้ โดยทำตามขั้นตอนดังต่อไปนี้</p>
+<p>Step 1. กำหนด IP Address :192.168.81.1/24  ใน Windows 10 โดยที่ Startup button พิมพ์ </p>
+<pre><code>View network connections</code></pre>
+<p class="image-container"><img style="width: 269.37px" src="img\9b888ed62a7391bc.png"></p>
+<p>Step 2. คลิกขวาที่ vEthernet (WSL) เลือก Properties</p>
+<p class="image-container"><img style="width: 261.00px" src="img\3334af981fab05e1.png"></p>
+<p>Step 3.  คลิกที่ Internet Protocol Version 4 (TCP/IPv4) จากนั้นคลิกที่ปุ่ม Properties</p>
+<p class="image-container"><img style="width: 307.47px" src="img\72e96ff2e22d1d7f.png"></p>
+<p>Step 4. กำหนด IP Address : 192.168.81.1 และ Subnet mask : 255.255.255.0 แล้วคลิกปุ่ม OK</p>
+<p class="image-container"><img style="width: 304.50px" src="img\e29131f9e1b90a7.png"></p>
+<p>Step 5. เข้า PowerShell คลิกขวา Run as Administrator </p>
+<p>Step 6. กำหนด IP Address :192.168.81.16/24 ให้ Ubuntu โดยใช้คำสั่ง</p>
+<pre><code>wsl -d Ubuntu-18.04 -u root ip addr add 192.168.81.16/24 broadcast 192.168.81.255 dev eth0 label eth0:1</code></pre>
+<p class="image-container"><img style="width: 624.00px" src="img\d885877f81d4d166.png"></p>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="References" duration="1">
+        <h2 is-upgraded>Reference docs</h2>
+<ul>
+<li>Dave McKay. (2019). <a href="https://drive.google.com/file/d/1ppSJRjrICTu7Kmol3oa2CL7G59kHrlJ1/view?usp=sharing" target="_blank">Linux Essential Toolkit</a>., LifeSavvy Media.</li>
+<li><a href="https://github.com/microsoft/WSL/issues/4210#issuecomment-648570493" target="_blank">WSL set static ip</a></li>
+<li><a href="https://saixiii.com/chmod-linux-command/" target="_blank">chmod – Linux Command คำสั่งเปลี่ยนสิทธิ์ในการเข้าถึง file</a></li>
+</ul>
+
+
+      </google-codelab-step>
+    
+  </google-codelab>
+
+  <script src="https://storage.googleapis.com/codelab-elements/native-shim.js"></script>
+  <script src="https://storage.googleapis.com/codelab-elements/custom-elements.min.js"></script>
+  <script src="https://storage.googleapis.com/codelab-elements/prettify.js"></script>
+  <script src="https://storage.googleapis.com/codelab-elements/codelab-elements.js"></script>
+
+</body>
+</html>

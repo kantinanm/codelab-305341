@@ -1,0 +1,454 @@
+
+<!doctype html>
+
+<html>
+<head>
+  <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1.0, user-scalable=yes">
+  <meta name="theme-color" content="#4F7DC9">
+  <meta charset="UTF-8">
+  <title>Codelab 10 - VLAN Configuration</title>
+  <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Source+Code+Pro:400|Roboto:400,300,400italic,500,700|Roboto+Mono">
+  <link rel="stylesheet" href="//fonts.googleapis.com/icon?family=Material+Icons">
+  <link rel="stylesheet" href="https://storage.googleapis.com/codelab-elements/codelab-elements.css">
+  <style>
+    .success {
+      color: #1e8e3e;
+    }
+    .error {
+      color: red;
+    }
+  </style>
+</head>
+<body>
+  <google-codelab-analytics gaid="UA-49880327-14"></google-codelab-analytics>
+  <google-codelab codelab-gaid=""
+                  id="codelab-10-vlan-configuration"
+                  title="Codelab 10 - VLAN Configuration"
+                  environment="web"
+                  feedback-link="">
+    
+      <google-codelab-step label="IOS Command Summary: คำสั่งต่างๆที่ควรรู้" duration="15">
+        <table>
+<tr><td colspan="1" rowspan="1"><p><strong>Command pattern </strong></p>
+</td><td colspan="1" rowspan="1"><p><strong>Example</strong></p>
+</td><td colspan="1" rowspan="1"><p><strong>Remark</strong></p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p>enable</p>
+</td><td colspan="1" rowspan="1"><p><code>router&gt; enable</code></p>
+</td><td colspan="1" rowspan="1"><p>ใช้เพื่อต้องการเข้าสู่ Privileged mode</p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p>config terminal</p>
+</td><td colspan="1" rowspan="1"><p><code>router# configure terminal</code></p>
+</td><td colspan="1" rowspan="1"><p>เข้าสู่ Global configuration mode</p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p>hostname [name]</p>
+</td><td colspan="1" rowspan="1"><p><code>router# hostname R1</code></p>
+</td><td colspan="1" rowspan="1"><p>ต้องการเปลี่ยนชื่ออุปกรณ์ตาม parameter args ที่ระบุ</p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p>clock rate [value]</p>
+</td><td colspan="1" rowspan="1"><p><code>router# clock rate 64000</code></p>
+</td><td colspan="1" rowspan="1"><p>ตั้งค่า clock rate ในการส่งข้อมูลของ serial </p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p>interface [type] [number]</p>
+</td><td colspan="1" rowspan="1"><p><code>router# interface f0/5</code></p>
+</td><td colspan="1" rowspan="1"><p>เปลี่ยนจาก global configuration mode ไป interface configuration mode</p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p>interface range [type] [number]-[number] </p>
+</td><td colspan="1" rowspan="1"><p><code>router# interface range f0/5-8</code></p>
+</td><td colspan="1" rowspan="1"><p>เลือก config interface แบบกำหนดเป็นช่วง  (เพื่อกำหนดค่าทุก interface ให้เป็นแบบเดียวกัน)</p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p>no shutdown  </p>
+</td><td colspan="1" rowspan="1"><p><code>router(if-config)# no shutdown</code></p>
+</td><td colspan="1" rowspan="1"><p>สั่ง enable interface ให้มีสถานะเปิดใช้งาน</p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p>description</p>
+</td><td colspan="1" rowspan="1"><p><code>router(if-config)# description portUplink</code></p>
+</td><td colspan="1" rowspan="1"><p>กำหนดคำอธิบายของ interface </p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p>show run</p>
+</td><td colspan="1" rowspan="1"><p><code>router# show run</code></p>
+</td><td colspan="1" rowspan="1"><p>แสดงค่า config ของอปุกรณ์</p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p>show version</p>
+</td><td colspan="1" rowspan="1"><p><code>router# show version</code></p>
+</td><td colspan="1" rowspan="1"><p>แสดง version ของ IOS</p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p>exit</p>
+</td><td colspan="1" rowspan="1"><p><code>router(if-config)# exit</code></p>
+</td><td colspan="1" rowspan="1"><p>ถอยออก</p>
+</td></tr>
+</table>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="VLAN :  Virtual LAN" duration="15">
+        <p>        เป็นความสามารถบน Switch ที่ช่วยในการจัดแยกหรือแบ่งกลุ่มการเชื่อมต่อบนเครือข่าย (Network) เพื่อให้อุปกรณ์ต่างๆ ที่ทำงานอยู่บนเครือข่ายมีการเชื่อมต่อสื่อสารกัน เหมือนราวกับว่าอุปกรณ์ถูกเชื่อมต่อบนสายเส้นเดียวกัน</p>
+<p><strong>ประโยชน์</strong></p>
+<ol type="1" start="1">
+<li>เพื่อให้เครื่องคอมพิวเตอร์ที่อยู่ต่าง Domain ไม่สามารถสื่อสารกันได้ และเพื่อความปลอดภัยของเครือข่าย</li>
+<li>เพิ่มประสิทธิภาพการทำงานของเครือข่าย (ลด Broadcast Domain)</li>
+<li>มีความยืดหยุ่นในการใช้งาน ซึ่งผู้ใช้สามารถที่จะเคลื่อนย้ายไปยัง VLAN อื่นๆ เพียงแค่เปลี่ยนการตั้งค่าบนพอร์ท (Port) ของ Switch ให้อยู่ภายใน VLAN ที่กำหนด ซึ่งไม่จำเป็นต้องมีการย้าย Switch หรือสายใดๆ</li>
+<li>รองรับการขยายตัวของระบบ Network ในอนาคต และหากเกิดปัญหาในระบบเครือข่ายก็สามารถวิเคราะห์ปัญหาที่เกิดขึ้นในระบบได้ง่ายขึ้น</li>
+<li>ประหยัดงบประมาณทางด้าน Network Hardware</li>
+</ol>
+<p><strong>ลักษณะการใช้งาน </strong></p>
+<p>    เราจะพบได้ทั่วไปตามองค์กร การแบ่งตามแผนก แบ่งตามหน่วยงาน แบ่งตามลักษณะการใช้งาน  ,การแยกเครือข่าย Subnet CCTV ออกจากการใช้งาน Subnet Office เป็นต้น</p>
+<p class="image-container"><img style="width: 624.00px" src="img\91e3f7bdc08ea62c.jpeg"></p>
+<p><strong>การสร้าง VLAN</strong></p>
+<pre><code>switch(config)#vlan 10 
+switch(config-vlan)#name manager
+switch(config-vlan)#exit</code></pre>
+<p><strong>คำสั่งแสดง VLAN ทั้งหมด</strong></p>
+<pre><code>switch(config)#show vlan  </code></pre>
+<p><strong>ผลลัพธ์</strong></p>
+<p class="image-container"><img style="width: 624.00px" src="img\36d0e386df07d2e0.jpeg"></p>
+<p><strong>การกำหนด IP ให้กับ VLAN</strong></p>
+<pre><code>switch(config)#interface vlan10
+switch(config-if)#interface vlan10
+switch(config-if)#ip address 192.168.0.254 255.255.255.0
+switch(config-if)#exit</code></pre>
+<p><strong>คำสั่งแสดง IP ทั้งหมดที่กำหนดไว้ที่ Interface ต่างๆ บน Switch</strong></p>
+<pre><code>switch(config)#show ip interface brief   </code></pre>
+<p><strong>ผลลัพธ์</strong></p>
+<p class="image-container"><img style="width: 624.00px" src="img\dadcd1cca2363d8f.jpeg"></p>
+<p><strong>คำสั่งดูค่า running config เฉพาะ interface port ที่เราสนใจ</strong></p>
+<pre><code>show run interface f0/1   </code></pre>
+<p><strong>ผลลัพธ์</strong></p>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Trunk protocol : IEEE 802.1Q" duration="10">
+        <p>        Trunk protocol  คือโปรโตคอลที่ใช้ในควบคุมและจัดการการเชื่อมต่อของ switch ด้วยกัน <strong>เพื่อช่วยให้สามารถส่ง packet ระหว่าง switch ที่มีการใช้ VLAN ที่เดียวกัน</strong></p>
+<p class="image-container"><img style="width: 567.00px" src="img\471366698f607333.png"></p>
+<p>สาเหตุของการพัฒนา Trunk protocol เนื่องด้วยที่ Header field ของ Ethernet frame นั้นไม่มี field ที่ใช้บ่งและรับรู้ได้ว่า switch นั้นจะรับส่ง VLAN หรือยอมให้ Ethernet Frame ถูกส่งเข้ามาได้บ้าง</p>
+<p class="image-container"><img style="width: 624.00px" src="img\4a0e7f4e94ab9d3a.jpeg"></p>
+<p>รูปด้านบนแสดง ตำแหน่งของ Header field ของ Ethernet Frame (IEEE 802.3)</p>
+<p class="image-container"><img style="width: 624.00px" src="img\dee21947dcd06a7f.jpeg"></p>
+<p>รูปด้านบนแสดง Header field ตามรูปแบบ Trunk protocol (IEEE 802.1Q)</p>
+<aside class="special"><p><strong>ข้อสังเกตุ:  </strong>VLAN ID (VID) เป็นตัวเลขจำนวนเต็ม (0 - 4095) </p>
+</aside>
+<p><strong>Native VLAN</strong></p>
+<p>        จากการนิยามใน IEEE 802.1Q นั้น Native VLAN คือ  <strong>VLAN 1 ซึ่งเป็น untagged VLAN มาตรฐานที่พบได้ใน Switch ทุกตัวที่รองรับการทำ VLAN </strong></p>
+<p>        โดย VLAN 1 นั้นจะมีสถานะ active หรือ enable โดยเป็นค่าปริยาย และเมื่อนำ Switch ที่รองรับ VLAN มาเชื่อมต่อกัน   ทั้งคู่จะใช้ VLAN 1 ในการเชื่อมต่อกันโดยไม่ต้องกำหนด Trank port </p>
+<p>        และเราจะไม่สามารถลบ VLAN 1 ได้</p>
+<p class="image-container"><img style="width: 624.00px" src="img\535200e48897d5bc.jpeg"></p>
+<p><strong>Trunk Port และ Access Port</strong></p>
+<ul>
+<li>Trunk Port คือ Port ที่สามารถเป็นสมาชิกได้มากกว่าหนึ่ง VLAN , ส่วนมากจะนิยมใช้ต่อระหว่าง switch กับ switch หรือ router</li>
+<li>Access Port  เป็นสมาชิกได้แค่ VLAN เดียว ,จะนิยมใช้ต่อระหว่าง switch กับ PC</li>
+</ul>
+<aside class="warning"><p><strong>Tip :</strong> Trunk Port คือ port ที่ทำหน้าที่เชื่อมต่อกับ Switch ตัวอื่น ๆ ที่ต้องการให้เป็นสมาชิกของ VLAN เดียวกัน และทำหน้าที่ส่งผ่าน Traffic ของหลาย ๆ VLAN ให้กระจายไปยัง Switch ตัวอื่น ๆ </p>
+</aside>
+<p><strong>Cisco 2950 and 2960 switch configuration</strong></p>
+<pre><code>switch(config)#interface gigabitEthernet 0/1
+switch(if-config)#switchport mode trunk
+switch(if-config)#switchport trunk allow vlan 1,10,20</code></pre>
+<p><strong>Cisco 3550 and 3560 switch configuration</strong></p>
+<pre><code>switch(config)#interface gigabitEthernet 0/1
+switch(if-config)#switchport trunk encapsulation dot1q
+switch(if-config)#switchport mode trunk
+switch(if-config)#switchport trunk allow vlan 1,10,20</code></pre>
+<aside class="warning"><p><strong>Tip :</strong> Access Port นี้จะมี Traffic ของ VLAN เพียง VLAN เดียวที่วิ่งผ่านออกมายัง port นี้  </p>
+</aside>
+<p><strong>Port to VLAN switch configuration</strong></p>
+<pre><code>switch(config)#interface gigabitEthernet 0/1
+switch(if-config)#switchport mode access
+switch(if-config)#switchport access vlan 10</code></pre>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="InterVLAN Routing" duration="5">
+        <p>        Inter-VLAN Routing คือการทำให้ host ( PC,Notebook,Server) ที่อยู่ต่าง VLAN กัน ติดต่อกันได้  โดยต้องมีอุปกรณ์ที่อยู่ใน Layer 3 มาช่วย ตัวอย่างอุปกรณ์ Layer 3 ที่ทำ InterVLAN ได้เช่น Router , Switch Layer 3</p>
+<aside class="warning"><p><strong>Tip :</strong> Switch layer 3 ขึ้นไปที่รองรับ VLAN สามารถทำ routing ได้ </p>
+</aside>
+<p><strong>interVLAN Routing switch configuration</strong></p>
+<pre><code>switch(config)#ip routing
+switch(config)#exit</code></pre>
+<p><strong>คำสั่งเพื่อแสดงเส้นทาง ip route   (ใช้ได้กับอุปกรณ์ Layer 3 ขึ้นไป) </strong></p>
+<pre><code>switch#show ip route</code></pre>
+<p><strong>ผลลัพธ์</strong></p>
+<p class="image-container"><img style="width: 624.00px" src="img\96eb60097efbefa5.jpeg"></p>
+<p><strong>ลองดูสักตั้ง</strong></p>
+<p class="image-container"><img style="width: 624.00px" src="img\1ab1e7ff397d807c.jpeg"></p>
+<p>เพื่อฝึกฮาคิสังเกตุ ลองทำตาม Topology ด้านล่างนี้</p>
+<p class="image-container"><img style="width: 624.00px" src="img\1c7a2f5851963625.jpeg"></p>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Switch Lab: VLAN Configuration" duration="30">
+        <p><strong>Objective</strong></p>
+<p>ตั้งค่า VLAN และ กำหนด Switchport ให้ VLAN โดยในแลปนี้มีอุปกรณ์ที่ต้องใช้ดังต่อไปนี้</p>
+<ol type="1" start="1">
+<li>Switch layer 3: serie 3500 model 3550 จำนวน 2 ตัว (P1DSW1, P2DSW2)</li>
+<li>Switch layer 2: seric 2900 model 2950 จำนวน 2 ตัว (P1ASW1, P2ASW2)</li>
+<li>PC จำนวน 2 เครื่อง</li>
+</ol>
+<p><strong>Lab Topology</strong></p>
+<p>สร้าง topology ดังต่อไปนี้</p>
+<p class="image-container"><img style="width: 624.00px" src="img\a8d1cf0ce58efdb8.png"></p>
+<p>จากรูปมีการเชื่อมต่อพอร์ตดังต่อไปนี้</p>
+<p>ที่ <strong>P1ASW1</strong></p>
+<ul>
+<li>interface FastEthernet 0/1 ไปที่ <strong>P1DSW1</strong> พอร์ต interface FastEthernet 0/1 </li>
+<li>interface FastEthernet 0/2 ไปที่ <strong>P1DSW1</strong> พอร์ต interface FastEthernet 0/2 </li>
+<li>interface FastEthernet 0/3 ไปที่ <strong>P2DSW2</strong> พอร์ต interface FastEthernet 0/1 </li>
+<li>interface FastEthernet 0/4 ไปที่<strong> P2DSW2</strong> พอร์ต interface FastEthernet 0/2 </li>
+<li>interface FastEthernet 0/5 ไปที่ <strong>P1PC1</strong> พอร์ต Ethernet0</li>
+</ul>
+<p>ที่ <strong>P2ASW2</strong></p>
+<ul>
+<li>interface FastEthernet 0/1 ไปที่<strong> P1DSW1 </strong>พอร์ต interface FastEthernet 0/3 </li>
+<li>interface FastEthernet 0/2 ไปที่ <strong>P1DSW1</strong> พอร์ต interface FastEthernet 0/4 </li>
+<li>interface FastEthernet 0/3 ไปที่<strong> P2DSW2</strong> พอร์ต interface FastEthernet 0/3 </li>
+<li>interface FastEthernet 0/4 ไปที่ <strong>P2DSW2</strong> พอร์ต interface FastEthernet 0/4 </li>
+<li>interface FastEthernet 0/5 ไปที่<strong> P2PC2</strong> พอร์ต Ethernet0</li>
+</ul>
+<p>ที่ <strong>P1DSW1</strong></p>
+<ul>
+<li>interface FastEthernet 0/11 ไปที่ <strong>P2DSW2</strong> พอร์ต interface FastEthernet 0/11</li>
+<li>interface FastEthernet 0/12 ไปที่ <strong>P2DSW2</strong> พอร์ต interface FastEthernet 0/12</li>
+</ul>
+<h2 is-upgraded><strong>IP Addresses</strong></h2>
+<p>กำหนด ip address และ subnet mask ที่ใช้ใน lab ตามตารางดังต่อไปนี้</p>
+<table>
+<tr><td colspan="1" rowspan="1"><p><strong>Device</strong></p>
+</td><td colspan="1" rowspan="1"><p><strong>Interface</strong></p>
+</td><td colspan="1" rowspan="1"><p><strong>IP Address</strong></p>
+</td><td colspan="1" rowspan="1"><p><strong>Subnet Mask</strong></p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p>P1ASW1</p>
+</td><td colspan="1" rowspan="1"><p>VLAN1</p>
+<p>VLAN99</p>
+</td><td colspan="1" rowspan="1"><p>172.16.1.10</p>
+<p>172.16.99.10</p>
+</td><td colspan="1" rowspan="1"><p>255.255.0.0</p>
+<p>255.255.0.0</p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p>P2ASW2</p>
+</td><td colspan="1" rowspan="1"><p>VLAN1</p>
+<p>VLAN99</p>
+</td><td colspan="1" rowspan="1"><p>172.16.1.20</p>
+<p>172.16.99.20</p>
+</td><td colspan="1" rowspan="1"><p>255.255.0.0</p>
+<p>255.255.0.0</p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p>P1DSW1</p>
+</td><td colspan="1" rowspan="1"><p>VLAN1</p>
+<p>VLAN99</p>
+</td><td colspan="1" rowspan="1"><p>172.16.1.100</p>
+<p>172.16.99.100</p>
+</td><td colspan="1" rowspan="1"><p>255.255.0.0</p>
+<p>255.255.0.0</p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p>P2DSW2</p>
+</td><td colspan="1" rowspan="1"><p>VLAN1</p>
+<p>VLAN99</p>
+</td><td colspan="1" rowspan="1"><p>172.16.1.200</p>
+<p>172.16.99.200</p>
+</td><td colspan="1" rowspan="1"><p>255.255.0.0</p>
+<p>255.255.0.0</p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p>P1PC1</p>
+</td><td colspan="1" rowspan="1"><p>ip address</p>
+<p>default gateway</p>
+</td><td colspan="1" rowspan="1"><p>172.16.1.2</p>
+<p>172.16.1.100</p>
+</td><td colspan="1" rowspan="1"><p>255.255.0.0</p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p>P2PC2</p>
+</td><td colspan="1" rowspan="1"><p>ip address</p>
+<p>default gateway</p>
+</td><td colspan="1" rowspan="1"><p>172.16.2.2</p>
+<p>172.16.1.200</p>
+</td><td colspan="1" rowspan="1"><p>255.255.0.0</p>
+</td></tr>
+</table>
+<p><strong>Command Summary</strong></p>
+<table>
+<tr><td colspan="1" rowspan="1"><p><strong>Command</strong></p>
+</td><td colspan="1" rowspan="1"><p><strong>Description</strong></p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p><strong>interface range fastethernet</strong> slot/starting-port - ending-port</p>
+</td><td colspan="1" rowspan="1"><p>configures a range of interfaces</p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p><strong>interface</strong> type number</p>
+</td><td colspan="1" rowspan="1"><p>changes from global configuration mode to interface configuration mode</p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p><strong>ip address </strong>ip-address subnet-mask</p>
+</td><td colspan="1" rowspan="1"><p>assigns an IP address to an interface</p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p><strong>name </strong>vlan-name</p>
+</td><td colspan="1" rowspan="1"><p>names a VLAN</p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p><strong>ping</strong> ip-address</p>
+</td><td colspan="1" rowspan="1"><p>sends an Internet Control Message Protocol (ICMP) echo request to the specified address</p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p><strong>show interface </strong>[type number]<strong> switchport</strong></p>
+</td><td colspan="1" rowspan="1"><p>shows the switchport configuration</p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p><strong>shutdown</strong>; <strong>no shutdown</strong></p>
+</td><td colspan="1" rowspan="1"><p>disables an interface; enables an interface</p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p><strong>switchport access vlan</strong> vlan-id</p>
+</td><td colspan="1" rowspan="1"><p>assigns the default VLAN for a port</p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p><strong>vlan </strong>vlan-id</p>
+</td><td colspan="1" rowspan="1"><p>created a VLAN</p>
+</td></tr>
+</table>
+<h2 is-upgraded><strong>Lab Tasks</strong></h2>
+<ol type="1" start="1">
+<li>สร้าง VLAN ชื่อ <strong>VLAN 99</strong></li>
+<li>เชื่อมต่อ PC เข้ากับ Switch Layer 2 (model 2950) จากนั้นกำหนดพอร์ตให้อยู่ใน VLAN 99</li>
+<li>พิมพ์คำสั่ง <strong>show interface</strong> interface-id <strong>switchport </strong>เพื่อตรวจสอบพอร์ตจากข้อ 2 ว่ามาอยู่ใน VLAN 99 แล้วหรือไม่</li>
+<li>ที่ P1PC1 ให้ ping ไปที่ switch P1ASW1 (172.16.1.10) จะพบว่า ping ไม่เจอ เพราะเหตุใด?</li>
+<li>ที่ switch ให้ disable VLAN 1. เหตุใดจึงต้อง disable VLAN 1?</li>
+<li>สร้าง VLAN 99 จากนั้นกำหนด IP address ให้กับ VLAN 99</li>
+<li>ping จาก P1PC1 ไปที่ VLAN 99 บนสวิตซ์ P1ASW1 (172.16.99.10) จะพบว่า ping succeed เพราะเหตุใด?</li>
+<li>ping จาก P1PC1 ไปที่ P2PC2 จะพบว่า ping fail เพราะเหตุใด?</li>
+<li>ที่สวิตซ์ พิมพ์<strong> interface range f0/1-4 </strong>กำหนดพอร์ตเชื่อมต่อ VLAN 99</li>
+<li>ที่ Switch Layer3 (3550) พิมพ์<strong> interface range f0/1-4 </strong>กำหนดพอร์ตเชื่อมต่อกับ VLAN 99. หมายเหตุเราไม่จำเป็นต้องสร้าง VLAN 99  อีกเพราะมันจะถูกสร้างโดยอัตโนมัติ</li>
+<li>พิมพ์<strong> interface range f0/11-12 </strong>กำหนดพอร์ตเชื่อมต่อกับ VLAN 99</li>
+<li>ping จาก P1PC1 ไป P2PC2 (172.16.2.2) ทำไมตอนนี้ถึง ping succeed ทั้งที่ก่อนหน้า fail?</li>
+<li>อะไรคือการอนุญาตให้ P1PC และ P2PC2 สามารถ ping ไปที่ switch layer 3 ได้</li>
+<li>บน switch layer 3 ให้ disable VLAN 1 และ กำหนด IP address ให้ VLAN 99</li>
+<li>ping จาก P1PC1 ไปที่ VLAN 99 บนสวิตซ์ P1DSW1 (172.16.99.100) บอกเหตุผลว่าทำไมจึง ping succeed?</li>
+</ol>
+<h2 is-upgraded><strong>Lab Solutions</strong></h2>
+<p>Step 1. เปลี่ยนชื่อ switch เป็น P1ASW1 และ P2ASW2 แล้วสร้าง VLAN 99 ชื่อ VLAN 99 โดยพิมพ์ฺคำสั่งดังนี้</p>
+<p><strong>P1ASW1</strong></p>
+<pre><code>Switch&gt;enable
+Switch#configure terminal
+Switch(config)#hostname P1ASW1
+P1ASW1(config)#vlan 99
+P1ASW1(config-vlan)#name VLAN99
+P1ASW1(config-vlan)#exit</code></pre>
+<p class="image-container"><img style="width: 624.00px" src="img\eb45efd446a53809.png"></p>
+<p><strong>P2ASW2</strong></p>
+<pre><code>Switch&gt;enable
+Switch#configure terminal
+Switch(config)#hostname P2ASW2
+P2ASW2(config)#vlan 99
+P2ASW2(config-vlan)#name VLAN99
+P2ASW2(config-vlan)#exit</code></pre>
+<p class="image-container"><img style="width: 624.00px" src="img\5b4043603610c43d.png"></p>
+<p>Step 2. ย้าย interface ที่เชื่อมต่อ PC ให้ไปอยู่ใน VLAN99</p>
+<p><strong>P1ASW1</strong></p>
+<pre><code>P1ASW1(config)#interface fastethernet 0/5
+P1ASW1(config-if)#switchport access vlan 99
+P1ASW1(config-if)#exit</code></pre>
+<p class="image-container"><img style="width: 529.00px" src="img\fec35e5ebca9cd45.png"></p>
+<p><strong>P2ASW2</strong></p>
+<pre><code>P2ASW2(config)#interface fastethernet 0/5
+P2ASW2(config-if)#switchport access vlan 99
+P2ASW2(config-if)#exit</code></pre>
+<p class="image-container"><img style="width: 523.00px" src="img\3ae2073b82ece66c.png"></p>
+<p>Step 3. ดูข้อมูล switchport โดยพิมพ์คำสั่ง</p>
+<pre><code>P1ASW1#show interface fastethernet 0/5 switchport</code></pre>
+<p class="image-container"><img style="width: 613.00px" src="img\fbf9631cd68d0891.png"></p>
+<p>Step 4. กำหนด IP address ให้กับ P1PC1 จากนั้นทดสอบโดยการ ping จาก P1PC1 ไปที่ P1ASW1 (172.16.1.10) จะพบว่า ping ไม่เจอ เพราะ P1PC1 อยู่ใน VLAN 99 แต่ P1ASW1 อยู่ใน VLAN 1</p>
+<pre><code>C:&gt;ipconfig /ip 172.16.1.2 255.255.0.0
+C:&gt;ping 172.16.99.10</code></pre>
+<p class="image-container"><img style="width: 419.00px" src="img\6bcc68474008ef81.png"></p>
+<p>Step 5. ที่ P1ASW1 และ P2ASW2 ให้ disable VLAN 1 ด้วยคำสั่ง shutdown</p>
+<pre><code>P1ASW1(config)#interface vlan 1
+P1ASW1(config-if)#shutdown</code></pre>
+<p class="image-container"><img style="width: 624.00px" src="img\b35018abbd734993.png"></p>
+<pre><code>P2ASW2(config)#interface vlan 1
+P2ASW2(config-if)#shutdown</code></pre>
+<p class="image-container"><img style="width: 624.00px" src="img\52efa24d8e6d7cce.png"></p>
+<p>Step 6.  ที่ P1ASW1 และ P2ASW2 กำหนด IP address ให้กับ VLAN 99 </p>
+<pre><code>P1ASW1(config)#interface vlan 99
+P1ASW1(config-if)#ip address 172.16.99.10 255.255.0.0</code></pre>
+<p class="image-container"><img style="width: 624.00px" src="img\798cd25721748146.png"></p>
+<pre><code>P2ASW2(config)#interface vlan 99
+P2ASW2(config-if)#ip address 172.16.99.20 255.255.0.0</code></pre>
+<p class="image-container"><img style="width: 624.00px" src="img\4f506a1187baf10a.png"></p>
+<p>Step 7. ทดสอบ ping จาก P1PC1 ไปที่ P1ASW1 (172.16.99.10) </p>
+<pre><code>C:&gt;ping 172.16.99.10</code></pre>
+<p>Step 8. ทดสอบ ping จาก P1PC1 ไปที่ P2PC2 (172.16.2.2)</p>
+<pre><code>C:&gt;ping 172.16.2.2</code></pre>
+<p class="image-container"><img style="width: 480.00px" src="img\9ba68fe5caacaa51.png"></p>
+<p>Step 9. ที่ P1ASW1 และ P2ASW2 กำหนด port interface fastethernet 0/1-4 ให้กับ VLAN 99</p>
+<pre><code>P1ASW1(config)#interface range fastethernet 0/1-4
+P1ASW1(config-if-range)#switchport access vlan 99</code></pre>
+<p class="image-container"><img style="width: 479.00px" src="img\c9851d04242db5b3.png"></p>
+<pre><code>P2ASW2(config)#interface range fastethernet 0/1-4
+P2ASW2(config-if-range)#switchport access vlan 99</code></pre>
+<p class="image-container"><img style="width: 478.00px" src="img\366dfdfa004c3f18.png"></p>
+<p>Step 10. ที่ P1DSW1 และ P2DSW2 เปลี่ยนชื่อ hostname และกำหนด port interface fastethernet 0/1-4 ให้กับ VLAN 99</p>
+<pre><code>Switch&gt;enable
+Switch#configure terminal
+Switch(config)#hostname P1DSW1
+P1DSW1(config)#interface range fastethernet 0/1-4
+P1DSW1(config-if-range)#switchport access vlan 99
+P1DSW1(config-if-range)#exit</code></pre>
+<p class="image-container"><img style="width: 594.00px" src="img\97e0ded1aef39416.png"></p>
+<pre><code>Switch&gt;enable
+Switch#configure terminal
+Switch(config)#hostname P2DSW2
+P2DSW2(config)#interface range fastethernet 0/1-4
+P2DSW2(config-if-range)#switchport access vlan 99
+P2DSW2(config-if-range)#exit</code></pre>
+<p class="image-container"><img style="width: 592.00px" src="img\523b01bf3ef6a60f.png"></p>
+<p>Step 11. จากนั้นกำหนด port interface fastethernet 0/11-12 ให้กับ VLAN 99</p>
+<pre><code>P1DSW1(config)#interface range fastethernet 0/11-12
+P1DSW1(config-if-range)#switchport access vlan 99
+P1DSW1(config-if-range)#exit</code></pre>
+<p class="image-container"><img style="width: 505.00px" src="img\8c05136620bce8c1.png"></p>
+<pre><code>P2DSW2(config)#interface range fastethernet 0/11-12
+P2DSW2(config-if-range)#switchport access vlan 99
+P2DSW2(config-if-range)#exit</code></pre>
+<p class="image-container"><img style="width: 503.00px" src="img\6dd4380202da4eb7.png"></p>
+<p>Step 12. ทดสอบ ping จาก P1PC1 ไปที่ P2PC2 (172.16.2.2)</p>
+<pre><code>C:&gt;ping 172.16.2.2</code></pre>
+<p class="image-container"><img style="width: 482.00px" src="img\394ffd398c4cad31.png"></p>
+<p>Step 13. ทำการอนุญาตให้ P1PC1 และ P2PC2 สามารถ ping ไปที่ P1DSW1 และ P2DSW2 ได้ ด้วยการสร้าง VLAN 99 และกำหนด IP Address ให้กับ VLAN 99 ตาม Step 14.</p>
+<p>Step 14. ที่ P1DSW1 และ P2DSW2 ให้ทำการ disable VLAN 1 และกำหนด IP address ให้กับ VLAN 99</p>
+<pre><code>P1DSW1(config)#interface vlan 1
+P1DSW1(config-if)#shutdown
+P1DSW1(config-if)#interface vlan 99
+P1DSW1(config-if)#ip address 172.16.99.100 255.255.0.0
+P1DSW1(config-if)#exit</code></pre>
+<p class="image-container"><img style="width: 624.00px" src="img\b00d3f6f6d8fc3c2.png"></p>
+<pre><code>P2DSW2(config)#interface vlan 1
+P2DSW2(config-if)#shutdown
+P2DSW2(config-if)#interface vlan 99
+P2DSW2(config-if)#ip address 172.16.99.200 255.255.0.0
+P2DSW2(config-if)#exit</code></pre>
+<p class="image-container"><img style="width: 624.00px" src="img\6dc35368839e170a.png"></p>
+<p>Step 15. ที่ P1PC1 ทดสอบ ping ไปที่ P1DSW1 (172.16.99.100)</p>
+<pre><code>C:&gt;ping 172.16.99.100</code></pre>
+<p class="image-container"><img style="width: 514.00px" src="img\53e6c0995ad0794b.png"></p>
+<h2 is-upgraded><strong>Sample Configuration Scripts</strong></h2>
+<p class="image-container"><img style="width: 624.00px" src="img\afb7052ef70a7013.png"></p>
+<p class="image-container"><img style="width: 624.00px" src="img\d60e31a014c263f1.png"></p>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="References" duration="1">
+        <h2 is-upgraded>Reference docs</h2>
+<ul>
+<li><a href="http://mars.tekkom.dk/w/index.php/IEEE_802.1Q" target="_blank">http://mars.tekkom.dk/w/index.php/IEEE_802.1Q</a></li>
+<li><a href="https://www.gatevidyalay.com/ethernet-ethernet-frame-format/" target="_blank">https://www.gatevidyalay.com/ethernet-ethernet-frame-format/</a></li>
+<li><a href="http://mars.tekkom.dk/w/index.php/VLAN_Trunk_Cisco_IOS" target="_blank">http://mars.tekkom.dk/w/index.php/VLAN_Trunk_Cisco_IOS</a></li>
+<li><a href="https://drive.google.com/file/d/15bAPkh1NpH8ZI0RG2It7f9nuWF6utY7r/view?usp=sharing" target="_blank">SWITCH Lab: VLAN Configuration</a></li>
+</ul>
+
+
+      </google-codelab-step>
+    
+  </google-codelab>
+
+  <script src="https://storage.googleapis.com/codelab-elements/native-shim.js"></script>
+  <script src="https://storage.googleapis.com/codelab-elements/custom-elements.min.js"></script>
+  <script src="https://storage.googleapis.com/codelab-elements/prettify.js"></script>
+  <script src="https://storage.googleapis.com/codelab-elements/codelab-elements.js"></script>
+
+</body>
+</html>

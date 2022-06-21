@@ -1,0 +1,153 @@
+
+<!doctype html>
+
+<html>
+<head>
+  <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1.0, user-scalable=yes">
+  <meta name="theme-color" content="#4F7DC9">
+  <meta charset="UTF-8">
+  <title>Codelab 3 - Packet sniffer</title>
+  <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Source+Code+Pro:400|Roboto:400,300,400italic,500,700|Roboto+Mono">
+  <link rel="stylesheet" href="//fonts.googleapis.com/icon?family=Material+Icons">
+  <link rel="stylesheet" href="https://storage.googleapis.com/codelab-elements/codelab-elements.css">
+  <style>
+    .success {
+      color: #1e8e3e;
+    }
+    .error {
+      color: red;
+    }
+  </style>
+</head>
+<body>
+  <google-codelab-analytics gaid="UA-49880327-14"></google-codelab-analytics>
+  <google-codelab codelab-gaid=""
+                  id="codelab-3-packet-sniffer"
+                  title="Codelab 3 - Packet sniffer"
+                  environment="web"
+                  feedback-link="">
+    
+      <google-codelab-step label="โปรแกรม Wireshark" duration="15">
+        <p>สิ่งหนึ่งที่จะทำให้เข้าใจเรื่อง ได้ดียิ่งขึ้นคือ การทดลองและพิจารณาการดำเนินการใดๆที่เกี่ยวข้องกับ protocols เช่น การเฝ้าสังเกตุการแลกเปลี่ยน messages กันระหว่าง  protocols พร้อมผลของ messages ในแต่ละขั้นตอน </p>
+<p>ตามที่กล่าวมา &#34;<strong>สามารถทำได้โดยการสร้างสถานการณ์และจำลอง Network environment มันขึ้นมา</strong>&#34;</p>
+<p> เราจะเริ่มต้นที่ การ Download โปรแกรม <a href="https://www.wireshark.org/download.html" target="_blank">Wireshark</a> ซึ่งเป็นเครื่องมือพื้นฐานที่ใช้งานง่ายในการใช้สังเกตุและติดตาม package ที่ส่งผ่าน ระหว่าง  protocol </p>
+<p>Step 1.เลือก Download โปรแกรม ให้สอดคล้องกับระบบปฏิบัติการ</p>
+<p class="image-container"><img style="width: 538.50px" src="img\a56bfb648cadc7d1.jpeg"></p>
+<p>Step 2.Double Click ไฟล์ติดตั้ง จากนั้นกดปุ่มยอมรับ License Agreement</p>
+<p class="image-container"><img style="width: 443.07px" src="img\e7fdb50d9cfcfd0a.jpeg"></p>
+<p class="image-container"><img style="width: 409.50px" src="img\8c8715b723989ba1.jpeg"></p>
+<p>Step 3.กด Noted  </p>
+<p class="image-container"><img style="width: 414.26px" src="img\bf86e91636b78ad2.jpeg"> </p>
+<p>Step 4.เลือก Checked ทุก component แล้วกด Next </p>
+<p class="image-container"><img style="width: 430.07px" src="img\73e9131efb28f5de.jpeg"></p>
+<p>Step 5.เลือก Checked ว่าต้องการให้สร้าง Shortcuts แบบไหน และกำหนด default associate extension files จากนั้นกด Next </p>
+<p class="image-container"><img style="width: 444.50px" src="img\71725f9ac17915f6.jpeg"></p>
+<p>Step 6.กำหนด Destination folder ปลายทางที่ต้องการติดตั้ง  และ</p>
+<p>กด Next</p>
+<p class="image-container"><img style="width: 424.80px" src="img\a924e1b4638af3e.jpeg"></p>
+<p>Step 7.โปรแกรมติดตั้งขึ้นหน้าจอแบบรูปด้านล่าง ให้เรา Checked เลือก Install Npcap แล้วกด Next เพื่อติดตั้ง Driver Npcap (เป็น library ที่จำเป็นต่อการใช้งาน Wireshark ) </p>
+<p class="image-container"><img style="width: 440.81px" src="img\e7b57bd700cdcba7.jpeg"></p>
+<p>จากนั้นขั้นตอนย่อยในการ install npcap จะเป็นลำดับตามรูปต่อไปนี้</p>
+<ul>
+<li><img style="width: 378.09px" src="img\b88197e69241624.jpeg"></li>
+<li><img style="width: 380.51px" src="img\76678e041856bf29.jpeg"></li>
+<li><img style="width: 386.50px" src="img\5e4101294ec9b2a0.jpeg"></li>
+<li><img style="width: 389.50px" src="img\2054969711f3c7e3.jpeg"></li>
+<li><img style="width: 371.50px" src="img\6802d75a98e303c4.jpeg"></li>
+<li><img style="width: 367.50px" src="img\2beb22085f3b0e83.jpeg"></li>
+<li><img style="width: 368.50px" src="img\7fb80b373eaf7927.jpeg"></li>
+<li><img style="width: 401.50px" src="img\78b3c696e8970df2.jpeg"></li>
+<li><img style="width: 403.98px" src="img\251f3ea0aa096b91.jpeg"></li>
+<li><img style="width: 404.50px" src="img\58588c17d6721e6b.jpeg"></li>
+<li><img style="width: 422.50px" src="img\8deb745e3cff4952.jpeg"></li>
+</ul>
+<p>Step 8.รอจนติดตั้งเสร็จ จากนั้นทำการ Restart </p>
+<p class="image-container"><img style="width: 454.50px" src="img\6e9e410493aace59.jpeg"></p>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="ลักษณะการทำงานของโปรแกรม Wireshark" duration="5">
+        <p>Packet sniffer คือ เครื่องมือที่ใช้ในการเฝ้าสังเกตุกระบวนการแลกเปลี่ยนข้อมูลในแต่ละ protocol </p>
+<p>การทำงานของโปรแกรมจำนวน packet sniffer นั้น โปรแกรมจะตรวจจับ packet ที่มีการรับและส่งออกข้อมูล โดยพิจารณาจาก Interface ที่ผู้ใช้งานเลือกพิจารณาตรวจจับ เช่น Ethernet , Wifi ซึ่งรูปแบบวิธีดังกล่าวอาจพูดได้ว่าเป็นการทำงานแบบ passive </p>
+<p>ข้อมูลภายใน messages ที่มีการรับและส่งออกจากเครื่องคอมพิวเตอร์ จะถูกเก็บและแสดงเนื้อหา content ตาม protocol fields</p>
+<p class="image-container"><img style="width: 624.00px" src="img\d52aec42c6102651.jpeg"></p>
+<p>รูปที่ 1 Packet sniffer structure</p>
+<aside class="warning"><p><strong>Tip :</strong> Packet sniffer นั้นไม่สามารถรับและส่ง data packet / messages เองได้  แต่จะเป็นการ copy </p>
+<p>data packet / messages ในขณะที่เครื่อง pc ของเราทำการ ส่ง /รับ messages ผ่านการใช้งานของ Application ที่ทำงานอยู่ขณะนั้น</p>
+</aside>
+<p>จากรูปที่ 1 ขวามือ แสดง Protocol และ Application  ในตัวอย่างนี้ คือ Internet Protocol และ Application (Web browser ที่เปิดและทำงานอยู่ในเครื่อง) ตาม TCP/IP Protocol   ในกรอบสี่เหลี่ยม ---ซ้ายมือนั้นคือ Packet sniffer  และมี Software component ที่สำคัญ 2 ส่วนคือ</p>
+<ol type="1" start="1">
+<li><strong>Packet capture library</strong> นั้น เป็น library ที่ทำการ copy frame ทุกๆ frame ที่มีการรับและส่งข้อมูล ผ่าน interface (link) </li>
+<li><strong>Packet analyzer</strong> เป็นส่วนที่ใช้ในการแสดงเนื้อหาของ frame โดยแสดงรายละเอียดเป็น field แยกตาม Protocol layer </li>
+</ol>
+<aside class="special"><p><strong>Note: </strong></p>
+<ul>
+<li>สิ่งที่จะทำให้เราเข้าใจการทำงานของ packet analyzer ได้ดี นั้นคือ การเข้าใจโครงสร้างของ frame message ในแต่ละ layer</li>
+</ul>
+</aside>
+<p><strong>packet analyzer</strong> นั้นเข้าใจถึงรูปแบบ format ของ Ethernet frames และแยกแยะหรือสกัด IP datagram ออกจาก Ethernet frames  นอกจากนั้นยังเข้าใจและอ่านรูปแบบ format ของ IP datagram ได้อีกและสกัดออกมาเป็น TCP segment</p>
+<p>และในขั้นตอนสุดท้ายจะสามารถสกัด Data message ที่อยู่ใน HTTP protocols ได้จาก TCP segment</p>
+<p class="image-container"><img style="width: 624.00px" src="img\42c37f16bedf363e.jpeg"></p>
+<p>รูปที่ 2 Ethernet frame structure</p>
+<aside class="special"><p><strong>Note: </strong></p>
+<ul>
+<li>ตัวอย่างที่สามารถบ่งบอกและยืนยันความเข้าใจการทำงานของ <strong>packet analyzer</strong> ที่กล่าวมาข้างต้นนี้ได้ คือการบ่งบอกได้ว่า byte แรก HTTP message นั้นคือ .. String ที่ประกอบด้วย .....................</li>
+</ul>
+</aside>
+<p class="image-container"><img style="width: 505.50px" src="img\99fbe8bbb7aae67d.jpeg"></p>
+<p>รูปที่ 3 HTTP message format</p>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="เริ่มต้นใช้งาน" duration="10">
+        <p>ส่วนต่างๆที่นิสิตควรรู้เกี่ยวกับ โปรแกรม Wireshark มีดังนี้</p>
+<p class="image-container"><img style="width: 624.00px" src="img\c39aa63691873271.jpeg"></p>
+<ol type="1" start="1">
+<li><strong>command menus</strong> คือเมนูบาร์ที่อยู่ส่วนบนสุดของโปรแกรม สำหรับเรียกใช้ฟังก์ชั่นการทำงาน Start Stop และอื่นๆ ที่เกี่ยวข้องกับการพิจารณา Ethernet frames </li>
+<li><strong>packet-listing window</strong> เป็นส่วนที่แสดงผลแพ็คเกจที่เราดักจับมา ประกอบด้วย </li>
+</ol>
+<ul>
+<li>Packet number : หมายเลขของแพ็คเกจ </li>
+<li>Time : เวลาที่ใช้ในการจับแพ็คเกจ</li>
+<li>Source and Destination address : หมายเลข IP Address ของต้นทางและปลายทาง</li>
+<li>Protocol type : ชนิดของโปรโตคอล</li>
+<li>Protocol specific information : ข้อมูลที่อยู่ในแพ็คเกจ</li>
+</ul>
+<ol type="1" start="3">
+<li><strong>packet-header details window</strong> เป็นส่วนที่ใช้แสดงรายละเอียดของแพ็คเกจที่เราเลือกจาก packet-listing window โดยจะมีรายละเอียดที่เกี่ยวข้องกับการพิจารณา Ethernet frame และ IP datagram ที่อยู่ในแพ็คเกจนั้นๆ เราสามารถคลิกที่ลูกศร plus/minus เพื่อดูรายละเอียดต่างๆ เพิ่มเติมได้</li>
+<li><strong>packet-contents window</strong> เป็นส่วนที่แสดงเนื้อหาทั้งหมดของเฟรมในรูปแบบของ ASCII และ เลขฐานสิบหก </li>
+</ol>
+<h2 is-upgraded><strong>เริ่มต้นการดักจับแพ็คเกจ</strong></h2>
+<p>Step 1. เปิดโปรแกรม Wireshark</p>
+<p>Step 2. เลือก Interface ที่เราต้องการใช้ในการดักจับแพ็คเกจ ในที่นี้เลือก Wi-Fi ดังรูป<img style="width: 610.00px" src="img\ab4568b948365e69.png">        </p>
+<p>Step 3. เปิดเว็บบราวเซอร์ และเข้าไปที่ URL: <a href="http://gaia.cs.umass.edu/wireshark-labs/INTRO-wireshark-file1.html" target="_blank">http://gaia.cs.umass.edu/wireshark-labs/INTRO-wireshark-file1.html</a></p>
+<p>Step 4. โปรแกรมจะเริ่มจับแพ๊คเกจดังรูปด้านล่างจากนั้นให้คลิกที่ปุ่มสีแดงเพื่อหยุดการจับแพ็คเกจ</p>
+<p class="image-container"><img style="width: 624.00px" src="img\e77e1a96c246fed8.png"></p>
+<p>Step 5. ในช่อง Display ให้พิมพ์ http เพื่อ filter เฉพาะ HTTP protocol</p>
+<p class="image-container"><img style="width: 624.00px" src="img\1d8febc4596245a4.png"></p>
+<p>Step 6. เราจะได้ผลลัพธ์ดังรูปด้านล่าง จากนั้นที่ Packet details windows ให้คลิกที่ลูกศรชี้ลงตรง Hypertext Transfer Protocol เพื่อดูรายละเอียด </p>
+<p class="image-container"><img style="width: 624.00px" src="img\fe13c215d18d1aee.png"></p>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="References" duration="1">
+        <h2 is-upgraded>Reference docs</h2>
+<ul>
+<li><a href="http://www-net.cs.umass.edu/wireshark-labs/Wireshark_Intro_v8.0.pdf" target="_blank">Wireshark Lab: Getting Started v8.0</a></li>
+</ul>
+
+
+      </google-codelab-step>
+    
+  </google-codelab>
+
+  <script src="https://storage.googleapis.com/codelab-elements/native-shim.js"></script>
+  <script src="https://storage.googleapis.com/codelab-elements/custom-elements.min.js"></script>
+  <script src="https://storage.googleapis.com/codelab-elements/prettify.js"></script>
+  <script src="https://storage.googleapis.com/codelab-elements/codelab-elements.js"></script>
+
+</body>
+</html>

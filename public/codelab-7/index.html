@@ -1,0 +1,183 @@
+
+<!doctype html>
+
+<html>
+<head>
+  <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1.0, user-scalable=yes">
+  <meta name="theme-color" content="#4F7DC9">
+  <meta charset="UTF-8">
+  <title>Codelab 7 - Boson Netsim</title>
+  <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Source+Code+Pro:400|Roboto:400,300,400italic,500,700|Roboto+Mono">
+  <link rel="stylesheet" href="//fonts.googleapis.com/icon?family=Material+Icons">
+  <link rel="stylesheet" href="https://storage.googleapis.com/codelab-elements/codelab-elements.css">
+  <style>
+    .success {
+      color: #1e8e3e;
+    }
+    .error {
+      color: red;
+    }
+  </style>
+</head>
+<body>
+  <google-codelab-analytics gaid="UA-49880327-14"></google-codelab-analytics>
+  <google-codelab codelab-gaid=""
+                  id="codelab-7-boson-netsim"
+                  title="Codelab 7 - Boson Netsim"
+                  environment="web"
+                  feedback-link="">
+    
+      <google-codelab-step label="How to Install" duration="5">
+        <p>                 สามารถดาวน์โหลดไฟล์ install ได้ที่ <a href="https://bit.ly/3gPCJPM" target="_blank">https://bit.ly/3gPCJPM</a> เมื่อดาวน์โหลดไฟล์เรียบร้อยแล้วให้แตกไฟล์ลงที่เครื่องก่อน ดังรูป</p>
+<p class="image-container"><img style="width: 144.00px" src="img\c9efc552dd4bdb8.png"></p>
+<p>จากนั้นทำตามขั้นตอนดังต่อไปนี้</p>
+<p>Step 1. ไปที่ไดร์ฟ C สร้างโฟลเดอร์ชื่อ Boson</p>
+<p class="image-container"><img style="width: 155.50px" src="img\aa0c23e3ca8d1d0.png"></p>
+<p>Step 2. Install ตัว netsim10.exe</p>
+<p class="image-container"><img style="width: 152.50px" src="img\3d3d5826b78f64aa.png"></p>
+<p>Step 3. คลิก Next ไปเรื่อยๆ กด Install เมื่อเรียบร้อยกด Finish ตามลำดับ</p>
+<p class="image-container"><img style="width: 292.62px" src="img\90521be4cbbb5d2e.png"><img style="width: 287.18px" src="img\b408fd0b7e582141.png"></p>
+<p>Step 4. อย่าพึ่งเปิดโปรแกรม ให้ไปที่ folder Mscon43demo จากนั้น Copy ไฟล์ mscon43demo.dll ไปไว้ใน C:\Boson\ </p>
+<p class="image-container"><img style="width: 173.00px" src="img\2a6b8d78d6197094.png"> <img style="width: 365.00px" src="img\4cbd7f022e616054.png"></p>
+<p>Step 5. ใน Folder Patched </p>
+<p class="image-container"><img style="width: 164.08px" src="img\e1d778c243fe68ef.png"> </p>
+<p>Step 6. Copy ทั้ง 3 ไฟล์ไปวางไว้ใน Folder ที่เรา install program ที่ path</p>
+<p class="image-container"><img style="width: 173.00px" src="img\dfe654cb5a7ecbda.png"></p>
+<pre><code>C:\Program Files (x86)\Boson Software\Boson NetSim 10</code></pre>
+<p>Step 7. เลือก Replace the files in destinatin</p>
+<p class="image-container"><img style="width: 336.44px" src="img\66d6ca383d309663.png"></p>
+<p>Step 7. เปิดโปรแกรม Boson Netsim ขึ้นมา หากมี Error ดังรูป ให้แก้ไขดังนี้</p>
+<p class="image-container"><img style="width: 373.50px" src="img\ca54e20437b68c88.png"></p>
+<p>Step 8. ไปที่ Control Panel เลือก Clock and Region &gt; Region</p>
+<p class="image-container"><img style="width: 274.52px" src="img\b9e43dc59aabb7a1.png"><img style="width: 247.50px" src="img\6892360af010cc96.png"></p>
+<p>Step 9. เปลี่ยน Format จาก Thai เป็น English (United States) คลิก OK แล้วเปิดโปรแกรม Netsim อีกครั้ง</p>
+<p class="image-container"><img style="width: 477.00px" src="img\3784a6e1a5ba37e5.png"></p>
+<p>Step 10. เอาเครื่องหมายถูกหน้า Display release notes... ออกแล้วกดปุ่ม Close</p>
+<p class="image-container"><img style="width: 624.00px" src="img\fcbb0a524e786d18.png"></p>
+<p>Step 11. ติ๊กถูกหน้า Disable Tips แล้วกดเครื่องหมาย X และกดปุ่ม Yes เพื่อปิดไม่ให้แสดง Tool Tips อีก</p>
+<p class="image-container"><img style="width: 492.00px" src="img\409ca485369dd55.png"></p>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Lab Topology" duration="5">
+        <p>                 เริ่มต้นใช้งานโปรแกรม Netsim ด้วยคำสั่งเบื้องต้น เมื่อเปิดโปรแกรม Netsim ขึ้นมาแล้ว ตรงเมนูด้านซ้ายมือ เลือกที่ Network Designer ดังรูป แล้วทำตามขั้นตอนดังต่อไปนี้</p>
+<p class="image-container"><img style="width: 624.00px" src="img\e557208579f5d81a.png"></p>
+<p>Step 1. ตรงส่วนของ Available Devices เลือก Available Routers &gt; 2800 Series &gt; 2811 ดังรูป</p>
+<p class="image-container"><img style="width: 162.00px" src="img\a4893286c2042e00.png"></p>
+<p>Step 2. คลิกเม้าค้างที่ Router แล้วลากมาวางตรง New Topology 1จะมีหน้าต่างดังรูป คลิกที่ปุ่ม Create Router</p>
+<p class="image-container"><img style="width: 394.50px" src="img\71c3b0e0a40081ba.png"></p>
+<p>Step 3. ที่หน้า New Topology 1 จะมี Router 1 ดังรูป </p>
+<p class="image-container"><img style="width: 102.00px" src="img\a24370b6f33f632a.png"></p>
+<p>Step 4. ให้ลาก Router ตัวเดิมออกมาอีก 2 ตัว เป็น Router 2 และ 3 ตามลำดับ ดังรูป</p>
+<p class="image-container"><img style="width: 178.00px" src="img\25c6de72c8729e5.png"></p>
+<p>Step 5. เชื่อมต่อ Router 1และ 2 ด้วย Serial port โดยคลิกขวาที่ Router 1 เลือก  New Connection... </p>
+<p class="image-container"><img style="width: 300.00px" src="img\ee0554d3da795f89.png"></p>
+<p>Step 6. ที่ Local Interface เลือก Serial0/0</p>
+<p class="image-container"><img style="width: 543.00px" src="img\d7b091c258a19cb5.png"></p>
+<p>Step 7. ที่ Remote Interface เลือก Serial0/0 จากนั้นคลิกปุ่ม Connect</p>
+<p class="image-container"><img style="width: 544.00px" src="img\33ead3540139b80f.png"></p>
+<p>จะมีการเชื่อมต่อระหว่าง Router 1 และ 2 ดังรูป</p>
+<p class="image-container"><img style="width: 193.50px" src="img\fd0f4df85687e328.png"></p>
+<p>Step 8. เชื่อมต่อ Router 1 และ 3 ด้วย Serial port โดยคลิกขวาที่ Router 1 เลือก  New Connection... </p>
+<p class="image-container"><img style="width: 300.00px" src="img\ee0554d3da795f89.png"></p>
+<p>Step 9.  ที่ Local Interface เลือก Serial0/1</p>
+<p class="image-container"><img style="width: 543.00px" src="img\768f04c92ac14265.png"></p>
+<p>Step 10. ที่ Remote Device เลือก Router3</p>
+<p class="image-container"><img style="width: 542.00px" src="img\922d47abaf7060c.png"></p>
+<p>Step 11. ที่ Remote Interface เลือก Serial0/1 จากนั้นคลิกปุ่ม Connect</p>
+<p class="image-container"><img style="width: 543.00px" src="img\83b552c9cb8a6603.png"></p>
+<p>จะมีการเชื่อมต่อระหว่าง Router 1 และ 3 ดังรูป</p>
+<p class="image-container"><img style="width: 258.00px" src="img\e395d1743abedd7a.png"></p>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Lab Tasks" duration="5">
+        <h2 is-upgraded><strong>Task 1: Configure the Router</strong></h2>
+<p>Step 1. ที่ Toolbar ด้านบน คลิกปุ่ม Start Simulator</p>
+<p class="image-container"><img style="width: 624.00px" src="img\12313488a8cb1d01.png"></p>
+<p>Step 2. จะเข้ามาที่หน้า config </p>
+<p class="image-container"><img style="width: 624.00px" src="img\ed6a7ceac00339b8.png"></p>
+<p>Step 3. กด Enter</p>
+<p class="image-container"><img style="width: 624.00px" src="img\cfb062de9584b74d.png"></p>
+<p>Step 4. พิมพ์คำสั่ง enable เพื่อเข้าสู่ Privileged Mode</p>
+<pre><code>enable</code></pre>
+<p>สัญลักษณ์หลังคำว่า Router&gt; จะเปลี่ยนเป็นเครื่องหมาย #</p>
+<p class="image-container"><img style="width: 624.00px" src="img\f3601026368e84c3.png"></p>
+<p>Step 5. พิมพ์คำสั่ง configure terminal เพื่อเข้าสู่ Configuration Mode</p>
+<pre><code>configure terminal</code></pre>
+<p>ด้านหลัง Router จะมี (config) ซึ่งเราจะสามารถทำการตั้งค่าต่างๆ ให้ตัวอุปกรณ์ได้แล้ว</p>
+<p class="image-container"><img style="width: 624.00px" src="img\ace32add8b17eae.png"></p>
+<p>Step 6 เปลี่ยนชื่อ Router โดยพิมพ์คำสั่ง hostname ตามด้วยชื่อที่เราต้องการตั้ง ในที่นี้ให้ตั้งว่า Router1</p>
+<pre><code>hostname Router1</code></pre>
+<p>จะเห็นว่ามีการเปลี่ยนชื่อจาก Router เป็น Router1 แล้วดังรูป</p>
+<p class="image-container"><img style="width: 624.00px" src="img\6eadcbbf83c8afc9.png"></p>
+<p>Step 7. หากต้องการ Stop Simulator ให้ไปที่เมนูด้านขวามือ คลิกที่ Network Designer แล้วคลิกปุ่ม Stop Simulator ที่ Toolbar</p>
+<p class="image-container"><img style="width: 228.00px" src="img\efc8e8c194801f62.png"></p>
+<p class="image-container"><img style="width: 624.00px" src="img\d6b615a27c45397c.png"></p>
+<p>สามารถดูวิดีโอสอนเพิ่มเติมได้ที่ <a href="https://bit.ly/2Va17UA" target="_blank">https://bit.ly/2Va17UA</a></p>
+<h2 is-upgraded><strong>Task 2: Save a Configuration and then Load the Configuration</strong></h2>
+<ol type="1" start="1">
+<li>หากต้องการบันทึก Configuration ให้ไปที่ Toolbar คลิกปุ่ม Save </li>
+</ol>
+<p class="image-container"><img style="width: 624.00px" src="img\bfd6cb0a82c68f2.png"></p>
+<p>หากมีหลาย Configured สามารถบันทึกทั้งหมดได้โดยคลิกที่ Save all configuration</p>
+<p class="image-container"><img style="width: 624.00px" src="img\815bce0ea0ac0a27.png"></p>
+<ol type="1" start="2">
+<li>หากต้องการเปิดไฟล์ที่เคยบันทึกไว้ให้ไปที่ icon Open ที่ Toolbar</li>
+</ol>
+<p class="image-container"><img style="width: 624.00px" src="img\8c8a8adb1eea30a9.png"></p>
+<h2 is-upgraded><strong>Task 3: Paste a Configuration</strong></h2>
+<ol type="1" start="1">
+<li>หากเรามีคำสั่ง Config อยู่แล้ว และต้องการวางลงในอุปกรณ์ใน Netsim สามารถทำได้โดยสั่ง Start Simulator จากนั้นไปที่เมนู Lab &gt; Paste Router Configuration...</li>
+</ol>
+<p class="image-container"><img style="width: 223.50px" src="img\1a217acda81407a1.png"></p>
+<ol type="1" start="2">
+<li>วางคำสั่งต่อไปนี้ลงใน Paste Configuration แล้วคลิก OK</li>
+</ol>
+<pre><code>enable
+configure terminal
+hostname Tampa
+interface serial0/0
+ip address 192.168.1.1 255.255.255.0
+end</code></pre>
+<p class="image-container"><img style="width: 322.13px" src="img\9794bd1923e77e46.png"></p>
+<p class="image-container"><img style="width: 624.00px" src="img\5e81388f5041a85c.png"></p>
+<ol type="1" start="3">
+<li>พิมพ์คำสั่ง show ip interface brief</li>
+</ol>
+<pre><code>show ip interface brief</code></pre>
+<p class="image-container"><img style="width: 624.00px" src="img\23b491d482e95ff9.png"></p>
+<p>เราจะเห็นอุปกรณ์ได้มีการ Config ตามที่เราวางลงใน  Paste Configuration เรียบร้อยแล้ว</p>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Sample Configuration Script" duration="1">
+        <p>เราสามารถใช้คำสั่ง </p>
+<pre><code>show running-config</code></pre>
+<p>เพื่อดู Config ทั้งหมดได้ดังรูป</p>
+<p class="image-container"><img style="width: 282.00px" src="img\85d846d705c4b3b3.png"></p>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="References" duration="1">
+        <h2 is-upgraded>Reference docs</h2>
+<ul>
+<li><a href="https://bit.ly/3jyGLNX" target="_blank">Netsim Demo Lab: Using Netsim</a></li>
+</ul>
+
+
+      </google-codelab-step>
+    
+  </google-codelab>
+
+  <script src="https://storage.googleapis.com/codelab-elements/native-shim.js"></script>
+  <script src="https://storage.googleapis.com/codelab-elements/custom-elements.min.js"></script>
+  <script src="https://storage.googleapis.com/codelab-elements/prettify.js"></script>
+  <script src="https://storage.googleapis.com/codelab-elements/codelab-elements.js"></script>
+
+</body>
+</html>

@@ -1,0 +1,446 @@
+
+<!doctype html>
+
+<html>
+<head>
+  <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1.0, user-scalable=yes">
+  <meta name="theme-color" content="#4F7DC9">
+  <meta charset="UTF-8">
+  <title>Codelab 8 - Netsim Simulator- with NAT</title>
+  <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Source+Code+Pro:400|Roboto:400,300,400italic,500,700|Roboto+Mono">
+  <link rel="stylesheet" href="//fonts.googleapis.com/icon?family=Material+Icons">
+  <link rel="stylesheet" href="https://storage.googleapis.com/codelab-elements/codelab-elements.css">
+  <style>
+    .success {
+      color: #1e8e3e;
+    }
+    .error {
+      color: red;
+    }
+  </style>
+</head>
+<body>
+  <google-codelab-analytics gaid="UA-49880327-14"></google-codelab-analytics>
+  <google-codelab codelab-gaid=""
+                  id="codelab-8-netsim-simulator-with-nat"
+                  title="Codelab 8 - Netsim Simulator- with NAT"
+                  environment="web"
+                  feedback-link="">
+    
+      <google-codelab-step label="Boson Netsim Simulator" duration="5">
+        <p class="image-container"><img style="width: 548.00px" src="img\f63eee5220aeec16.jpeg"></p>
+<p>Boson Netsim Simulator เป็นโปรแกรมที่ใช้จำลองการใช้งานซอฟต์แวร์ IOS (CISCO) บนอุปกรณ์ Switch , Router ที่สามารถจำลองการประยุกต์ใช้งานให้เหมาะสมตาม Network Topology หรือตาม Scenario ต่างๆ ที่เราต้องการจำลองได้อย่างยืดหยุ่น </p>
+<p>Netsim เป็นซอฟต์แวร์ที่ทำงานได้บนระบบปฏิบัติการ Windows มีอุปกรณ์ภายใต้เครื่องหมายการค้าภายใต้ยี่ห้อ Cisco ไม่ว่าจะเป็น Router ตั้งแต่ 2500 Serie , 2600 Serie , 2800 Serie , 3600 Serie รวมไปถึงมี Switch ตระกูล Catalyst 1900 series, 2900 series, and 3500 series  พร้อมรองรับการทำ routing protocols แบบต่างๆได้แก่แบบ RIP, IGRP, EIGRP, BGP และแบบ OSPF</p>
+<aside class="warning"><p><strong>Caution. :</strong> Netsim รองรับคำสั่งจำนวนมากตามรูปแบบ IOS commands ที่มีอยู่บนอุปกรณ์ที่มี Cisco IOS เช่นพวก Switch และ Router แต่ไม่ใช้ทุกคำสั่ง !!!  โดยมากจะมี IOS commands ที่รองรับในปฏิบัติการ Lab ตาม Scenario ต่างๆ ที่ผู้พัฒนาไว้ </p>
+</aside>
+<p>        โปรแกรม Network Simulator นี้จึงเหมาะสมสำหรับผู้ที่ต้องการทำงานด้าน Network โดยตรงหรือผู้ที่ต้องการเตรียมตัวสอบประกาศนียบัตรของ Cisco ในระบบ CCNA จนไปถึงระดับ Expert</p>
+<p>นอกจากนี้ยังโปรแกรมลักษณะเดียวกัน อธิ Cisco Packet Tracer และ Graphical Network Simulator-3 : GNS3 ซึ่งในอนาคตนิสิตสามารถไปศึกษาการใช้งานได้ตามความเหมาะสม</p>
+<p class="image-container"><img style="width: 200.00px" src="img\b6e7e28d60440c93.jpeg">          <img style="width: 157.57px" src="img\f092470ff1fb9c97.png">                              <img style="width: 200.00px" src="img\fa0da7e7a30d190e.png"></p>
+<p><strong>System Requirements</strong></p>
+<ul>
+<li>Supported operating systems: Windows 8, Windows 7, Windows Vista, Windows XP</li>
+<li>.NET Framework: Microsoft .NET Framework Version 4.0</li>
+<li>Processor: 1-GHz Pentium processor or equivalent (minimum); 3-GHz Pentium processor or equivalent (recommended)</li>
+<li>RAM: 512 MB (minimum); 2 GB (recommended)</li>
+<li>Hard Disk: Up to 100 MB of available space</li>
+<li>Display: 1024 x 768, 256 colors (minimum); 1024 x 768 high color, 32-bit (recommended)</li>
+<li>Active Internet connection</li>
+</ul>
+<p><strong>Panel ที่ใช้บ่อย</strong></p>
+<ol type="1" start="1">
+<li>Labs panel : ส่วนที่ใช้เป็น Navigator ในการเลือก Lab ที่ได้จัดเตรียมไว้โดยโปรแกรม</li>
+</ol>
+<p class="image-container"><img style="width: 624.00px" src="img\31baf0abb842db3a.jpeg"></p>
+<ol type="1" start="2">
+<li>Network Designer panel : ส่วนที่ใช้ในการสร้าง Network Topology</li>
+</ol>
+<p class="image-container"><img style="width: 624.00px" src="img\851ff8431f14ce5c.jpeg"></p>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Cisco Connect a Terminal" duration="5">
+        <p>        ในการเชื่อมต่ออุปกรณ์จริง เราจำเป็นต้องการใช้สาย Console (Rollover) หรือสายที่มี Connector เป็น RS232 (comport)  ตามรูป</p>
+<p class="image-container"><img style="width: 624.00px" src="img\a65e1e4c3dab0554.png"></p>
+<p>โดยเราสามารถทำสาย Console จาก Diagram ด้านล่างนี้ โดยมีแค่หัว Connector DB-9 กับสาย UTP </p>
+<p class="image-container"><img style="width: 624.00px" src="img\54a9a3a8bf0a3872.jpeg"></p>
+<p class="image-container"><img style="width: 624.00px" src="img\388eb937cc2e3f1e.jpeg"></p>
+<p><strong>วิธีการเข้าไป Config switch/router</strong></p>
+<ol type="1" start="1">
+<li>เสียบสาย Console</li>
+<li><code>switch&gt; enable</code></li>
+<li><code>switch# config terminal</code></li>
+</ol>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="IOS CLI mode" duration="10">
+        <p>ซอฟต์แวร์เครือข่าย IOS นั้นมี Mode การทำงานหลักอยู่ 3 mode ได้แก่ </p>
+<ol type="1" start="1">
+<li>User mode</li>
+<li>Privileged mode หรือ EXEC-level mode</li>
+<li>Global configuration mode</li>
+</ol>
+<p>โดยทั้ง 3 Mode จะมีลักษณะการใช้งานแตกต่างกัน โดยสรุปดังนี้</p>
+<p class="image-container"><img style="width: 624.00px" src="img\bc033072cbfe51f3.jpeg"></p>
+<ol type="1" start="1">
+<li><strong>User mode</strong> เป็น Mode แรกในการเริ่มมีปฏิสัมพันธ์กับผู้ใช้งาน คำสั่งที่สามารถใช้งานใน Mode นี้ได้แก่ ping , show (limit), enable และอื่นๆ โดยวัตถุประสงค์การใช้งานและอยู่ใน mode นี้คือ การใช้คำสั่งในการตรวจสอบและแก้ไขปัญหาเกี่ยวกับระบบเครือข่ายเบื้องต้น รวมถึง ผู้ดูแลระบบเครือข่ายสามารถเรียกตรวจสอบค่าเกี่ยวกับอุปกรณ์ โดยไม่จำเป็นต้องเข้าไปยัง Privileged mode </li>
+</ol>
+<aside class="special"><p><strong>ข้อสังเกตุ: </strong></p>
+<ul>
+<li>User mode นี้สามารถสังเกตุได้จาก command prompt  ที่จะเป็น &gt; ดังตัวอย่างด้านล่าง</li>
+</ul>
+</aside>
+<pre><code>router&gt; </code></pre>
+<ol type="1" start="2">
+<li><strong>Privileged mode หรือ EXEC-level mode</strong> เป็น Mode ที่อยู่ลำดับถัดมาจาก User mode สามารถเข้ามา Mode นี้ได้จากการพิมพ์คำสั่ง enable ดังตัวอย่างด้านล่าง </li>
+</ol>
+<pre><code>router&gt; enable
+router#</code></pre>
+<p>วัตถุประสงค์การใช้งานและลักษณะการใช้งานของ mode นี้คือการแสดงค่าต่างๆของอุปกรณ์ การตรวจสอบ การกำหนดให้ reload คำสั่ง การสำรองไฟล์ config , การ upload ไฟล์ config รวมถึงคำสั่งต่างๆที่ใช้ในการตรวจสอบปัญหาของโปรโตคอลและระบบเครือข่ายพื้นฐาน </p>
+<p>ตัวอย่างของคำสั่งที่ใช้บ่อยๆ ได้แก่ configure terminal, copy, clear, delete, dir, erase, ping, pwd,  restart, show, telnet, write และอื่นๆ</p>
+<ol type="1" start="3">
+<li><strong>Global configuration mode</strong> เป็น Mode หลักสำหรับการ config อุปกรณ์  สามารถเข้ามา Mode นี้ได้จากการพิมพ์คำสั่ง configure terminal จาก Privileged mode  ดังตัวอย่างด้านล่าง </li>
+</ol>
+<pre><code>router# configure terminal
+router(config)#</code></pre>
+<p>วัตถุประสงค์การใช้งานและลักษณะการใช้งานของ mode นี้คือการกำหนดค่าของอุปกรณ์ ซึ่งในสามารถการกำหนดค่าได้ละเอียดถึงระดับ Interface ( Physical port ) ได้ สามารถกำหนดหรือสร้าง Virtual Interface (VLAN )  สามารถสร้างและจัดการ Link Aggregation (Link Aggregation Control Protocol (LACP) ได้ </p>
+<aside class="special"><p><strong>ข้อสังเกตุ: </strong></p>
+<p>Mode นี้จะมี mode ย่อยๆ แยกตาม interface หรือ สิ่งที่เราต้องการกำหนดค่า ให้สังเกตุจาก</p>
+<p>command prompt  ที่จะเปลี่ยนไปเรื่อยๆ ตามที่ผู้ใช้เข้าไปกำหนด ยกตัวอย่างตามด้านล่าง</p>
+</aside>
+<p><strong>Interface Command prompt</strong></p>
+<pre><code>router(config)# interface f0/1
+router(if-config)#</code></pre>
+<p><strong>Router Command prompt</strong></p>
+<pre><code>router(config)#router rip
+router(config-router)#</code></pre>
+<p><strong>Service Command prompt</strong></p>
+<pre><code>router(config)# ip dhcp pool netvlan10
+router(dhcp-config)#</code></pre>
+<aside class="warning"><p><strong>Tip :</strong> คำสั่ง exit ใช้ในออกจาก mode ต่างๆ ตามลำดับ </p>
+</aside>
+<p><strong>วิธีการกลับไปยัง mode ก่อนหน้า</strong></p>
+<ol type="1" start="1">
+<li>switch# exit </li>
+<li>switch(config)# พิมพ์ end หรือ exit</li>
+<li>switch(config-if)# พิมพ์ end หรือ exit</li>
+</ol>
+<p><strong>สรุปภาพรวมของทั้ง 3 Mode</strong></p>
+<p class="image-container"><img style="width: 624.00px" src="img\248897d7b4d2d9d1.jpeg"></p>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="NAT (Network Address Translation)" duration="10">
+        <p>        ตามที่เนื้อหาใน Slide ที่อาจารย์บรรยายนั้น ได้กล่าวถึงหน้าที่ของ NAT หรือ Network Address Translation ไว้ ซึ่งพอจะสรุปและเรียบเรียงเพิ่มเติ่มได้ดังนี้</p>
+<p>         NAT หรือ Network Address Translation นั้นมีหน้าที่ในการแปลง Private IPv4 มาเป็น Public IPv4 เพื่อให้เครื่องคอมพิวเตอร์ภายใน Home network หรือภายในองค์กรนั้น สามารถเข้าถึงเครือข่าย Internet ได้ และในทางกลับกันจะทำหน้าที่ในการแปลง Public IPv4 กลับมาเป็น Private IPv4</p>
+<p>        โดย NAT นั้นเป็นเซอร์วิสหรือรูปแบบบริการซึ่งจะมีอยู่ทุกอุปกรณ์ในระบบเครือข่ายที่ทำหน้าที่ตั้งแต่ Layer 3 ขึ้นไป</p>
+<p>        การนำ NAT มาใช้งานนั้นเพื่อแก้ไขปัญหาความขาดแคลนของ IPv4 , ตามที่เราได้รู้กันมาว่าจำนวน IPv4 นั้นสามารถรองรับจำนวน host ได้เท่าไร ? แรกเริ่มเดิมที่วิศวกรที่คิดค้น IPv4 นั้นก็ไม่ได้คิดว่าจำนวนอุปกรณ์ในเครือข่าย Internet จะเติบโตและกว้างใหญ่เกินกว่าขนาดที่ IPv4 จะรองรับไว้</p>
+<aside class="warning"><p><strong>จะเป็นอย่างไรเมื่อเรานำ IPv4 ทั้งหมดมาทำเป็น Public IP? : </strong></p>
+<p>       จากการคำนวณเราจะได้ประมาณ 4 พันล้าน หมายเลข IP Address (4,294,967,296  public IPv4 address) นั่นก็ยังไม่เพียงพอ หากเราใช้จำนวนทั้งหมดทำเป็น public IP address</p>
+<p><strong>ข้อเสีย</strong></p>
+<ol type="1" start="1">
+<li>More expensive</li>
+<li>Unnecessary</li>
+<li>Waste of public IP address</li>
+</ol>
+</aside>
+<p>         นั่นจึงเป็นที่มาและสาเหตุของปัญหาที่จะคิดหาวิธีการแก้ไขป้องกันปัญหาเรื่องความขาดแคลน IPv4 โดยใช้ NAT (Network Address Translation) </p>
+<p class="image-container"><img style="width: 624.00px" src="img\1a923d637bc00e9a.jpeg"></p>
+<p><strong>การเปรียบเทียบความแตกต่างระหว่าง Public IP และ Private IP</strong></p>
+<table>
+<tr><td colspan="1" rowspan="1"><p><strong>Public IP</strong></p>
+</td><td colspan="1" rowspan="1"><p><strong>Private IP</strong></p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p>Publicly registered on the internet</p>
+</td><td colspan="1" rowspan="1"><p>Not publicly registered</p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p>Must have a public IP to access the internet</p>
+</td><td colspan="1" rowspan="1"><p>Cannot directly access the internet with a private ip</p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p>Only used internally</p>
+</td></tr>
+</table>
+<p><strong>ประเภทของ NAT</strong></p>
+<ol type="1" start="1">
+<li><strong>Static NAT</strong> เป็นการแปลง IP address ชนิดกำหนดค่า  IP address ที่คงที่ตายตัว จากเครือข่ายภายใน ไปยังเครือข่ายภายนอก โดยทั่วไปเป็นการแปลง IP address แบบ One to One (จำนวน Public IP Address จะขึ้นอยู่กับจำนวนเครื่อง Client ของระบบเครือข่ายภายใน )</li>
+<li><strong>Dynamic NAT</strong> เป็นการแปลง IP address แบบยืดหยุ่น โดยอาศัยการกำหนด Public IP Address Pooling หรือการกำหนดกลุ่มช่วง  Public IP address จำนวนหนึ่งเพื่อใช้ในกระบวนการแปลง IP address จากเครือข่ายภายใน ออกไปเป็น Public IP address เพื่อการเข้าถึงเครือข่ายอินเตอร์เน็ต</li>
+</ol>
+<aside class="special"><p><strong>เรื่องของอนาคต: </strong>ในอนาคต เราอาจจะไม่ใช้ NAT หรือ private IP address อีกต่อไป เนื่องจากการที่มี IPv6 เข้ามาใช้งานและแทนที่เราอาจจะพบว่าทุกๆอุปกรณ์อาจจะมี public IP address ของตนเอง</p>
+<ul>
+<li>Capable of producing over 340 undecillion IP addresses</li>
+</ul>
+</aside>
+<p>หน่วย undecillion คือจำนวนขนาดไหน ? สามารถพิจารณาได้จากรูปด้านล่างนี้</p>
+<p class="image-container"><img style="width: 426.00px" src="img\dfafa89c12979895.jpeg"></p>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="PAT (Port Address Translation)" duration="5">
+        <p>        เป็นรูปแบบวิธีการแปลงหมายเลข IP Address แบบ many to one คือ IP Address ของเครื่องภายในเครือข่ายหลาย ๆ เครื่องจะทำการแปลงไปเป็น IP Address ของเครือข่ายภายนอกเพียง IP Address เดียวเท่านั้น โดยในการแปลงหมายเลข IP Address จะทำการแปลงหมายเลข Port ต้นทางไปด้วย</p>
+<p><strong>ยกตัวอย่าง</strong>        เครื่อง PC ที่มี IP  192.168.0.1 ต้องการเข้าถึงเว็บไซต์ที่มี IP 55.66.77.88  โดยมีลำดับการทำงานดังนี้</p>
+<ol type="1" start="1">
+<li>Packet ส่งออกจากเครื่อง PC </li>
+</ol>
+<pre><code>Source 192.168.0.1:8897 Destination 55.66.77.88:80</code></pre>
+<ol type="1" start="2">
+<li>PAT table ที่ Router</li>
+</ol>
+<table>
+<tr><td colspan="1" rowspan="1"><p><strong>Inside</strong></p>
+</td><td colspan="1" rowspan="1"><p><strong>Outside</strong></p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p>192.168.0.1:8897</p>
+</td><td colspan="1" rowspan="1"><p>11.22.33.44.8897</p>
+</td></tr>
+</table>
+<p><strong>*** หมายเหตุ </strong>Public IP ที่ Router ได้ในที่นี้คือ 11.22.33.44</p>
+<ol type="1" start="3">
+<li>Router ทำการแก้ไข Source IP Address และส่ง Packet ออกไปภายนอก</li>
+</ol>
+<pre><code>Source 11.22.33.44.8897 Destination 55.66.77.88:80</code></pre>
+<ol type="1" start="4">
+<li>Packet ตอบกลับมา</li>
+</ol>
+<pre><code>Source 55.66.77.88:80 Destination 11.22.33.44.8897</code></pre>
+<ol type="1" start="5">
+<li>Router ทำการเปรียบเทียบ PAT table ในข้อ 2 และแก้ไข Destination ให้ถูกต้อง จากนั้นส่ง Packet กลับไปที่ PC 1 ดังนี้</li>
+</ol>
+<pre><code>Source 55.66.77.88:80 Destination 192.168.0.1:8897</code></pre>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Lab: Static NAT" duration="30">
+        <p>ในแลปนี้เราจะมาคอนฟิค Network Address Translation (NAT) และ  Routing Information Protocol version 2 (RIPv2) บนอุปกรณ์ Cisco </p>
+<h2 is-upgraded><strong>Lab Topology</strong></h2>
+<p>        เปิดโปรแกรม Netsim สร้าง topology ดังนี้</p>
+<p class="image-container"><img style="width: 624.00px" src="img\8bf286fe5ee4c86.png"></p>
+<p>Step 1. ใช้ Router 2 ตัว Serie 2800 Model 2811 </p>
+<p class="image-container"><img style="width: 200.00px" src="img\4601b615cb81f180.png"></p>
+<p>Step 2. กำหนดให้ Router 1 และ 2 เชื่อมต่อกันผ่าน Serial 0/0 โดยคลิกขวาที่ Router 1 เลือก New Connections...</p>
+<p class="image-container"><img style="width: 283.00px" src="img\ed9332fe8cc4ce11.png"></p>
+<p>ที่ Local Interface เลือก Serial0/0 และ Remote Interface เลือก Serial0/0 จากนั้นคลิก Connect</p>
+<p class="image-container"><img style="width: 543.00px" src="img\9e43540159c409e0.png"></p>
+<p>Step 3. ที่ Other Devices ดึง PC มาวางที่ Topology 2 เครื่อง</p>
+<p class="image-container"><img style="width: 184.00px" src="img\70ae6797836d2215.png"></p>
+<p>คลิกปุ่ม Create PC</p>
+<p class="image-container"><img style="width: 447.00px" src="img\d5ba657b76175cca.png"></p>
+<p>จะได้ดังรูป</p>
+<p class="image-container"><img style="width: 562.00px" src="img\4fdca78018846986.png"></p>
+<p>Step 4. เชื่อมต่อ PC1 เข้ากับ Router1 โดยคลิกขวาที่ PC1 เลือก New Connection...</p>
+<p class="image-container"><img style="width: 260.00px" src="img\e8a2239eb5feb8fa.png"></p>
+<p>ที่ Local Interface เลือก Ethernet0, Remote Device เลือก Router1 และ Remote Interface เลือก FastEthernet0/0 จากนั้นคลิก Connect</p>
+<p class="image-container"><img style="width: 544.00px" src="img\d454e1645f7e8dd9.png"></p>
+<p>Step 4. เชื่อมต่อ PC2 เข้ากับ Router2 โดยคลิกขวาที่ PC2 เลือก New Connection...</p>
+<p class="image-container"><img style="width: 260.00px" src="img\e8a2239eb5feb8fa.png"></p>
+<p>ที่ Local Interface เลือก Ethernet0, Remote Device เลือก Router2 และ Remote Interface เลือก FastEthernet0/0 จากนั้นคลิก Connect</p>
+<p class="image-container"><img style="width: 543.00px" src="img\1740ba7ba436363d.png"></p>
+<p>จะได้ดังรูป</p>
+<p class="image-container"><img style="width: 493.00px" src="img\fdcf0ca93e515cad.png"></p>
+<h2 is-upgraded><strong>Command Summary</strong></h2>
+<table>
+<tr><td colspan="1" rowspan="1"><p><strong>Command</strong></p>
+</td><td colspan="1" rowspan="1"><p><strong>Description</strong></p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p><strong>clock rate </strong>clock-rate</p>
+</td><td colspan="1" rowspan="1"><p>ตั้งค่า clock rate ในการส่งข้อมูล</p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p><strong>configure terminal</strong></p>
+</td><td colspan="1" rowspan="1"><p>เปลี่ยนจาก privileged mode ไป configuration mode</p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p><strong>enable</strong></p>
+</td><td colspan="1" rowspan="1"><p>เข้าสู่ privileged mode </p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p><strong>end</strong></p>
+</td><td colspan="1" rowspan="1"><p>ออกจาก configuration mode</p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p><strong>exit</strong></p>
+</td><td colspan="1" rowspan="1"><p>ออกจากโหมดปัจจุบัน 1 ระดับ</p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p><strong>hostname </strong>host-name</p>
+</td><td colspan="1" rowspan="1"><p>ตั้งชื่ออุปกรณ์</p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p><strong>interface </strong>type number</p>
+</td><td colspan="1" rowspan="1"><p>เปลี่ยนจาก global configuration mode ไป interface configuration mode</p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p><strong>ip address </strong>ip-address subnet-mask</p>
+</td><td colspan="1" rowspan="1"><p>กำหนด ip address ให้ interface</p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p><strong>ip nat inside</strong></p>
+</td><td colspan="1" rowspan="1"><p>กำหนด inside interface ให้ NAT</p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p><strong>ip nat inside source static </strong>inside-local-address inside-global-address</p>
+</td><td colspan="1" rowspan="1"><p>สร้าง static NAT translation</p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p><strong>ip nat outside</strong></p>
+</td><td colspan="1" rowspan="1"><p>ตั้งค่า interface เป็น outside interface</p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p><strong>network </strong>network-address</p>
+</td><td colspan="1" rowspan="1"><p>เปิดใช้งาน RIP บน specified network</p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p><strong>no shutdown</strong></p>
+</td><td colspan="1" rowspan="1"><p>สั่ง enable interface</p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p><strong>ping </strong>ip-address</p>
+</td><td colspan="1" rowspan="1"><p>ส่ง Internet Control Message Protocol (ICMP)</p>
+<p>ร้องขอไปยัง specified address</p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p><strong>router rip</strong></p>
+</td><td colspan="1" rowspan="1"><p>เปิดใช้งาน RIP routing</p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p><strong>show ip nat translations</strong></p>
+</td><td colspan="1" rowspan="1"><p>ดู NAT translation</p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p><strong>show running-config</strong></p>
+</td><td colspan="1" rowspan="1"><p>ดู configuration</p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p><strong>version 2</strong></p>
+</td><td colspan="1" rowspan="1"><p>เปิดใช้งาน RIPv2</p>
+</td></tr>
+</table>
+<h2 is-upgraded><strong>IP Addresses</strong></h2>
+<p>กำหนด ip address และ subnet mask ที่ใช้ใน lab ตามตารางดังต่อไปนี้</p>
+<table>
+<tr><td colspan="1" rowspan="1"><p><strong>Device</strong></p>
+</td><td colspan="1" rowspan="1"><p><strong>Interface</strong></p>
+</td><td colspan="1" rowspan="1"><p><strong>IP Address</strong></p>
+</td><td colspan="1" rowspan="1"><p><strong>Subnet Mask</strong></p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p>Router1</p>
+</td><td colspan="1" rowspan="1"><p>FastEthernet 0/0</p>
+<p>Serial 0/0</p>
+</td><td colspan="1" rowspan="1"><p>192.168.101.1</p>
+<p>192.168.1.1</p>
+</td><td colspan="1" rowspan="1"><p>255.255.255.0</p>
+<p>255.255.255.0</p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p>Router2</p>
+</td><td colspan="1" rowspan="1"><p>FastEthernet 0/0</p>
+<p>Serial 0/0</p>
+</td><td colspan="1" rowspan="1"><p>192.168.100.1</p>
+<p>192.168.1.2</p>
+</td><td colspan="1" rowspan="1"><p>255.255.255.0</p>
+<p>255.255.255.0</p>
+</td></tr>
+</table>
+<table>
+<tr><td colspan="1" rowspan="1"><p><strong>Device</strong></p>
+</td><td colspan="1" rowspan="1"><p><strong>IP Address</strong></p>
+</td><td colspan="1" rowspan="1"><p><strong>Subnet Mask</strong></p>
+</td><td colspan="1" rowspan="1"><p><strong>Default Gateway</strong></p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p>PC1</p>
+</td><td colspan="1" rowspan="1"><p>192.168.101.2</p>
+</td><td colspan="1" rowspan="1"><p>255.255.255.0</p>
+</td><td colspan="1" rowspan="1"><p>192.168.101.1</p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p>PC2</p>
+</td><td colspan="1" rowspan="1"><p>192.168.100.2</p>
+</td><td colspan="1" rowspan="1"><p>255.255.255.0</p>
+</td><td colspan="1" rowspan="1"><p>192.168.100.1</p>
+</td></tr>
+</table>
+<h2 is-upgraded><strong>Lab Tasks</strong></h2>
+<ol type="1" start="1">
+<li>ที่ Router ตัวที่ 1 เปลี่ยนชื่อเป็น Router1 กำหนด IP address ให้กับ interface ตามตารางด้านบน และที่ สาย Serial กำหนด speed เป็น 64Kbps จากนั้นเปิดการใช้งาน interface</li>
+<li>ที่ Router ตัวที่ 2 เปลี่ยนชื่อเป็น Router2 กำหนด IP address ให้กับ interface ตามตารางด้านบน จากนั้นเปิดการใช้งาน interface</li>
+<li>ตั้งค่า Router ด้วย RIP </li>
+<li>ที่ Router1 กำหนด NAT (192.168.1.100) เพื่อให้ PC1 สามารถเชื่อมต่อไปยังภายนอกได้</li>
+<li>Ping จาก PC1 ไป PC2 (192.168.100.2)</li>
+<li>ที่ Router1 พิมพ์คำสั่ง show ip nat translations </li>
+</ol>
+<h2 is-upgraded><strong>Lab Solutions</strong></h2>
+<p>Step 1. ที่ Router1 ให้เปลี่ยนชื่อ hostname พร้อมทั้งกำหนด IP Address และ Clock rate ให้สาย interface serial0/0 และเปิดการใช้งาน interface ด้วยคำสั่งดังต่อไปนี้</p>
+<pre><code>Router&gt;enable
+Router#configure terminal
+Router(config)#hostname Router1
+Router1(config)#interface fastethernet 0/0
+Router1(config-if)#ip address 192.168.101.1 255.255.255.0
+Router1(config-if)#no shutdown
+Router1(config-if)#interface serial 0/0
+Router1(config-if)#ip address 192.168.1.1 255.255.255.0
+Router1(config-if)#clock rate 64000
+Router1(config-if)#no shutdown
+Router1(config-if)#exit</code></pre>
+<p><strong>ผลลัพธ์</strong></p>
+<p class="image-container"><img style="width: 624.00px" src="img\b41382193b872045.png"></p>
+<p>Step 2. ที่ Router2 ให้เปลี่ยนชื่อ hostname พร้อมทั้งกำหนด IP Address ให้ interface และเปิดการใช้งาน interface ด้วยคำสั่งดังต่อไปนี้</p>
+<pre><code>Router&gt;enable
+Router#configure terminal
+Router(config)#hostname Router2
+Router2(config)#interface fastethernet 0/0
+Router2(config-if)#ip address 192.168.100.1 255.255.255.0
+Router2(config-if)#no shutdown
+Router2(config-if)#interface serial 0/0
+Router2(config-if)#ip address 192.168.1.2 255.255.255.0
+Router2(config-if)#no shutdown
+Router2(config-if)#exit</code></pre>
+<p><strong>ผลลัพธ์</strong></p>
+<p class="image-container"><img style="width: 624.00px" src="img\5fa08b8a2a0ca42.png"></p>
+<p>Step 3.  กำหนด RIP ให้กับ Router1 และ Router2</p>
+<p>Router1</p>
+<pre><code>Router1(config)#router rip
+Router1(config-router)#version 2
+Router1(config-router)#network 192.168.1.0
+Router1(config-router)#network 192.168.100.0
+Router1(config-router)#network 192.168.101.0
+Router1(config-router)#exit</code></pre>
+<p class="image-container"><img style="width: 543.00px" src="img\a5b343acc1f697bc.png"></p>
+<p>Router2</p>
+<pre><code>Router2(config)#router rip
+Router2(config-router)#version 2
+Router2(config-router)#network 192.168.1.0
+Router2(config-router)#network 192.168.100.0
+Router2(config-router)#network 192.168.101.0
+Router2(config-router)#end</code></pre>
+<p class="image-container"><img style="width: 538.00px" src="img\38eefd8632630706.png"></p>
+<p>Step 4. กำหนด NAT ให้กับ Router1 </p>
+<pre><code>Router1(config)#ip nat inside source static 192.168.101.2 192.168.1.100
+Router1(config)#interface fastethernet 0/0
+Router1(config-if)#ip nat inside
+Router1(config-if)#interface serial 0/0
+Router1(config-if)#ip nat outside
+Router1(config-if)#end</code></pre>
+<p class="image-container"><img style="width: 624.00px" src="img\a011c0872eb855df.png"></p>
+<p>Step 5. กำหนด IP Address และ Gateway ให้ PC1 และ PC2</p>
+<p>PC1</p>
+<pre><code>C:&gt;ipconfig /ip 192.168.101.2 255.255.255.0
+C:&gt;ipconfig /dg 192.168.101.1</code></pre>
+<p>PC2</p>
+<pre><code>C:&gt;ipconfig /ip 192.168.100.2 255.255.255.0
+C:&gt;ipconfig /dg 192.168.100.1</code></pre>
+<p>Step 6. Ping จาก PC1 ไป PC2 (192.168.100.2)</p>
+<pre><code>PC1&gt;ping 192.168.100.2</code></pre>
+<p>Step 7. ที่ Router1 พิมพ์คำสั่ง show ip nat translations </p>
+<pre><code>Router1#show ip nat translations</code></pre>
+<h2 is-upgraded><strong>Sample Configuration Script</strong></h2>
+<p class="image-container"><img style="width: 624.00px" src="img\1c25cccfd2b85ad5.png"></p>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="References" duration="1">
+        <h2 is-upgraded>Reference docs</h2>
+<ul>
+<li>Kurose, James F. (2013). <a href="https://nu365.sharepoint.com/:b:/s/Sec_4947_2564_1_1/EUF__Krbk_NEktZ-6s6CjvEBaZQedkIkoBE2gWxQXX847A?e=9nh7b3" target="_blank">Computer Networking A Top-Down Approach 6th</a>, Pearson Education Inc.:116-118</li>
+<li><a href="https://www.cisco.com/c/th_th/products/ios-nx-os-software/index.html" target="_blank">https://www.cisco.com/c/th_th/products/ios-nx-os-software/index.html</a></li>
+<li><a href="https://bit.ly/2WZGLyl" target="_blank">Lab: Static NAT</a></li>
+<li><a href="http://sci.bsru.ac.th/sciweb/e-magazine/5-2/chapter-1.pdf" target="_blank">http://sci.bsru.ac.th/sciweb/e-magazine/5-2/chapter-1.pdf</a></li>
+</ul>
+
+
+      </google-codelab-step>
+    
+  </google-codelab>
+
+  <script src="https://storage.googleapis.com/codelab-elements/native-shim.js"></script>
+  <script src="https://storage.googleapis.com/codelab-elements/custom-elements.min.js"></script>
+  <script src="https://storage.googleapis.com/codelab-elements/prettify.js"></script>
+  <script src="https://storage.googleapis.com/codelab-elements/codelab-elements.js"></script>
+
+</body>
+</html>

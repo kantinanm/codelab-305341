@@ -1,0 +1,668 @@
+
+<!doctype html>
+
+<html>
+<head>
+  <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1.0, user-scalable=yes">
+  <meta name="theme-color" content="#4F7DC9">
+  <meta charset="UTF-8">
+  <title>Codelab 9 - Routing Protocol</title>
+  <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Source+Code+Pro:400|Roboto:400,300,400italic,500,700|Roboto+Mono">
+  <link rel="stylesheet" href="//fonts.googleapis.com/icon?family=Material+Icons">
+  <link rel="stylesheet" href="https://storage.googleapis.com/codelab-elements/codelab-elements.css">
+  <style>
+    .success {
+      color: #1e8e3e;
+    }
+    .error {
+      color: red;
+    }
+  </style>
+</head>
+<body>
+  <google-codelab-analytics gaid="UA-49880327-14"></google-codelab-analytics>
+  <google-codelab codelab-gaid=""
+                  id="codelab-9-routing-protocol"
+                  title="Codelab 9 - Routing Protocol"
+                  environment="web"
+                  feedback-link="">
+    
+      <google-codelab-step label="Routing Protocol" duration="40">
+        <p>จาก Codelab 8 เราจะเห็นว่ามีการ Config <strong>Routing Protocol</strong> ที่ตัวอุปกรณ์ Router กันอย่างง่ายไปแล้ว  ใน Codelab 9 นี้เราจะมาลงรายละเอียดเนื้อหาที่เกี่ยวกับ  <strong>Routing Protocol </strong>กันเพื่อให้เกิดความเข้าใจในเนื้อหาก่อนลงมือทำปฏิบัติการจริงกัน  เอาละมาเริ่มกันเลย....</p>
+<p><strong>Routing Protocol คืออะไร ?</strong></p>
+<ul>
+<li>กระบวนการที่ส่ง packet จาก host ภายในระบบเครือข่ายหนึ่งข้ามไปยังอีก host อื่นๆ โดยเลือกเส้นทางที่ดีที่สุด จาก routing table</li>
+<li>การตัดสินใจเลือกเส้นทางที่ใช้ในการ forward packet ไปให้ถึงเครื่องปลายทาง</li>
+</ul>
+<p>Routing Protocol สามารถจำแนกตามลักษณะการทำงานได้ 3 ประเภทคือ</p>
+<ol type="1" start="1">
+<li><strong>Static routing </strong>เป็นการกำหนดการเส้นทางการ forward packet หรือการส่งต่อข้อมูลจากอุปกรณ์ในระบบเครือข่ายออกไปยังอุปกรณ์ปลายทางที่เหมาะสม (Router) แบบคงที่ </li>
+</ol>
+<p>(เพิ่มรูป ตัวอย่างการทำ Static route)</p>
+<pre><code>Router(config)#ip route 192.168.1.0 255.255.255.0 172.16.90.200</code></pre>
+<p><strong>ข้อเสีย</strong></p>
+<ul>
+<li>ต้อง config เส้นทางแบบ manual</li>
+<li>ต้อง config ที่ router ทุกๆ ตัว ตามเส้นทางที่ต้องทำ route</li>
+<li>จัดการได้ยาก เมื่อมีเส้นทางใดเส้นทางหนึ่งเสีย ต้องใช้เวลาในการดำเนินการแก้ไข </li>
+<li>หากมี network ใหม่ ก็ย่อมต้อง config เส้นทางใหม่</li>
+</ul>
+<aside class="warning"><p><strong>Caution :</strong> Static routes have too much overhead</p>
+</aside>
+<ol type="1" start="2">
+<li><strong>Default routing </strong>เป็นการกำหนดเส้นทางของ packet ให้เป็นค่าปริยายหรือค่าเริ่มต้น หรือสร้างกฏกำหนดให้ Destination IP ใดๆก็ตามที่ไม่มีใน Routing Table  ทุก IP จะถูกส่งไปหา Router ตัวถัดไป (Next Hop Address)   ซึ่งจะพบในอุปกรณ์ที่ทำหน้าที่เป็น edge device เช่น switch layer 3 , และ router </li>
+</ol>
+<pre><code>Router(config)#ip route 0.0.0.0 0.0.0.0 1.2.3.4</code></pre>
+<ol type="1" start="3">
+<li><strong>Dynamic routing </strong>เป็นการกำหนดเส้นทางของ packet ให้เป็นไปอย่างยืดหยุ่น(แบบพลวัต) ซึ่งจะแปลผันตามปัจจัย (hop count, speed, cost, Latency, MTU (Maximum Transfer Unit) และค่าความสำคัญของเส้นทางที่ที่พึงถูกประเมินโดย Routing Algorithms แบบต่างๆ  แบ่งได้ออก Interior และ Exterior โดยรายละเอียดจะกล่าวในลำดับถัดไป</li>
+</ol>
+<p><strong>The purpose of dynamic routing protocols includes:</strong></p>
+<ul>
+<li>Discovery of remote networks.</li>
+<li>Maintaining up-to-date routing information.</li>
+<li>Choosing the best path to destination networks.</li>
+<li>Forwarding process needs to be loop-free</li>
+<li>Ability to find a new best path if the current path is no longer available.</li>
+</ul>
+<p><strong>Dynamic Routing Protocol Operation.</strong></p>
+<ol type="1" start="1">
+<li>Router ส่งและรับ routing messages ที่ interface ตนเอง</li>
+<li>Router จะทำการ แบ่งบัน routing messages และ routing information กับ router ที่ใช้ protocol เดียวกัน</li>
+<li>Router จะมีการแลกเปลี่ยน routing information เพื่อการเรียนรู้เกี่ยวกับระบบเครือข่ายที่ห่างไกล </li>
+<li>เมื่อ Router พบการเปลี่ยนแปลง topology ในระบบเครือข่าย routing protocol จะสามารถแนะนำ และแจ้งข่าวสารให้กับ  router ใกล้เคียง</li>
+</ol>
+<p>นอกจากนั้น Routing Protocol สามารถจำแนกตามลักษณะของการออกแบบระบบเครือข่าย ตาม IP Address ได้อีก 2 ประเภทคือ</p>
+<ol type="1" start="1">
+<li><strong>Classful routing protocol</strong> คือ routing protocol ที่ การันตีว่า IP ที่ได้รับการแบ่งตาม Classful นั้นสามารถใช้งานบนระบบเครือข่าย (ตัว router ตั้งสมมุติฐานเอาเองว่า subnet masks ได้ถูกกำหนดไว้เหมือนกัน ทั้ง Network) ตัวอย่าง routing  protocol ได้แก่  RIPv1 และ IGRP </li>
+</ol>
+<p><strong>ข้อดี</strong></p>
+<ul>
+<li>ไม่สนใจข้อมูลเกี่ยวกับ subnet information (จะไม่มีการประกาศ subnet mask ติดไปด้วย) </li>
+<li>การทำ summary route (สรุปเส้นทาง path ที่เชื่อมต่อ) จะเกิดขึ้นตามตามต่อ หรือขอบเขตของ major network </li>
+</ul>
+<p class="image-container"><img style="width: 624.00px" src="img\78ee0e3ba816cffa.jpeg"></p>
+<aside class="special"><p><strong>ข้อสังเกตุ: </strong></p>
+<p>          Classful สามารถเรียกอีกอย่างหนึ่งได้ว่า FLSM (Fixed-Length Subnet Mask) กล่าวได้ว่าเป็นการออกแบบระบบเครือข่าย Network โดยที่ Subnet ทั้งหมดจะต้องมี Subnet Mask ที่เหมือนๆกัน (มี Length ของ Prefix ใน Class นั้นๆที่ fix หรือไม่มีการเปลี่ยนแปลง)</p>
+</aside>
+<aside class="warning"><p><strong>พิจารณาปัญหาการขาดแคลน IPv4 !!!  </strong></p>
+<p>       นิสิตจะเห็นว่าการใช้ Classful routing protocol นั้นเป็นการใช้งาน ip ที่มีอยู่ในกลุ่ม Network อย่างไม่มีประสิทธิภาพ เราอาจใช้ Class C แบ่งกลุ่มแล้ว ก็ยังได้จำนวน host จำนวน 254   โดยในความเป็นจริงจะพบว่า host หรือ client ใน Network นั้นอาจจะมีน้อยมากๆ บางทีไม่ถึง 20 host   </p>
+<p>       จากปัญหาดังกล่าวจึงเกิดความคิดที่จะออกแบบระบบเครือข่ายโดยใช้ subnet </p>
+</aside>
+<ol type="1" start="2">
+<li><strong>Classless routing protocol </strong>คือ routing protocol ที่ใช้สำหรับเครือข่ายที่ออกแบบและมีพื้นฐานมาจากการนำ subnet ใน Class มาแบ่งให้เหมาะสมกับจำนวน host ที่ต้องใช้งานนั้นๆ </li>
+</ol>
+<ul>
+<li>เป็นการส่งข้อมูล subnet information , ประกาศ subnet mask ติดไปด้วย</li>
+<li>รองรับการออกแบบ network และกำหนด subnet masks แบบ Variable-Length Subnet Mask (VLSM)</li>
+<li>สามารถทำ summary routes ได้เองโดย Network Administrator</li>
+<li>ตัวอย่าง RIPv2 , EIGRP, OSPF , และ IS-IS</li>
+</ul>
+<p class="image-container"><img style="width: 525.50px" src="img\da9c50e39886025d.jpeg"></p>
+<aside class="warning"><p><strong>ปลดล๊อกสกิลทองคำ :</strong> หากคุณเป็น Network Administrator แล้ว ผู้จัดการต้องการให้คุณออกแบบระบบเครือข่าย โดยมีจำนวน host ตามด้านล่างนี้ คุณจะออกแบบและแบ่งกลุ่ม subnet อย่างไร</p>
+<ul>
+<li>Sales and Purchase: 120</li>
+<li>Development: 50</li>
+<li>Accounts: 26</li>
+<li>Management: 5 </li>
+</ul>
+</aside>
+<aside class="special"><p><strong>จะทราบได้อย่างไรว่าในแต่ละ subnet มีจำนวน host เท่าใด? </strong></p>
+<p>          เราสามารถใช่สูตร 2 pow(n) -2 โดยที่ n คือจำนวน bit ที่เหลือสำหรับทำ host ควบคู่กับการพิจารณา prefix length ยกตัวอย่าง เช่น</p>
+<p><strong>กรณีที่ 1</strong></p>
+<p>        prefix length /24  นั้นมีค่า Subnet Mask 255.255.255.0 </p>
+<p>        จะเหลือ bit สำหรับทำ host  มีค่าเท่ากับ 32-24  = 8 bit </p>
+<p>        แทนสูตร 2 pow(8) -2 = 254 ซึ่งสรุปได้ว่า prefix length /24 นั้นรองรับ host ได้จำนวน 254 เครื่อง</p>
+<p><strong>กรณีที่ 2</strong></p>
+<p>        prefix length /30  นั้นมีค่า Subnet Mask 255.255.255.252</p>
+<p>        จะเหลือ bit สำหรับทำ host  มีค่าเท่ากับ 32-30  = 2 bit </p>
+<p>        แทนสูตร 2 pow(2) -2 = 254 ซึ่งสรุปได้ว่า prefix length /30 นั้นรองรับ host ได้จำนวน 2 เครื่อง</p>
+</aside>
+<p><strong>มาดูเชลย..!!  เอ้ยเฉลยกันเลย....</strong></p>
+<p class="image-container"><img style="width: 624.00px" src="img\2f79f923a77cdceb.jpeg"></p>
+<table>
+<tr><td colspan="1" rowspan="1"><p><strong>SLASH NOTATION</strong></p>
+</td><td colspan="1" rowspan="1"><p><strong>HOSTS/SUBNETS</strong></p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p>/24 </p>
+</td><td colspan="1" rowspan="1"><p>254</p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p>/25</p>
+</td><td colspan="1" rowspan="1"><p>126</p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p>/26</p>
+</td><td colspan="1" rowspan="1"><p>62</p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p>/27</p>
+</td><td colspan="1" rowspan="1"><p>30</p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p>/28</p>
+</td><td colspan="1" rowspan="1"><p>14</p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p>/29</p>
+</td><td colspan="1" rowspan="1"><p>6</p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p>/30</p>
+</td><td colspan="1" rowspan="1"><p>2</p>
+</td></tr>
+</table>
+<aside class="special"><p>          &#34;Classless routing protocols are predominantly used in networks today&#34;</p>
+</aside>
+<p>หากเราพิจารณา Routing Protocol ตามประเภทการเชื่อมต่อแล้วยังสามารถจำแนกได้อีก 2 ประเภทคือ</p>
+<ol type="1" start="1">
+<li><strong>Interior gateway protocol</strong> คือ protocol ที่ใช้ค้นหาเส้นทางและเชื่อมต่อกันแค่ภายในระบบเครือข่าย Autonomous System (AS) เดียว  สามารถแบ่งกลุ่มการทำงานได้ 2 ประเภทคือ</li>
+</ol>
+<p><strong>Distance Vector </strong></p>
+<ul>
+<li>เป็นกลไลที่จะทำให้ Router จะรู้ระยะทาง จาก hop หนึ่งไปอีก hop หนึ่ง (distance vector)</li>
+<li>Routing Information Protocol (RIP) ซึ่งเราจะกล่าวถึงในหัวข้อต่อไป</li>
+<li>ตัวอย่างการให้แปลผันค่าน้ำหนักและความสำคัญของ Liked ที่เชื่อมต่อ Router สามารถแสดงได้ดังตาราง Administrative Distance ดังนี้</li>
+</ul>
+<table>
+<tr><td colspan="1" rowspan="1"><p><strong>Abbr. </strong></p>
+</td><td colspan="1" rowspan="1"><p><strong>Route Type</strong></p>
+</td><td colspan="1" rowspan="1"><p><strong>Admin. Dist</strong></p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p>C </p>
+</td><td colspan="1" rowspan="1"><p>Directly Connected</p>
+</td><td colspan="1" rowspan="1"><p>0</p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p>S</p>
+</td><td colspan="1" rowspan="1"><p>Static</p>
+</td><td colspan="1" rowspan="1"><p>1</p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p>B</p>
+</td><td colspan="1" rowspan="1"><p>BGP (External) </p>
+</td><td colspan="1" rowspan="1"><p>20</p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p>D</p>
+</td><td colspan="1" rowspan="1"><p>EIGRP (Internal)</p>
+</td><td colspan="1" rowspan="1"><p>90</p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p>I </p>
+</td><td colspan="1" rowspan="1"><p>IGRP</p>
+</td><td colspan="1" rowspan="1"><p>100</p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p>O</p>
+</td><td colspan="1" rowspan="1"><p>OSPF </p>
+</td><td colspan="1" rowspan="1"><p>110</p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p>i</p>
+</td><td colspan="1" rowspan="1"><p>IS-IS </p>
+</td><td colspan="1" rowspan="1"><p>115</p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p>R</p>
+</td><td colspan="1" rowspan="1"><p>RIP</p>
+</td><td colspan="1" rowspan="1"><p>120</p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p>D</p>
+</td><td colspan="1" rowspan="1"><p>EIGRP (External)</p>
+</td><td colspan="1" rowspan="1"><p>170</p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p>B</p>
+</td><td colspan="1" rowspan="1"><p>BGP (Internal) </p>
+</td><td colspan="1" rowspan="1"><p>200</p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p>Unusable Route </p>
+</td><td colspan="1" rowspan="1"><p>255</p>
+</td></tr>
+</table>
+<ol type="1" start="2">
+<li><strong>Exterior gateway protocol</strong> คือ protocol ที่ใช้ค้นหาเส้นทางที่เชื่อมต่อกันระหว่างระบบเครือข่าย Autonomous System (AS) ตั้งแต่ 2 AS ขึ้นไป  ยกตัวอย่างเช่น BGP</li>
+</ol>
+<p class="image-container"><img style="width: 624.00px" src="img\a8c88141b5f1575.jpeg"></p>
+<aside class="special"><p><strong>Autonomous System (AS): </strong>ระบบเครือข่าย Network ภายใต้การดูแลขององค์กรใดองค์กรหนึ่ง  (บ้านพักอาศัย,สถาบันการศึกษา,หน่วยงานต่างๆ, บริษัท ห้างร้าน ฯลฯ )</p>
+</aside>
+<p><strong>Routing algorithm</strong>  นั้นจะช่วยให้มีเส้นทางที่ดีและเหมาะสมที่สุดสำหรับ router ต้นทาง ไปยัง  router ปลายทาง</p>
+<p class="image-container"><img style="width: 624.00px" src="img\1dc113ab2cb8cd0b.jpeg"></p>
+<p><strong>Initial Routing table at B</strong></p>
+<table>
+<tr><td colspan="1" rowspan="1"><p><strong>Dest.</strong></p>
+</td><td colspan="1" rowspan="1"><p><strong>Cost</strong></p>
+</td><td colspan="1" rowspan="1"><p><strong>Next Hop</strong></p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p>A</p>
+</td><td colspan="1" rowspan="1"><p>1</p>
+</td><td colspan="1" rowspan="1"><p>A</p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p>C </p>
+</td><td colspan="1" rowspan="1"><p>3</p>
+</td><td colspan="1" rowspan="1"><p>C </p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p>E</p>
+</td><td colspan="1" rowspan="1"><p>9</p>
+</td><td colspan="1" rowspan="1"><p>E</p>
+</td></tr>
+</table>
+<p>        Each node maintains a routing table (distance vector) such as Destination, Estimated cost to Destination, Next hop via which to reach destination</p>
+<p><strong>Final Routing table at B</strong></p>
+<table>
+<tr><td colspan="1" rowspan="1"><p><strong>Dest.</strong></p>
+</td><td colspan="1" rowspan="1"><p><strong>Cost</strong></p>
+</td><td colspan="1" rowspan="1"><p><strong>Next Hop</strong></p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p>A</p>
+</td><td colspan="1" rowspan="1"><p>1</p>
+</td><td colspan="1" rowspan="1"><p>A</p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p>C </p>
+</td><td colspan="1" rowspan="1"><p>3</p>
+</td><td colspan="1" rowspan="1"><p>C </p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p>D</p>
+</td><td colspan="1" rowspan="1"><p>7</p>
+</td><td colspan="1" rowspan="1"><p>C</p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p>E</p>
+</td><td colspan="1" rowspan="1"><p>9</p>
+</td><td colspan="1" rowspan="1"><p>E</p>
+</td></tr>
+</table>
+<p><strong>Reference Node C : Initial Routing table at C</strong></p>
+<table>
+<tr><td colspan="1" rowspan="1"><p><strong>Dest.</strong></p>
+</td><td colspan="1" rowspan="1"><p><strong>Cost</strong></p>
+</td><td colspan="1" rowspan="1"><p><strong>Next Hop</strong></p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p>A</p>
+</td><td colspan="1" rowspan="1"><p><strong>5</strong></p>
+</td><td colspan="1" rowspan="1"><p>A</p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p>B </p>
+</td><td colspan="1" rowspan="1"><p>3</p>
+</td><td colspan="1" rowspan="1"><p>B </p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p>D</p>
+</td><td colspan="1" rowspan="1"><p>4</p>
+</td><td colspan="1" rowspan="1"><p>D</p>
+</td></tr>
+</table>
+<p>1.Massage from A (C to A) : C=5</p>
+<table>
+<tr><td colspan="1" rowspan="1"><p><strong>TO</strong></p>
+</td><td colspan="1" rowspan="1"><p><strong>A</strong></p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p>A</p>
+</td><td colspan="1" rowspan="1"><p>0</p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p>B </p>
+</td><td colspan="1" rowspan="1"><p>1</p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p>C</p>
+</td><td colspan="1" rowspan="1"><p>5</p>
+</td></tr>
+</table>
+<p>2.Massage from B (C to B) : C=3</p>
+<table>
+<tr><td colspan="1" rowspan="1"><p><strong>TO</strong></p>
+</td><td colspan="1" rowspan="1"><p><strong>A</strong></p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p>A</p>
+</td><td colspan="1" rowspan="1"><p>1</p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p>B </p>
+</td><td colspan="1" rowspan="1"><p>0</p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p>C</p>
+</td><td colspan="1" rowspan="1"><p>3</p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p>E</p>
+</td><td colspan="1" rowspan="1"><p>9</p>
+</td></tr>
+</table>
+<p><strong>Reference Node C :  After Initial Routing table at C</strong></p>
+<table>
+<tr><td colspan="1" rowspan="1"><p><strong>Dest.</strong></p>
+</td><td colspan="1" rowspan="1"><p><strong>Cost</strong></p>
+</td><td colspan="1" rowspan="1"><p><strong>Next Hop</strong></p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p>A</p>
+</td><td colspan="1" rowspan="1"><p><strong>4</strong></p>
+</td><td colspan="1" rowspan="1"><p><strong>B</strong></p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p>B </p>
+</td><td colspan="1" rowspan="1"><p>3</p>
+</td><td colspan="1" rowspan="1"><p>B </p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p>D</p>
+</td><td colspan="1" rowspan="1"><p>4</p>
+</td><td colspan="1" rowspan="1"><p>D</p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p>E</p>
+</td><td colspan="1" rowspan="1"><p><strong>12</strong></p>
+</td><td colspan="1" rowspan="1"><p>B</p>
+</td></tr>
+</table>
+<p>3.Massage from D (C to D) : C=4</p>
+<table>
+<tr><td colspan="1" rowspan="1"><p><strong>TO</strong></p>
+</td><td colspan="1" rowspan="1"><p><strong>A</strong></p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p>A</p>
+</td><td colspan="1" rowspan="1"><p>0</p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p>B </p>
+</td><td colspan="1" rowspan="1"><p>1</p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p>C</p>
+</td><td colspan="1" rowspan="1"><p>5</p>
+</td></tr>
+</table>
+<p><strong>Final Routing table at C</strong></p>
+<table>
+<tr><td colspan="1" rowspan="1"><p><strong>Dest.</strong></p>
+</td><td colspan="1" rowspan="1"><p><strong>Cost</strong></p>
+</td><td colspan="1" rowspan="1"><p><strong>Next Hop</strong></p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p>A</p>
+</td><td colspan="1" rowspan="1"><p><strong>4</strong></p>
+</td><td colspan="1" rowspan="1"><p><strong>B</strong></p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p>B </p>
+</td><td colspan="1" rowspan="1"><p>3</p>
+</td><td colspan="1" rowspan="1"><p>B </p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p>D</p>
+</td><td colspan="1" rowspan="1"><p>4</p>
+</td><td colspan="1" rowspan="1"><p>D</p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p>E</p>
+</td><td colspan="1" rowspan="1"><p><strong>6</strong></p>
+</td><td colspan="1" rowspan="1"><p><strong>D</strong></p>
+</td></tr>
+</table>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="DHCP (Dynamic Host Configuration Protocol)" duration="5">
+        <p>        DHCP (Dynamic Host Configuration Protocol) นั้นคือ มีหน้าที่ของโปรโตคอลนี้คือการจัดสรรไอพีแอดเดรสให้กับเครื่องลูกข่าย เพื่อลดภาระของผู้ดูแลระบบเครือข่าย</p>
+<p><strong>ขั้นตอนการทำงาน DHCP</strong></p>
+<ol type="1" start="1">
+<li>DHCP DISCOVERY : เครื่องลูกข่ายทำการส่งข้อมูลแบบ Broadcast เพื่อทำการร้องขอ ไอพี</li>
+</ol>
+<pre><code>UDP Src=0.0.0.0          sPort=68
+Dest=255.255.255.255     dPort=67</code></pre>
+<ol type="1" start="2">
+<li>DHCP OFFER : DHCP Server จะทำการจองหมายเลขไอพีแอดเดรสที่ว่างแล้ว  ส่ง Message DHCP Offer ไปยังเครื่องลูกข่ายที่ทำการร้องขอ</li>
+</ol>
+<pre><code>UDP Src=192.168.1.1    sPort=67
+Dest=255.255.255.255 dPort=68</code></pre>
+<ol type="1" start="3">
+<li>DHCP REQUESTS : เครื่องลูกข่ายจะแสดงความต้องการไอพีแอดเดรสตามที่ได้รับจากขั้นตอน DHCP Offer</li>
+</ol>
+<pre><code>UDP Src=0.0.0.0       sPort=68
+Dest=255.255.255.255  dPort=67</code></pre>
+<ol type="1" start="4">
+<li>DHCP ACKNOWLEDGEMENT : DHCP Server จะจัดสรรไอพีให้เครื่องลูกข่าย และ DNS, Gateway WINS</li>
+</ol>
+<pre><code>UDP Src=192.168.1.1 sPort=67
+Dest=255.255.255.255 dPort=68</code></pre>
+<p class="image-container"><img style="width: 478.00px" src="img\d4ab1160eeba699b.jpeg"></p>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Lab: DHCP Binding" duration="30">
+        <h2 is-upgraded><strong>Objective</strong></h2>
+<p>ในแลปนี้จะพูดถึงการทำ Dynamic Host Configuration Protocol (DHCP) ระหว่าง server กับ clients เราจะใช้ DHCP ในการกำหนด IP address ให้กับ clients </p>
+<h2 is-upgraded><strong>Lab Topology</strong></h2>
+<p>        เปิดโปรแกรม Netsim สร้าง topology ดังนี้</p>
+<p class="image-container"><img style="width: 624.00px" src="img\9d41b507d68da4e8.png"></p>
+<p>Step 1. ใช้ Router 1 ตัว Serie 2800 Model 2811 </p>
+<p class="image-container"><img style="width: 200.00px" src="img\4601b615cb81f180.png"></p>
+<p>Step 2. ใช้ Switch เลเยอร์ 3 จำนวน 1 ตัว Series 3500 Model 3550</p>
+<p class="image-container"><img style="width: 151.00px" src="img\f0d4566946fb10e8.png"></p>
+<p>Step 3. ใช้ PC ทั้งหมด 6 เครื่อง</p>
+<p class="image-container"><img style="width: 184.00px" src="img\70ae6797836d2215.png"></p>
+<p>Step 4. เชื่อมต่อ Router1 (พอร์ต FastEthernet 0/0) เข้ากับ Switch1 (พอร์ต FastEthernet 0/1) โดยคลิกขวาที่ Router1 เลือก New Connection... ตั้งค่าดังรูป แล้วคลิกปุ่ม Connect</p>
+<p class="image-container"><img style="width: 545.00px" src="img\6d6fc39bf6048e6a.png"></p>
+<p>Step 5. จากนั้นไปที่ Switch1 คลิกขวาเลือก New Connection... แล้วเชื่อมต่อกับ PC1-6 ดังต่อไปนี้</p>
+<ul>
+<li>PC1 : พอร์ต FastEthernet 0/2</li>
+<li>PC2 : พอร์ต FastEthernet 0/3</li>
+<li>PC3 : พอร์ต FastEthernet 0/4</li>
+<li>PC4 : พอร์ต FastEthernet 0/5</li>
+<li>PC5 : พอร์ต FastEthernet 0/6</li>
+<li>PC6 : พอร์ต FastEthernet 0/7</li>
+</ul>
+<p>ตัวอย่างการเชื่อมต่อ ดังรูปต่อไปนี้</p>
+<p><strong>PC1</strong></p>
+<p class="image-container"><img style="width: 410.99px" src="img\7b86fc85208eb77d.png"></p>
+<p><strong>PC2</strong></p>
+<p class="image-container"><img style="width: 411.30px" src="img\2190569f52078fa7.png"></p>
+<p><strong>PC3</strong></p>
+<p class="image-container"><img style="width: 412.50px" src="img\b63e568efba1a2b0.png"></p>
+<p><strong>PC4</strong></p>
+<p class="image-container"><img style="width: 411.66px" src="img\440f9229824b505b.png"></p>
+<p><strong>PC5</strong></p>
+<p class="image-container"><img style="width: 410.60px" src="img\966724aa50cda303.png"></p>
+<p><strong>PC6 ตั้งชื่อว่า srv001</strong></p>
+<p class="image-container"><img style="width: 412.02px" src="img\b6a01d95d21d73d8.png"></p>
+<p>จะได้ดังรูป</p>
+<p class="image-container"><img style="width: 410.00px" src="img\42d79577ada64a07.png"></p>
+<h2 is-upgraded><strong>Command Summary</strong></h2>
+<table>
+<tr><td colspan="1" rowspan="1"><p><strong>Command</strong></p>
+</td><td colspan="1" rowspan="1"><p><strong>Description</strong></p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p><strong>clear ip dhcp binding </strong>ip-address</p>
+</td><td colspan="1" rowspan="1"><p>deletes an automatic address binding from the DHCP server database</p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p><strong>client-identifier </strong>unique-identifier</p>
+</td><td colspan="1" rowspan="1"><p>specifies a unique identifier (in dotted hexadecimal notation) for a DHCP client</p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p><strong>configure terminal</strong></p>
+</td><td colspan="1" rowspan="1"><p>enters global configuration mode from privileged EXEC mode</p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p><strong>default-router </strong>ip-address</p>
+</td><td colspan="1" rowspan="1"><p>specifies the IP address of a default gateway for DHCP clients</p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p><strong>dns-server </strong>ip-address</p>
+</td><td colspan="1" rowspan="1"><p>specifies the Domain Name System (DNS) IP servers available to a DHCP client</p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p><strong>domain -name </strong>domain</p>
+</td><td colspan="1" rowspan="1"><p>specifies the domain name for a DHCP client</p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p><strong>enable</strong></p>
+</td><td colspan="1" rowspan="1"><p>enters privileged EXEC mode</p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p><strong>end</strong></p>
+</td><td colspan="1" rowspan="1"><p>ends and exits configuration mode</p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p><strong>exit</strong></p>
+</td><td colspan="1" rowspan="1"><p>exits one level in the menu structure</p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p><strong>host </strong>ip-address subnet-mask</p>
+</td><td colspan="1" rowspan="1"><p>specifies the IP address and network mask for a manual binding to a DHCP client</p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p><strong>ipconfig</strong></p>
+</td><td colspan="1" rowspan="1"><p>is used in NetSim to display the currently configured IP address, subnet mask, and default gateway on a workstation</p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p><strong>ipconfig /all</strong></p>
+</td><td colspan="1" rowspan="1"><p>is used in NetSim to display the IP addresses and Media Access Control (MAC) address on a workstation</p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p><strong>ipconfig /ip dhcp</strong></p>
+</td><td colspan="1" rowspan="1"><p>is used in NetSim to assign an IP address to a workstation interface</p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p><strong>ipconfig /release</strong></p>
+</td><td colspan="1" rowspan="1"><p>is used in NetSim to send a message to the DHCP server to release the current DHCP configuration and discard the IP address configuration for the device</p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p><strong>ipconfig /renew</strong></p>
+</td><td colspan="1" rowspan="1"><p>is used in NetSim to renew the DHCP configuration for the device</p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p><strong>ip dhcp excluded-address</strong> ip-address [last-ip-address]</p>
+</td><td colspan="1" rowspan="1"><p>configures a range of excluded addresses</p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p><strong>ip dhcp pool</strong> pool-name</p>
+</td><td colspan="1" rowspan="1"><p>creates an IP address pool</p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p><strong>lease </strong>{day [hours [minutes]] | infinite}</p>
+</td><td colspan="1" rowspan="1"><p>configures a custom lease duration for DHCP assignments</p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p><strong>network</strong> ip-address subnet-mask</p>
+</td><td colspan="1" rowspan="1"><p>enables a DHCP server for a particular network segment</p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p><strong>service dhcp</strong></p>
+</td><td colspan="1" rowspan="1"><p>configures the router to respond to any DHCP requests</p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p><strong>show ip dhcp binding</strong></p>
+</td><td colspan="1" rowspan="1"><p>displays active DHCP-assigned IP addresses</p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p><strong>show ip dhcp pool</strong></p>
+</td><td colspan="1" rowspan="1"><p>displays a basic summary of a configured DHCP pool</p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p><strong>show ip dhcp server statistics</strong></p>
+</td><td colspan="1" rowspan="1"><p>displays general operating statics for a DHCP server process</p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p><strong>show running-config</strong></p>
+</td><td colspan="1" rowspan="1"><p>displays the active configuration file</p>
+</td></tr>
+</table>
+<h2 is-upgraded><strong>IP Addresses</strong></h2>
+<p>กำหนด ip address และ subnet mask ที่ใช้ใน lab ตามตารางดังต่อไปนี้</p>
+<table>
+<tr><td colspan="1" rowspan="1"><p><strong>Device</strong></p>
+</td><td colspan="1" rowspan="1"><p><strong>Interface</strong></p>
+</td><td colspan="1" rowspan="1"><p><strong>IP Address</strong></p>
+</td><td colspan="1" rowspan="1"><p><strong>Subnet Mask</strong></p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p>Router1</p>
+</td><td colspan="1" rowspan="1"><p>FastEthernet 0/0.1</p>
+<p>FastEthernet 0/0.2</p>
+</td><td colspan="1" rowspan="1"><p>172.16.10.17</p>
+<p>172.16.10.33</p>
+</td><td colspan="1" rowspan="1"><p>255.255.255.240</p>
+<p>255.255.255.240</p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p>Router2</p>
+</td><td colspan="1" rowspan="1"><p>FastEthernet 0/0</p>
+<p>Serial 0/0</p>
+</td><td colspan="1" rowspan="1"><p>172.16.10.18</p>
+<p>172.16.10.34</p>
+</td><td colspan="1" rowspan="1"><p>255.255.255.240</p>
+<p>255.255.255.240</p>
+</td></tr>
+</table>
+<h2 is-upgraded><strong>Lab Tasks</strong></h2>
+<p><strong>Task 1: Configure a DHCP Server on Router1</strong></p>
+<ol type="1" start="1">
+<li>เปิดใช้งาน DHCP server และกำหนดให้ router ตอบกลับ DHCP request</li>
+<li>เพิ่ม IP address ให้ Router1 และ Switch </li>
+<li>สร้าง DHCP pool ชื่อ vlan1 และเปิดใช้งาน serve DHCP clients บนเครือข่าย</li>
+<li>กำหนดระยะเวลาให้ DHCP pool vlan1 แจก IP Address จำนวน 48 ชั่วโมง (2วัน)</li>
+<li>สั่ง DHCP pool vlan1 ให้ assign ตัว default gateway ให้กับเครื่อง clients</li>
+<li>กำหนดค่า DHCP pool vlan1 เพื่อกำหนดให้ client รับ name จาก DNS server โดยใช้ IP address ของ subinterface บน Router1 </li>
+<li>กำหนด domain name ให้ DHCP pool vlan1 ชื่อ sales.boson.com</li>
+<li>สร้าง DHCP pool vlan2</li>
+<li>กำหนด DHCP pool vlan2 ให้มีระยะเวลา 36 ชั่วโมง (1 วัน 12 ชั่วโมง)</li>
+<li>สั่ง DHCP pool vlan2 ให้ assign ตัว default gateway ให้กับเครื่อง clients</li>
+<li>กำหนดค่า DHCP pool vlan2 เพื่อกำหนดให้ client รับ name จาก DNS server โดยใช้ IP address ของ subinterface บน Router1 </li>
+<li>กำหนด domain name ให้ DHCP pool vlan2 ชื่อ dev.boson.com</li>
+<li>สร้าง DHCP pool srv001 </li>
+</ol>
+<h2 is-upgraded><strong>Lab Solutions</strong></h2>
+<p><strong>Task 1. กำหนด DHCP Server บน Router1</strong></p>
+<p>Step 1. ที่ Router1 สั่ง enable DHCP โดยใช้คำสั่ง</p>
+<pre><code>Router(config)#service dhcp</code></pre>
+<p class="image-container"><img style="width: 624.00px" src="img\a3970c5320063e4.png"></p>
+<p>Step 2. จากนั้นกำหนด IP Address ให้กับตัว DHCP เพื่อป้องกันไม่ให้ server แจก IP เหล่านี้ไปยัง client โดยใช้คำสั่ง</p>
+<pre><code>Router1(config)#ip dhcp excluded-address 172.16.10.17 172.16.10.18
+Router1(config)#ip dhcp excluded-address 172.16.10.33 172.16.10.34</code></pre>
+<p class="image-container"><img style="width: 624.00px" src="img\493f50cde57195db.png"></p>
+<p>Step 3. ใช้คำสั่ง DHCP pool ชื่อ vlan1 </p>
+<pre><code>Router1(config)#ip dhcp pool vlan1 
+Router1(dhcp-config)#network 172.16.10.16 255.255.255.240</code></pre>
+<p class="image-container"><img style="width: 624.00px" src="img\40b10be3637e6805.png"></p>
+<p>Step 4. กำหนดระยะเวลาในการแจก IP Address ของ DHCP pool เป็นเวลา 2 วัน </p>
+<pre><code>Router1(dhcp-config)#lease 2</code></pre>
+<p class="image-container"><img style="width: 337.00px" src="img\26d9ef9db6b83521.png"></p>
+<p>Step 5. กำหนด default gateway ที่ DHCP pool vlan1 ที่ assign ให้ clients</p>
+<pre><code>Router1(dhcp-config)#default-router 172.16.10.17</code></pre>
+<p class="image-container"><img style="width: 574.00px" src="img\8d77b85728f11879.png"></p>
+<p>Step 6. กำหนด DNS server </p>
+<pre><code>Router1(dhcp-config)#dns-server 172.16.10.17</code></pre>
+<p class="image-container"><img style="width: 577.00px" src="img\135ab70af477fee7.png"></p>
+<p>Step 7. กำหนด Domain name </p>
+<pre><code>Router1(dhcp-config)#domain-name sales.boson.com
+Router1(dhcp-config)#exit</code></pre>
+<p class="image-container"><img style="width: 615.00px" src="img\24b3ab765f1a518c.png"></p>
+<p>Step 8. ใช้คำสั่ง DHCP pool ชื่อ vlan2  เชื่อมต่อกับ interface FastEthernet 0/0.2 โดยใช้คำสั่ง</p>
+<pre><code>Router1(config)#ip dhcp pool vlan2 
+Router1(dhcp-config)#network 172.16.10.32 255.255.255.240</code></pre>
+<p>Step 9. กำหนดระยะเวลาในการแจก IP Address ของ DHCP pool เป็นเวลา 1 วัน 12 ชั่วโมง </p>
+<pre><code>Router1(dhcp-config)#lease 1 12</code></pre>
+<p>Step 10. กำหนด default gateway ที่ DHCP pool vlan2 ที่ assign ให้ clients</p>
+<pre><code>Router1(dhcp-config)#default-router 172.16.10.33</code></pre>
+<p>Step 11. กำหนด DNS server </p>
+<pre><code>Router1(dhcp-config)#dns-server 172.16.10.33</code></pre>
+<p>Step 12. กำหนด Domain name </p>
+<pre><code>Router1(dhcp-config)#domain-name dev.boson.com
+Router1(dhcp-config)#exit</code></pre>
+<p>ผลลัพธ์ Step 8 - 12.</p>
+<p class="image-container"><img style="width: 624.00px" src="img\d019254e5ee1485c.png"></p>
+<p>Step 13. สร้าง DHCP pool ชื่อ srv001 และกำหนดค่าดังต่อไปนี้</p>
+<pre><code>Router1(config)#ip dhcp pool srv001 
+Router1(dhcp-config)#default-router 172.16.10.33 
+Router1(dhcp-config)#dns-server 172.16.10.33 
+Router1(dhcp-config)#domain-name dev.boson.com
+Router1(dhcp-config)#exit</code></pre>
+<p class="image-container"><img style="width: 576.00px" src="img\cf994326261ce592.png"></p>
+<p><strong>Task 2. กำหนด DHCP ให้กับ Clients</strong></p>
+<p>Step 1. บน PC1 - PC5 และ srv001 ใช้คำสั่งดังต่อไปนี้ เพื่อให้ client รับ IP Address จาก DHCP service บน Router1</p>
+<pre><code>C:&gt;ipconfig /ip dhcp</code></pre>
+<p>Step 2. ที่ srv001 ให้พิมพ์คำสั่ง ipconfig เพื่อดู IP address ที่ assign โดย DHCP service</p>
+<pre><code>C:&gt;ipconfig </code></pre>
+<p>Step 3. ที่ Router1 ใช้คำสั่ง show ip dhcp binding เพื่อดู IP address ที่ DHCP server แจกให้กับ client</p>
+<pre><code>Router1#show ip dhcp binding</code></pre>
+<p>Step 4. ใช้คำสั่งดังต่อไปนี้เพื่อล้างค่า DHCP binding ที่มีการกำหนดให้กับ srv001 </p>
+<pre><code>Router1#clear ip dhcp binding 172.16.10.37</code></pre>
+<p>Step 5. เข้าถึง srv001 DHCP pool และกำหนด IP Address 172.16.10.37 ให้ srv001 โดยใช้ client ID ของเครื่อง srv001 ที่ได้จาก Step 3.</p>
+<pre><code>Router1(config)#ip dhcp pool srv001
+Router1(dhcp-config)#host 172.16.10.37 255.255.255.240
+Router1(dhcp-config)#client-identifier 0063.6973.636F.2D30.3030.432E.3636.3533.2E35.3935.322D.4574.30</code></pre>
+<p>Step 6. เพิ่ม IP address ให้ SRV001 ไปในลิส DHCP โดยใช้คำสั่ง</p>
+<pre><code>Router1(config)#ip dhcp excluded-address 172.16.10.37</code></pre>
+<p>Step 7. ไปที่ PC ชื่อ srv001 พิมพ์คำสั่ง</p>
+<pre><code>C:&gt;ipconfig /release
+C:&gt;ipconfig /renew</code></pre>
+<p>เพื่ออัพเดต IP Address เป็นหมายเลขที่เรากำหนดให้</p>
+<p><strong>Task 3: Verify DHCP Client and Server Configurations</strong></p>
+<p>Step 1. ที่ PC พิมพ์คำสั่ง ipconfig /all</p>
+<pre><code>C:&gt;ipconfig /all</code></pre>
+<p>เราจะเห็นว่า PC มีหมายเลข IP Address, Subnet mask, Default gateway และ DNS suffix ดังรูป</p>
+<p>Step 2. จากนั้นไปที่ Router1 พิมพ์คำสั่ง</p>
+<pre><code>Router1#show ip dhcp binding</code></pre>
+<p>Step 3. ให้เราพิมพ์คำสั่ง</p>
+<pre><code>Router1#show ip dhcp server statistics</code></pre>
+<p>จะเห็นว่า DHCP มีการทำ Autimatic bindings 5 ครั้ง และ Manual bindings 1 ครั้ง <br>มีการส่งคำขอไปยังเซิร์ฟเวอร์ที่เรียกว่า  DHCPDISCOVER 7 ครั้ง และเซิร์ฟเวอร์ส่ง IP Address ที่อุปกรณ์สามารถใช้ได้ ส่งไปที่ไปยัง client เรียกว่า  DHCPOFFER 7 ครั้ง ตัวอย่างดังรูป</p>
+<p>Step 4. พิมพ์คำสั่ง </p>
+<pre><code>Router1#show ip dhcp pool</code></pre>
+<h2 is-upgraded><strong>Sample Configuration Script</strong></h2>
+<p class="image-container"><img style="width: 619.00px" src="img\2b29832b82f4b775.png"></p>
+<p class="image-container"><img style="width: 323.00px" src="img\27d3d47f3f28701a.png"></p>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="References" duration="1">
+        <h2 is-upgraded>Reference docs</h2>
+<ul>
+<li>Kurose, James F. (2013). <a href="https://nu365.sharepoint.com/:b:/s/Sec_4947_2564_1_1/EUF__Krbk_NEktZ-6s6CjvEBaZQedkIkoBE2gWxQXX847A?e=9nh7b3" target="_blank">Computer Networking A Top-Down Approach 6th</a>, Pearson Education Inc.:116-118</li>
+<li><a href="https://www.cisco.com/c/th_th/products/ios-nx-os-software/index.html" target="_blank">https://www.cisco.com/c/th_th/products/ios-nx-os-software/index.html</a></li>
+<li><a href="https://bit.ly/2WZGLyl" target="_blank">Lab: Static NAT</a></li>
+<li><a href="http://sci.bsru.ac.th/sciweb/e-magazine/5-2/chapter-1.pdf" target="_blank">http://sci.bsru.ac.th/sciweb/e-magazine/5-2/chapter-1.pdf</a></li>
+<li><a href="https://drive.google.com/file/d/1id8fFXtJxMt6CAlXjqUkq5oz3zqZxyN9/view?usp=sharing" target="_blank">LAB: DHCP Binding</a></li>
+</ul>
+
+
+      </google-codelab-step>
+    
+  </google-codelab>
+
+  <script src="https://storage.googleapis.com/codelab-elements/native-shim.js"></script>
+  <script src="https://storage.googleapis.com/codelab-elements/custom-elements.min.js"></script>
+  <script src="https://storage.googleapis.com/codelab-elements/prettify.js"></script>
+  <script src="https://storage.googleapis.com/codelab-elements/codelab-elements.js"></script>
+
+</body>
+</html>

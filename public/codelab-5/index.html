@@ -1,0 +1,449 @@
+
+<!doctype html>
+
+<html>
+<head>
+  <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1.0, user-scalable=yes">
+  <meta name="theme-color" content="#4F7DC9">
+  <meta charset="UTF-8">
+  <title>Codelab 5 - Summary</title>
+  <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Source+Code+Pro:400|Roboto:400,300,400italic,500,700|Roboto+Mono">
+  <link rel="stylesheet" href="//fonts.googleapis.com/icon?family=Material+Icons">
+  <link rel="stylesheet" href="https://storage.googleapis.com/codelab-elements/codelab-elements.css">
+  <style>
+    .success {
+      color: #1e8e3e;
+    }
+    .error {
+      color: red;
+    }
+  </style>
+</head>
+<body>
+  <google-codelab-analytics gaid="UA-49880327-14"></google-codelab-analytics>
+  <google-codelab codelab-gaid=""
+                  id="codelab-5-summary"
+                  title="Codelab 5 - Summary"
+                  environment="web"
+                  feedback-link="">
+    
+      <google-codelab-step label="HTTP Overview" duration="5">
+        <p>                 เป็นโปรโตคอลที่ใช้ในการรับส่งข้อมูลในรูปแบบ Text format แบบ HTML Element หรือภาษา Markup language    เช่น HTML รวมถึงภาษา Server-side scripting ต่างๆ เช่น PHP , ASP.NET,  JSP</p>
+<p>(HTTP Protocol )โดยใช้รูปแบบสถาปัตยกรรมระบบเครือข่ายแบบ<strong> Client-Server</strong></p>
+<p class="image-container"><img style="width: 470.00px" src="img\d72b7914f638abeb.jpeg"></p>
+<p>Client เช่น Web Browser ต่างๆ เช่น Safari , Chrome , Firefox , Edge หรืออาจเป็นโปรแกรมอื่นๆที่สามารถสร้าง HTTP Request ได้เช่น Telnet</p>
+<p>Server เช่น Service หรือ Application ต่างๆที่ สามารถรับ HTTP Request และสร้างตอบกลับ HTTP Response ได้ อธิ Apache web server , IIS web server, Nginx web server, Jboss web server Tomcat web server, กรณีเป็น HTTP module เช่น Express ใน Node.JS </p>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="กลไกกระบวนทำงานของ HTTP" duration="0">
+        <ol type="1" start="1">
+<li>Client จะสร้างการเชื่อมต่อแบบ <strong>TCP (creates socket)</strong> กับเครื่อง server </li>
+<li>Server จะรับการเชื่อมต่อจาก Client แล้วทำการส่ง Ack ไปยัง Client ว่าพร้อมสำหรับการเชื่อมต่อ</li>
+<li>Client จะสร้าง HTTP Request ผ่าน TCP connection socket มายัง Server ซึ่งมีรูปแบบ HTTP Request message format ดังนี้</li>
+</ol>
+<p class="image-container"><img style="width: 568.55px" src="img\dcbaf655b2f960cd.jpeg"></p>
+<p>        รายละเอียดและคำอธิบาย HTTP Request message format สามารถดูได้จากหัวข้อที่ 5 HTTP Message Format</p>
+<ol type="1" start="4">
+<li>Server จะสร้าง HTTP Response message และตอบกลับไปที่ Client ผ่าน socket เดิม ซึ่งมีรูปแบบ HTTP message format  ดังนี้</li>
+</ol>
+<p class="image-container"><img style="width: 595.55px" src="img\204027b5a970edac.jpeg"></p>
+<p>รายละเอียดและคำอธิบาย HTTP Request message format สามารถดูได้จากหัวข้อที่ 5 HTTP Message Format</p>
+<ol type="1" start="5">
+<li>สุดท้ายจะตัดการเชื่อมต่อทันที <strong>TCP connection closed</strong></li>
+</ol>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="ประเภท HTTP Connection" duration="0">
+        <p>        การเชื่อมต่อ HTTP Protocol นั้นแบ่งได้ 2 ประเภทได้แก่</p>
+<ol type="1" start="1">
+<li><strong>Non-persistent HTTP </strong>มีรูปแบบการทำงานที่อ้างอิงเนื้อหาในหัวข้อที่แล้ว 2 กลไกกระบวนการทำงาน  แต่แบบนี้จะเป็นการส่งเพียง Object เดียวต่อหนึ่ง TCP Connection. หากใน Web page นั้นมีหลายๆ Object เช่นมีการ Reference ไฟล์รูป ย่อมต้องวนกลับไปเริ่มการทำงานใหม่ ตั้งแต่ 1-5 วนไปเรื่อยๆ จนครบทุกรูป</li>
+<li><strong>Persistent HTTP</strong> มีรูปแบบการทำงานที่อ้างอิงเนื้อหาในหัวข้อที่แล้ว 2 กลไกกระบวนการทำงาน  แต่ต่างกันกับ Non-persistent HTTP ตรงที่ จะใช้ TCP Connection อันเดิมในการ Request Object ไปเรื่อยๆ จนครบ และค่อยตัดการเชื่อมต่อ ที่ขั้นตอนที่ 5  TCP connection closed</li>
+</ol>
+<p><strong>เปรียบเทียบประสิทธิภาพด้านความเร็วในการตอบสนอง (Response time)</strong></p>
+<p><strong>RTT ( round-trip time ) </strong>คือเวลาที่ packet ใช้เวลาในการเดินทางออกจาก Client ไปยัง Server จนถึงเวลาที่ Client ได้รับ packet ตอบกลับมาจาก Server (พิจารณารูปด้านล่าง)</p>
+<p class="image-container"><img style="width: 624.00px" src="img\bcfe5575bc3a9495.jpeg"></p>
+<p>        Non-persistent HTTP response time (per object): =  RTT +  RTT + File / Object transmission  time </p>
+<p>        โดยที่ </p>
+<ul>
+<li> RTT ของการสร้างการเชื่อมต่อ TCP connection</li>
+<li> RTT ของการส่ง Request Message ไปจนถึงรับ Response Message กลับมา</li>
+<li> File transmission  time =เวลาของการส่งข้อมูล file  จาก server สู่ client </li>
+</ul>
+<p>        สำหรับประสิทธิภาพการเชื่อมต่อแบบ Persistent HTTP นั้น จะดีกว่า Non-persistent HTTP ซึ่งเท่ากับ RTT +  File / Object transmission  time </p>
+<aside class="warning"><p><strong>อภิปรายผล:</strong> ทำไมจึงกล่าวว่า ประสิทธิภาพด้านความเร็วและส่งข้อมูลการเชื่อมต่อแบบ Persistent HTTP นั้นดีกว่าแบบ Non-persistent HTTP ?</p>
+</aside>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="รูปแบบ HTTP Request message format" duration="3">
+        <p class="image-container"><img style="width: 568.55px" src="img\dcbaf655b2f960cd.jpeg"></p>
+<p>ประกอบด้วย 4 ส่วนที่สำคัญ ได้แก่</p>
+<ol type="1" start="1">
+<li><strong>Request line</strong> ประกอบด้วย 3 ส่วนสำคัญได้แก่ </li>
+</ol>
+<p><strong>Method</strong> :</p>
+<table>
+<tr><td colspan="1" rowspan="1"><p><strong>Method</strong></p>
+</td><td colspan="1" rowspan="1"><p><strong>Description</strong></p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p><strong>GET</strong></p>
+</td><td colspan="1" rowspan="1"><p>The GET method is used to retrieve information from the given server using a given URI. Requests using GET should only retrieve data and should have no other effect on the data.</p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p><strong>HEAD</strong></p>
+</td><td colspan="1" rowspan="1"><p>Same as GET, but it transfers the status line and the header section only. <strong>&#34;</strong><strong><em>Application developers often use the HEAD method for debugging</em></strong><strong>&#34;</strong></p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p><strong>POST</strong></p>
+</td><td colspan="1" rowspan="1"><p>A POST request is used to send data to the server, for example, customer information, file upload, etc. using HTML forms. <strong>&#34;If the value of the method field is POST, then the entity body contains what the user entered into the form fields.&#34;</strong></p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p><strong>PUT</strong></p>
+</td><td colspan="1" rowspan="1"><p>Replaces all the current representations of the target resource with the uploaded content.<strong> &#34;The PUT method is also used by applications that need to upload objects to Web servers.&#34;</strong></p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p><strong>DELETE</strong></p>
+</td><td colspan="1" rowspan="1"><p>Removes all the current representations of the target resource given by URI.</p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p><strong>CONNECT</strong></p>
+</td><td colspan="1" rowspan="1"><p>Establishes a tunnel to the server identified by a given URI.</p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p><strong>OPTIONS</strong></p>
+</td><td colspan="1" rowspan="1"><p>Describe the communication options for the target resource.</p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p><strong>TRACE</strong></p>
+</td><td colspan="1" rowspan="1"><p>Performs a message loop back test along with the path to the target resource.</p>
+</td></tr>
+</table>
+<p><strong>URL หรือ URI</strong> :</p>
+<aside class="warning"><p><strong>ชั่งจะสงสัย? :</strong> What&#39;s the Difference Between a URI and a URL? </p>
+</aside>
+<p class="image-container"><img style="width: 314.65px" src="img\7065d64c11d29b4c.png"></p>
+<ul>
+<li>A URI is an identifier of a specific resource. Like a page, or book, or a document.</li>
+<li>A URL is special type of identifier that also tells you how to access it, such as HTTPs, FTP, etc.—like <a href="https://www.google.com" target="_blank">https://www.google.com</a>.</li>
+<li>If the protocol (https, ftp, etc.) is either present or implied for a domain, you should call it a URL—even though it&#39;s also a URI.</li>
+</ul>
+<p>รูปแแบบ </p>
+<pre><code>Request-URI = &#34;*&#34; | absoluteURI | abs_path | authority</code></pre>
+<table>
+<tr><td colspan="1" rowspan="1"><p><strong>Method</strong></p>
+</td><td colspan="1" rowspan="1"><p><strong>Description</strong></p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p><code>&#34;*&#34;</code></p>
+</td><td colspan="1" rowspan="1"><p>The asterisk * is used when an HTTP request does not apply to a particular resource, but to the server itself, and is only allowed when the method used does not necessarily apply to a resource. For example:<code>OPTIONS * HTTP/1.1</code></p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p>absoluteURI</p>
+</td><td colspan="1" rowspan="1"><p>The absoluteURI is used when an HTTP request is being made to a proxy. The proxy is requested to forward the request or service from a valid cache, and return the response. For example:</p>
+<p><code>GET http://www.w3.org/pub/WWW/TheProject.html HTTP/1.1</code></p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p>common form</p>
+</td><td colspan="1" rowspan="1"><p>The most common form of Request-URI is that used to identify a resource on an origin server or gateway. For example, a client wishing to retrieve a resource directly from the origin server would create a TCP connection to port 80 of the host &#34;www.w3.org&#34; and send the following lines </p>
+<p><code>GET /pub/WWW/TheProject.html HTTP/1.1</code></p>
+<p><code>Host: www.w3.org</code></p>
+</td></tr>
+</table>
+<p><strong>Version</strong> : ใช้ระบุ version ของ Protocol HTTP อธิ HTTP 1.1 , HTTP 2</p>
+<ol type="1" start="2">
+<li><strong>Header line</strong> : หรือ Client Request-header: เป็นส่วนที่ใช่บ่งบอกข้อมูลเพิ่มเติมหรือสถานภาพข้อมูลการร้องขอของ Client สำหรับเป็นข้อมูลให้ Server ตัวอย่างของ Client Request-header: fields ที่พบได้พบๆ มีดังนี้</li>
+</ol>
+<ul>
+<li>Accept-Charset</li>
+<li>Accept-Encoding</li>
+<li><strong>Accept-Language</strong> : header is just one of many content negotiation headers available in HTTP.</li>
+<li><strong>Authorization </strong>: request-header field value consists of credentials containing the authentication information of the user agent for the realm of the resource being requested. The general syntax is</li>
+</ul>
+<pre><code>Authorization : credentials</code></pre>
+<p>                        Ex.</p>
+<pre><code>Authorization: BASIC Z3Vlc3Q6Z3Vlc3QxMjM=</code></pre>
+<ul>
+<li><strong>Cookie</strong> :contains a name/value pair of information stored for that URL. Following is the general syntax:</li>
+</ul>
+<pre><code>Cookie: name1=value1;name2=value2;name3=value3</code></pre>
+<ul>
+<li>Expect</li>
+<li>From</li>
+<li>Host</li>
+<li>If-Match :used with a method to make it conditional. This header requests the server to perform the requested method only if the given value in this tag matches the given entity tags represented by <strong>ETag</strong>. The general syntax is:</li>
+</ul>
+<pre><code>If-Match : entity-tag</code></pre>
+<ul>
+<li>If-Modified-Since</li>
+<li>If-None-Match</li>
+<li>If-Range</li>
+<li>If-Unmodified-Since</li>
+<li>Max-Forwards</li>
+<li>Proxy-Authorization</li>
+<li>Range</li>
+<li>Referer</li>
+<li>TE</li>
+<li><strong>Connection</strong> : By default, HTTP 1.1 uses persistent connections, where the connection does not automatically close after a transaction. HTTP 1.0, on the other hand, does not have persistent connections by default. If a 1.0 client wishes to use persistent connections, it uses the keep-alive parameter as follows:</li>
+<li><strong>User-Agent</strong> :header line specifies the user agent, that is, the browser type that is making the request to the server.</li>
+</ul>
+<ol type="1" start="3">
+<li><strong>Blank line</strong> เป็นบันทัดที่ว่าง สำหรับคั่นส่วน Entity body หรือใช้เพื่อบ่งบอกว่า จบส่วน Header lines</li>
+<li><strong>Entity Body</strong> เป็นส่วนที่ใช้ ระบุตัวแปร พร้อมค่า ที่ต้องการส่งไปยัง server</li>
+</ol>
+<p>ตัวอย่าง HTTP Request message</p>
+<pre><code>GET /somedir/page.html HTTP/1.1
+Host: www.someschool.edu
+Connection: close
+User-agent: Mozilla/5.0
+Accept-language: fr</code></pre>
+<pre><code>GET /hello.htm HTTP/1.1
+User-Agent: Mozilla/4.0 (compatible; MSIE5.01; Windows NT)
+Host: www.tutorialspoint.com
+Accept-Language: en-us
+Accept-Encoding: gzip, deflate
+Connection: Keep-Alive</code></pre>
+<pre><code>POST /cgi-bin/process.cgi HTTP/1.1
+User-Agent: Mozilla/4.0 (compatible; MSIE5.01; Windows NT)
+Host: www.tutorialspoint.com
+Content-Type: application/x-www-form-urlencoded
+Content-Length: length
+Accept-Language: en-us
+Accept-Encoding: gzip, deflate
+Connection: Keep-Alive
+
+licenseID=string&amp;content=string&amp;/paramsXML=string</code></pre>
+<pre><code>GET /hello.htm HTTP/1.1
+User-Agent: Mozilla/4.0 (compatible; MSIE5.01; Windows NT)
+Host: www.tutorialspoint.com
+Accept-Language: en-us
+Accept-Encoding: gzip, deflate
+Connection: Keep-Alive</code></pre>
+<pre><code>POST /cgi-bin/process.cgi HTTP/1.1
+User-Agent: Mozilla/4.0 (compatible; MSIE5.01; Windows NT)
+Host: www.tutorialspoint.com
+Content-Type: text/xml; charset=utf-8
+Content-Length: length
+Accept-Language: en-us
+Accept-Encoding: gzip, deflate
+Connection: Keep-Alive
+
+&lt;?xml version=&#34;1.0&#34; encoding=&#34;utf-8&#34;?&gt;
+&lt;string xmlns=&#34;http://clearforest.com/&#34;&gt;string&lt;/string&gt;
+</code></pre>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="รูปแบบ HTTP Response message format" duration="3">
+        <p class="image-container"><img style="width: 595.55px" src="img\204027b5a970edac.jpeg"></p>
+<p>ประกอบด้วย 3 ส่วนที่สำคัญ ได้แก่</p>
+<ol type="1" start="1">
+<li>Status line</li>
+<li>Header lines</li>
+<li>Entity body</li>
+</ol>
+<p>        โดยที่ </p>
+<p><strong>Status line</strong> มีรูปแบบดังนี้</p>
+<pre><code>Status-Line = HTTP-Version SP Status-Code SP Reason-Phrase CRLF</code></pre>
+<p>ประกอบด้วย protocol version ตามด้วยตัวเลข 3 หลักของ Status code  ซึ่งใช้บ่งบอกสถานะของ HTTP Response Message  โดยหลักแรกแทนประเภทการตอบสนอง  จำแนกออกเป็น 5 ประเภท ตามตาราง </p>
+<table>
+<tr><td colspan="1" rowspan="1"><p><strong>S.N.</strong></p>
+</td><td colspan="1" rowspan="1"><p><strong>Code and Description</strong></p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p>1</p>
+</td><td colspan="1" rowspan="1"><p>1xx:<strong> Informational</strong></p>
+<p>It means the request has been received and the process is continuing.</p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p>2</p>
+</td><td colspan="1" rowspan="1"><p>2xx: <strong>Success</strong></p>
+<p>It means the action was successfully received, understood, and accepted.</p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p>3</p>
+</td><td colspan="1" rowspan="1"><p>3xx: <strong>Redirection</strong></p>
+<p>It means further action must be taken in order to complete the request.</p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p>4</p>
+</td><td colspan="1" rowspan="1"><p>4xx: <strong>Client Error</strong></p>
+<p>It means the request contains incorrect syntax or cannot be fulfilled.</p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p>5</p>
+</td><td colspan="1" rowspan="1"><p>5xx: <strong>Server Error</strong></p>
+<p>It means the server failed to fulfill an apparently valid request.</p>
+</td></tr>
+</table>
+<p>และ  Reason-Phrase คือข้อความที่เป็นคำอธิบาย Status-Code </p>
+<aside class="special"><p><strong>ข้อควรรู้ : </strong>โดยทั่วไปหาก HTTP Response Message ที่ได้รับการตอบกลับมาไม่ได้มีปัญหาอะไร จะมี Status code เป็น<strong> HTTP 200 OK</strong></p>
+</aside>
+<aside class="warning"><p><strong>รายละเอียดของแต่ละประเภทดูได้ที่  : </strong><a href="https://www.tutorialspoint.com/http/http_status_codes.htm" target="_blank">https://www.tutorialspoint.com/http/http_status_codes.htm</a></p>
+</aside>
+<p><strong>Header lines</strong> หรือ Response Header Fields เป็นส่วนที่สามารถแสดงข้อมูลเพิ่มเติมเกี่ยวกับสถานภาพของ server ตัวอย่าง เช่น  </p>
+<ul>
+<li>Accept-Ranges</li>
+<li>Age</li>
+<li>ETag</li>
+<li>Location</li>
+<li>Proxy-Authenticate</li>
+<li>Retry-After</li>
+<li>Server</li>
+<li>Vary</li>
+<li>WWW-Authenticate</li>
+</ul>
+<p><strong>Entity body</strong> คือส่วนที่เป็น Data ที่ Server มีการตอบกลับมา โดยทั่วไปแล้วจะเป็น text format อธิ HTML , XML, JSON, หรือสามารถเป็น Binary ก็ได้ อธิ ไฟล์รูป , ไฟล์เอกสาร</p>
+<p>ตัวอย่าง HTTP Response message</p>
+<pre><code>HTTP/1.1 200 OK
+Date: Mon, 27 Jul 2009 12:28:53 GMT
+Server: Apache/2.2.14 (Win32)
+Last-Modified: Wed, 22 Jul 2009 19:15:56 GMT
+Content-Length: 88
+Content-Type: text/html
+Connection: Closed</code></pre>
+<pre><code>&lt;html&gt;
+&lt;body&gt;
+&lt;h1&gt;Hello, World!&lt;/h1&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre>
+<p>จากตัวอย่าง HTTP Response Message ด้านบน</p>
+<aside class="special"><p><strong>อธิบาย เพิ่มเติมจาก Header line : </strong></p>
+<ul>
+<li>ค่าของ <strong>Date</strong> คือวันที่และเวลาที่ server สร้าง HTTP Response Message  (ไม่ใช้วันที่และเวลาที่ object ถูก create หรือ last modified )</li>
+<li>ค่าของ <strong>Server</strong> เป็นการบ่งบอกว่า message นี้ถูก generate โดย Apache Web Server</li>
+<li>ค่าของ <strong>Last-Modified</strong> คือเป็นวันที่และเวลาของ message ที่ถูกสร้างหรืออัพเดตล่าสุด ส่วนมากจะพบตามระบบเครือข่าย Network ที่มี Web cache หรือ Proxy Server อยู่ด้วย </li>
+<li>ค่าของ <strong>Content-Length</strong> เป็นค่าที่บ่งบอกจำนวน byte ของ object ที่ถูกส่งออกมา</li>
+<li>ค่าของ <strong>Content-Type</strong> เป็นค่าที่บ่งบอกถึงชนิดของ Object Type ในตัวอย่างด้านบนคือ text/html</li>
+</ul>
+</aside>
+<p>ตัวอย่าง error message ประเภท Client Error เนื่องจาก ไม่พบ Resource ตาม Request URI </p>
+<pre><code>HTTP/1.1 404 Not Found
+Date: Sun, 18 Oct 2012 10:36:20 GMT
+Server: Apache/2.2.14 (Win32)
+Content-Length: 230
+Connection: Closed
+Content-Type: text/html; charset=iso-8859-1</code></pre>
+<pre><code>&lt;!DOCTYPE HTML PUBLIC &#34;-//IETF//DTD HTML 2.0//EN&#34;&gt;
+&lt;html&gt;
+&lt;head&gt;
+   &lt;title&gt;404 Not Found&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+   &lt;h1&gt;Not Found&lt;/h1&gt;
+   &lt;p&gt;The requested URL /t.html was not found on this server.&lt;/p&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+</code></pre>
+<aside class="special"><p><strong>เครื่องมือที่ใช้ในการพิจารณา HTTP response message ? : </strong></p>
+<p>      เราสามารถใช้ Telnet ที่อยู่ในเครื่องของเรา ทำการสร้าง HTTP request message อย่างง่าย เพื่อดู HTTP response message ได้โดยทดลองพิมพ์คำสั่งตามด้านล่างนี้</p>
+</aside>
+<pre><code>telnet cis.poly.edu 80
+
+GET /~ross/ HTTP/1.1
+Host: cis.poly.edu
+
+</code></pre>
+<p>** กด Enter 2 ครั้งหลังจากพิมพ์บรรทัดสุดท้าย</p>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="HTTP Cookies" duration="5">
+        <p>               เราทราบกันดีว่าพื้นฐาน HTTP นั้นเป็น stateless (คือไม่ได้สนใจความเกี่ยวพันกันของ Request ก่อนหน้า แค่ทำงานรับ Request แล้วตอบกลับ Response ไปที่ Client) </p>
+<p><strong>Cookies</strong> เป็นองค์ประกอบที่ทำให้ HTTP Protocol สามารถ Track หรือติดตามสถานะการใช้งานของผู้ใช้งานได้  (stateful) </p>
+<p>พฤติกาณ์ปกติของ Web Server หรือ Web Application ต้องการที่จะกำหนดขอบเขตการเข้าถึง resource ตลอดจนให้บริการตามสิทธิ์ของ User ที่แตกต่างกัน ตัวอย่างที่เราพบได้คือ เว็บไซต์พวก Ecommerce ส่วนมากจะใช้ Cookies Track สถานะของผู้ใช้งาน เราจะสังเกตุได้จาก การที่เราเข้าไปยังเว็บไซต์ใดๆ แล้วมีการแจ้งเตือนผู้ให้ ให้ทำการยอมรับเงื่อนไขการใช้งาน Cookies  ตัวอย่างเว็บไซต์ <a href="https://www.sanook.com/" target="_blank">https://www.sanook.com/</a> </p>
+<p class="image-container"><img style="width: 624.00px" src="img\471b0ab603f67a69.jpeg"></p>
+<p>Cookie ที่กล่าวมาสังเกตุและพบได้จาก 4 ส่วนสำคัญได้แก่</p>
+<ol type="1" start="1">
+<li>Header ของ HTTP response message</li>
+<li>Header ของ HTTP request message</li>
+<li>Cookie filed ที่ถูกจัดเก็บและจัดการโดย Browser ที่เครื่อง Client</li>
+<li>Back-end database at the Web site.</li>
+</ol>
+<p>        เรามาลองดูตัวอย่างเพื่อความเข้าใจ ในเรื่อง Cookies กันตามภาพด้านล่างนี้</p>
+<p class="image-container"><img style="width: 624.00px" src="img\ebd0b95dcc106193.jpeg"></p>
+<p><strong>เรื่องสมมุติของ Susan</strong></p>
+<p>        Susan, who always accesses the Web using Internet Explorer from her home PC.......</p>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Web Caching" duration="5">
+        <p>Web Cache หรือที่ proxy server คือสิ่งหนึ่งในระบบเครือข่ายที่ทำให้ควบคุมและลดจำนวน HTTP Request ส่งไปที่ Origin server ได้</p>
+<p>Web Cache จะมี storage หรือพื้นที่ที่ใช้เพื่อการจัดเก็บ  HTTP Request Object จากการ Copy HTTP Request Object ของ Client ในระบบเครือข่าย แสดงตามรูปด้านล่าง</p>
+<p class="image-container"><img style="width: 624.00px" src="img\8e3769dd0d80fff2.jpeg"></p>
+<p><strong>กระบวนการทำงาน</strong></p>
+<ol type="1" start="1">
+<li>เครื่อง Client จะสร้าง TCP connection และเชื่อมต่อกับ Web cache และส่ง HTTP request object ไปยัง Web cache</li>
+<li>Web cache จะทำการตรวจสอบว่า request object นี้มีอยู่ใน Storage แล้วหรือไม่ ถ้ามีแล้วจะทำการส่ง HTTP Response message ไปที่เครื่อง Client ทันที</li>
+<li>ถ้าที่ Web cache ไม่พบ request object ที่ client ร้องขอ มันจะทำการสร้างและเชื่อมต่อ  TCP connection ไปที่ Origin server จากนั้นสร้างและสำเนา  HTTP request object  และ Request ยัง Origin server  ,และรอการตอบกลับมาจาก Origin server </li>
+<li>เมื่อ Web cache ได้รับ HTTP Response message ตอบกลับมาจาก Origin server มันจะสำเนา HTTP Response message เก็บไว้ใน Storage และส่งไปยัง Client ผ่าน TCP connection ที่ยังเชื่อมต่ออยู่ ในข้อที่ 1</li>
+</ol>
+<p><strong>สรุป </strong> Web Cache จะทำงานเป็น cache ในทั้ง 2 รูปแบบ เป็นทั้ง Server และ Client ในตัวเอง </p>
+<p>        ประโยชน์ของ Web cache </p>
+<ol type="1" start="1">
+<li>Reduce the response time for a client request.</li>
+<li>Reduce traffic on an institution&#39;s link to the Internet (or company or a university).</li>
+<li>Improving performance for all applications.</li>
+</ol>
+<p>พิจารณารูป</p>
+<p class="image-container"><img style="width: 565.00px" src="img\383e5ba9ccc340c2.jpeg"></p>
+<p>This picture shows a network system without  web cache.</p>
+<p class="image-container"><img style="width: 605.00px" src="img\66e5e2b7490b262f.jpeg"></p>
+<p>This picture shows a network system with web cache.</p>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Wireshark Lab: DNS" duration="15">
+        <p>        ใน Section 2.4 ของบทเรียน เมื่อเราเข้าเว็บไซต์โดยพิมพ์ www ตัว Domain Name System (DNS) จะแปลง hostname ไปเป็นหมายเลข IP address เพื่อนำเราไปยัง Server ที่เป็นที่อยู่ของเว็บไซต์นั้นๆ </p>
+<h2 is-upgraded><strong>nslookup</strong>                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           </h2>
+<p>        เป็นคำสั่งในการตรวจสอบว่าหมายเลข IP address อันนี้เป็นของเว็บไซต์อะไร หรือใช้ตรวจสอบว่าเว็บไซต์นี้มีหมายเลข IP address อะไร โดยการเรียกใช้คำสั่ง nslookup สามารถใช้งานผ่าน Command Prompt ลองดูตัวอย่างดังต่อไปนี้</p>
+<p class="image-container"><img style="width: 624.00px" src="img\a95a4a1c744d7dfa.png"></p>
+<p>จากรูป Client คือเว็บไซต์ภาควิชาวิศวกรรมไฟฟ้าและคอมพิวเตอร์ Server คือ DC-01-SVR.nu.local เมื่อเราพิมพ์คำสั่ง nslookup หากไม่ได้ระบุ server ไว้ nslookup จะส่ง query ไปยัง default DNS server ซึ่งก็คือ DC-01-SVR.nu.local</p>
+<p><strong>คำสั่งที่ 1 คือ</strong></p>
+<pre><code>nslookup www.ecpe.nu.ac.th</code></pre>
+<p>คือการบอกให้ส่งหมายเลข IP address ของเว็บไซต์ www.ecpe.nu.ac.th มาดังรูป สิ่งที่ตอบกลับมาจะมี 2 อย่างคือ ชื่อกับหมายเลข IP address </p>
+<p class="image-container"><img style="width: 423.90px" src="img\9c6c1db63a104474.png"></p>
+<p><strong>คำสั่งที่ 2 คือ</strong></p>
+<pre><code>nslookup -type=NS ecpe.nu.ac.th</code></pre>
+<p>ใช้ option &#34;-type=NS&#34; และโดเมน &#34;ecpe.nu.ac.th&#34; ทำให้ nslookup ส่ง query type-NS ไปยัง DNS server ให้ส่งชื่อ hostname ที่เชื่อถือได้ของ ecpe.nu.ac.th กลับมาให้ และมีการระบุหมายเลข IP address ที่เชื่อถือได้กลับมาให้ด้วย</p>
+<p class="image-container"><img style="width: 561.69px" src="img\a11700c014667bb5.png"></p>
+<h2 is-upgraded><strong>i</strong><strong>pconfig</strong></h2>
+<p>        คำสั่ง ipconfig บนระบบปฏิบัติการ windows และ ifconfig บนระบบปฏิบัติการ Linux เป็นคำสั่งที่ใช้สำหรับเรียกดูหมายเลข IP address ของเครื่องที่เราใช้งานอยู่ โดยการเรียกใช้คำสั่ง </p>
+<pre><code>ipconfig /all</code></pre>
+<p>ใน Command Prompt ดังตัวอย่างดังต่อไปนี้</p>
+<p class="image-container"><img style="width: 562.00px" src="img\ac4e2b77ce41a29.png"></p>
+<h2 is-upgraded><strong>Tracing DNS with Wireshark</strong></h2>
+<p>ต่อไปเราจะมาใช้โปรแกรม wireshark จับแพ็คเกจ จากคำสั่ง nslookup และ ipconfig โดยทำตามขั้นตอนดังต่อไปนี้</p>
+<p>Step 1. ใช้คำสั่ง ipconfig /flushdns เพื่อล้าง DNS cache บนโฮสต์ของเรา</p>
+<p class="image-container"><img style="width: 379.00px" src="img\a5a94b3a91d85ec9.png"></p>
+<p>Step 2. เปิดเว็บบราวเซอร์และเคลียร์แคชบนบราวเซอร์ </p>
+<p>Step 3. เปิดโปรแกรม Wireshark กดปุ่ม Stop เพื่อหยุดการจับแพ็คเกจ จากนั้นพิมพ์ &#34;ip.addr == หมายเลข IP address ของเครื่องเรา&#34; ในช่อง filter</p>
+<p>Step 4. กดปุ่ม Start เพื่อเริ่มการจับแพ็คเกจ</p>
+<p>Step 5. เปิด Command Prompt พิมพ์คำสั่ง </p>
+<pre><code>nslookup www.mit.edu</code></pre>
+<p>Step 6. ไปที่โปรแกรม wireshark แล้วหยุดการจับแพ็คเกจ</p>
+<p class="image-container"><img style="width: 624.00px" src="img\d46bb634af48d2b1.png"></p>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="References" duration="1">
+        <h2 is-upgraded>Reference docs</h2>
+<ul>
+<li><a href="http://www-net.cs.umass.edu/wireshark-labs/Wireshark_Intro_v8.0.pdf" target="_blank">Wireshark Lab: Getting Started v8.0</a></li>
+<li><a href="https://itbolt.blogspot.com/2017/08/mtu.html" target="_blank">https://itbolt.blogspot.com/2017/08/mtu.html</a></li>
+<li><a href="https://kb.netgear.com/19863/Ping-Test-to-determine-Optimal-MTU-Size-on-Router" target="_blank">https://kb.netgear.com/19863/Ping-Test-to-determine-Optimal-MTU-Size-on-Router</a></li>
+<li><a href="https://packetpushers.net/ip-fragmentation-in-detail/" target="_blank">https://packetpushers.net/ip-fragmentation-in-detail/</a></li>
+<li><a href="http://www-net.cs.umass.edu/wireshark-labs/Wireshark_IP_v8.0.pdf" target="_blank">http://www-net.cs.umass.edu/wireshark-labs/Wireshark_IP_v8.0.pdf</a></li>
+<li><a href="https://support.microsoft.com/th-th/topic/the-default-mtu-sizes-for-different-network-topologies-b25262c5-d90f-456d-7647-e09192eeeef4" target="_blank">https://support.microsoft.com/th-th/topic/the-default-mtu-sizes-for-different-network-topologies-b25262c5-d90f-456d-7647-e09192eeeef4</a></li>
+<li><a href="https://www.tutorialspoint.com/http/http_header_fields.htm" target="_blank">https://www.tutorialspoint.com/http/http_header_fields.htm</a></li>
+<li><a href="https://www.webnots.com/what-is-http/" target="_blank">https://www.webnots.com/what-is-http/</a></li>
+<li><a href="https://developer.zendesk.com/documentation/developer-tools/getting-started/installing-and-using-curl/" target="_blank">https://developer.zendesk.com/documentation/developer-tools/getting-started/installing-and-using-curl/</a></li>
+<li><a href="https://curl.se/windows/" target="_blank">https://curl.se/windows/</a></li>
+</ul>
+
+
+      </google-codelab-step>
+    
+  </google-codelab>
+
+  <script src="https://storage.googleapis.com/codelab-elements/native-shim.js"></script>
+  <script src="https://storage.googleapis.com/codelab-elements/custom-elements.min.js"></script>
+  <script src="https://storage.googleapis.com/codelab-elements/prettify.js"></script>
+  <script src="https://storage.googleapis.com/codelab-elements/codelab-elements.js"></script>
+
+</body>
+</html>
